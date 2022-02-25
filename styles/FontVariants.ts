@@ -12,7 +12,7 @@ export const FontVariants = StyleSheet.create({
   },
   subtitleBold: {
     fontSize: FontSizes.L20,
-    fontFamily: FontWeights.Roboto600,
+    fontFamily: FontWeights.Roboto700,
     lineHeight: LineHeights.ML26_6,
   },
   headerThin: {
@@ -22,7 +22,7 @@ export const FontVariants = StyleSheet.create({
   },
   headerBold: {
     fontSize: FontSizes.ML18,
-    fontFamily: FontWeights.Roboto600,
+    fontFamily: FontWeights.Roboto700,
     color: Colors.white,
   },
   body: {
