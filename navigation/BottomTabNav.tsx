@@ -1,5 +1,5 @@
 import * as React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeScreen } from "../views/home/HomeScreen";
 import { SoundScreen } from "../views/sound/SoundScreen";
@@ -9,15 +9,32 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 const Tab = createBottomTabNavigator();
 
+const DarkTheme = {
+  ...DefaultTheme,
+  dark: true,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#FFF',
+    background: '#0f315b',
+  },
+};
+
 export const Navigator = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={DarkTheme}>
       <Tab.Navigator
         screenOptions={{
+          headerShown: false, 
           tabBarShowLabel: true,
+          tabBarLabelStyle: {
+            padding: 10
+          },
           tabBarStyle: {
-            backgroundColor: '#0e142f'
-          }
+            backgroundColor: '#0e142f',
+            borderTopWidth: 0,
+            height: 70,
+            padding: 10
+          },
         }}
       >
         <Tab.Screen
