@@ -1,17 +1,17 @@
-import * as React from "react";
-import { Text, StyleSheet, Button, View } from "react-native";
-import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { HomeScreen } from "../views/home/HomeScreen";
-import { SoundsScreen } from "../views/sound/SoundsScreen";
-import { LogsScreen } from "../views/logs/LogsScreen";
-import { TrackerScreen } from "../views/tracker/TrackerScreen";
-import { ProfileScreen } from "../views/profile/ProfileScreen";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
+import * as React from "react";
+import { StyleSheet, View } from "react-native";
 import FeatherIcons from "react-native-vector-icons/Feather";
 import FoundationIcons from "react-native-vector-icons/Foundation";
 import IonIcons from "react-native-vector-icons/Ionicons";
-import { Colors, FontSizes } from "../styles";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { Colors } from "../styles";
+import { HomeScreen } from "../views/home/HomeScreen";
+import { LogsScreen } from "../views/logs/LogsScreen";
+import { ProfileScreen } from "../views/profile/ProfileScreen";
+import { SoundsScreen } from "../views/sound/SoundsScreen";
+import { TrackerScreen } from "../views/tracker/TrackerScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -69,7 +69,7 @@ export const Navigator = () => {
           name="Log"
           component={LogsScreen}
           options={{
-            tabBarIcon: ({ color }) => (
+            tabBarIcon: () => (
               <View style={styles.logbtn}>
                 <FeatherIcons name="plus" color={Colors.white} size={30} />
               </View>
