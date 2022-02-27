@@ -1,12 +1,17 @@
 import * as React from "react";
+import { Text, StyleSheet, Button, View } from "react-native";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeScreen } from "../views/home/HomeScreen";
-import { SoundScreen } from "../views/sound/SoundScreen";
+import { SoundsScreen } from "../views/sound/SoundsScreen";
+import { LogsScreen } from "../views/logs/LogsScreen";
 import { TrackerScreen } from "../views/tracker/TrackerScreen";
-import { SettingsScreen } from "../views/settings/SettingsScreen";
+import { ProfileScreen } from "../views/profile/ProfileScreen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { Colors } from "../styles";
+import FeatherIcons from "react-native-vector-icons/Feather";
+import FoundationIcons from "react-native-vector-icons/Foundation";
+import IonIcons from "react-native-vector-icons/Ionicons";
+import { Colors, FontSizes } from "../styles";
 
 const Tab = createBottomTabNavigator();
 
@@ -29,48 +34,67 @@ export const Navigator = () => {
           tabBarShowLabel: true,
           tabBarLabelStyle: {
             padding: 10,
+            paddingTop: 18,
           },
           tabBarStyle: {
             backgroundColor: Colors.primaryPurple,
             borderTopWidth: 0,
-            height: 70,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            marginTop: -20,
+            height: 80,
             padding: 10,
           },
         }}
       >
         <Tab.Screen
-          name="home"
+          name="Home"
           component={HomeScreen}
           options={{
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="home" color={color} size={size} />
+            tabBarIcon: ({ color }) => (
+              <FeatherIcons name="home" color={color} size={20} />
             ),
           }}
         />
         <Tab.Screen
-          name="sounds"
-          component={SoundScreen}
+          name="Sounds"
+          component={SoundsScreen}
           options={{
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="music" color={color} size={size} />
+            tabBarIcon: ({ color }) => (
+              <FoundationIcons name="sound" color={color} size={20} />
             ),
           }}
         />
         <Tab.Screen
-          name="tracker"
+          name="Log"
+          component={LogsScreen}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <View style={styles.logbtn}>
+                <FeatherIcons name="plus" color={Colors.white} size={30} />
+              </View>
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Tracker"
           component={TrackerScreen}
           options={{
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="clock" color={color} size={size} />
+            tabBarIcon: ({ color }) => (
+              <IonIcons name="ios-stats-chart" color={color} size={20} />
             ),
           }}
         />
         <Tab.Screen
-          name="settings"
-          component={SettingsScreen}
+          name="Me"
+          component={ProfileScreen}
           options={{
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="cog" color={color} size={size} />
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons
+                name="account-circle-outline"
+                color={color}
+                size={20}
+              />
             ),
           }}
         />
@@ -78,3 +102,16 @@ export const Navigator = () => {
     </NavigationContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  logbtn: {
+    marginTop: -40,
+    borderRadius: 50,
+    zIndex: 1,
+    height: 65,
+    width: 65,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: Colors.secondaryPurple,
+  },
+});
