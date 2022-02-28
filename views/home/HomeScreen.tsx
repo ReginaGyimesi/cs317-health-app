@@ -51,7 +51,7 @@ export const HomeScreen = () => {
             />
           </View>
           <View>
-            <Text style={styles.title}>Favourite sounds</Text>
+            <Text style={styles.title}>Your sounds</Text>
             <FeaturedTabWrapper
               icon={
                 <MaterialCommunityIcons
@@ -62,7 +62,7 @@ export const HomeScreen = () => {
               }
               text="water by a stream"
             />
-            <FeaturedTabWrapper
+            {/* <FeaturedTabWrapper
               icon={
                 <MaterialCommunityIcons
                   name="account-music-outline"
@@ -71,7 +71,7 @@ export const HomeScreen = () => {
                 />
               }
               text="wind in the trees"
-            />
+            /> */}
           </View>
         </View>
       </View>
@@ -82,7 +82,7 @@ export const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {},
   title: {
-    ...FontVariants.subtitleBold,
+    ...FontVariants.headerBold,
     color: Colors.grey20,
     marginBottom: 10,
     marginLeft: 30,

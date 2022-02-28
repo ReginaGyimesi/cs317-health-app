@@ -6,7 +6,7 @@ export const WelcomeView = () => {
     <View>
       <ImageBackground
         imageStyle={{ borderBottomLeftRadius: 20, borderBottomRightRadius: 20 }}
-        source={require("../../assets/images/bgdark.png")}
+        source={require("../../assets/images/bgdarkmoon.png")}
         style={styles.imgcontainer}
       >
         <View style={styles.textwrapper}>
