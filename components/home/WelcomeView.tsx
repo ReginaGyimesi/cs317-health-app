@@ -21,7 +21,6 @@ export const WelcomeView = () => {
           <Text style={[FontVariants.introThin, styles.text]}>
             {morningtime && "Good morning,"}
             {afternoontime && "Good afternoon,"}
-
             {nighttime && "Good evening,"}
           </Text>
           <Text
