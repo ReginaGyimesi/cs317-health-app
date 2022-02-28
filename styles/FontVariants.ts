@@ -30,7 +30,7 @@ export const FontVariants = StyleSheet.create({
     lineHeight: LineHeights.ML26_6,
   },
   headerThin: {
-    fontSize: FontSizes.L20,
+    fontSize: FontSizes.M16,
     fontFamily: FontWeights.Roboto300,
     color: Colors.white,
   },

@@ -37,7 +37,7 @@ export const Navigator = () => {
             paddingTop: 18,
           },
           tabBarStyle: {
-            backgroundColor: Colors.primaryPurple,
+            backgroundColor: "#111341",
             borderTopWidth: 0,
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
