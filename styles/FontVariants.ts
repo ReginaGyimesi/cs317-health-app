@@ -5,6 +5,20 @@ import { FontWeights } from "./FontWeights";
 import { LineHeights } from "./LineHeights";
 
 export const FontVariants = StyleSheet.create({
+  headerLarge: {
+    fontSize: FontSizes.HEADER50,
+    fontFamily: FontWeights.Roboto700,
+  },
+  introThin: {
+    fontSize: FontSizes.XXL28,
+    fontFamily: FontWeights.Roboto300,
+    lineHeight: LineHeights.ML26_6,
+  },
+  introBold: {
+    fontSize: FontSizes.XXL28,
+    fontFamily: FontWeights.Roboto700,
+    lineHeight: LineHeights.ML26_6,
+  },
   titleBold: {
     fontSize: FontSizes.XL24,
     fontFamily: FontWeights.Roboto700,
@@ -16,7 +30,7 @@ export const FontVariants = StyleSheet.create({
     lineHeight: LineHeights.ML26_6,
   },
   headerThin: {
-    fontSize: FontSizes.L20,
+    fontSize: FontSizes.M16,
     fontFamily: FontWeights.Roboto300,
     color: Colors.white,
   },

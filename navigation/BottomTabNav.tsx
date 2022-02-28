@@ -37,7 +37,7 @@ export const Navigator = () => {
             paddingTop: 18,
           },
           tabBarStyle: {
-            backgroundColor: Colors.primaryPurple,
+            backgroundColor: "#111341",
             borderTopWidth: 0,
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
@@ -71,7 +71,7 @@ export const Navigator = () => {
           options={{
             tabBarIcon: () => (
               <View style={styles.logbtn}>
-                <FeatherIcons name="plus" color={Colors.white} size={30} />
+                <FeatherIcons name="plus" color={Colors.white} size={32} />
               </View>
             ),
           }}

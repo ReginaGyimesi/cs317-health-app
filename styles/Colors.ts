@@ -4,6 +4,7 @@ export const Colors = {
   primaryPurple: "#16183A",
   secondaryPurple: "#3D45F6",
   lightPurple: "#A44FAB",
+  darkPurple: "#2D1E58",
   primaryYellow: "#BAAF48",
   primaryOrange: "#F96C3F",
   primaryPink: "#C6A7A7",
