@@ -27,12 +27,12 @@ export const WelcomeView = () => {
 const styles = StyleSheet.create({
   textwrapper: {
     margin: 30,
-    marginTop: 100,
+    marginTop: 120,
   },
   text: {
     color: Colors.grey20,
   },
   imgcontainer: {
-    height: 200,
+    height: 224,
   },
 });

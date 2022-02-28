@@ -5,6 +5,10 @@ import { FontWeights } from "./FontWeights";
 import { LineHeights } from "./LineHeights";
 
 export const FontVariants = StyleSheet.create({
+  headerLarge: {
+    fontSize: FontSizes.HEADER50,
+    fontFamily: FontWeights.Roboto700,
+  },
   introThin: {
     fontSize: FontSizes.XXL28,
     fontFamily: FontWeights.Roboto300,
