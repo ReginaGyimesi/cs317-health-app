@@ -6,6 +6,6 @@ export const FontSizes = {
   ML18: 18,
   L20: 20,
   XL24: 24,
-  XXL24: 36,
+  XXL28: 28,
   HEADER50: 50,
 };

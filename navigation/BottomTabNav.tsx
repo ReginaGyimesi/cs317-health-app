@@ -71,7 +71,7 @@ export const Navigator = () => {
           options={{
             tabBarIcon: () => (
               <View style={styles.logbtn}>
-                <FeatherIcons name="plus" color={Colors.white} size={30} />
+                <FeatherIcons name="plus" color={Colors.white} size={32} />
               </View>
             ),
           }}
