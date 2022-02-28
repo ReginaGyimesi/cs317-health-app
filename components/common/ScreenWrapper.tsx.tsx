@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, ScrollView, View } from "react-native";
 import { Colors, FontVariants } from "../../styles";
 import { BackToHomeButton } from "./BackToHomeButton";
 
@@ -10,19 +10,21 @@ type Props = {
 
 export const ScreenWrapper = ({ title, text, children }: Props) => {
   return (
-    <View style={[styles.container]}>
-      <BackToHomeButton />
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.text}>{text}</Text>
+    <ScrollView>
+      <View style={[styles.container]}>
+        <BackToHomeButton />
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.text}>{text}</Text>
+      </View>
       {children}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     margin: 30,
-    marginTop: 40,
+    marginTop: 50,
   },
   title: {
     ...FontVariants.titleBold,
