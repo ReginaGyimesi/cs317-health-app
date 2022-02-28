@@ -1,10 +1,11 @@
 import React from "react";
 import { Text, View } from "react-native";
+import { ScreenWrapper } from "../../components/common/ScreenWrapper.tsx";
 
 export const LogsScreen = () => {
   return (
-    <View>
-      <Text>test logs</Text>
-    </View>
+    <ScreenWrapper title="Sleep logging" text="Start logging your sleep.">
+    
+    </ScreenWrapper>
   );
 };
