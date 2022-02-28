@@ -2,10 +2,11 @@ import { StyleSheet, View, Text, ImageBackground } from "react-native";
 import { Colors, FontVariants } from "../../styles";
 
 let currtime = new Date().getHours();
-const nighttime = 5 >= currtime && currtime >= 18;
+const nighttime = currtime >= 18;
 export const WelcomeView = () => {
   const morningtime = 5 < currtime && currtime < 12;
   const afternoontime = 12 <= currtime && currtime < 18;
+
   return (
     <View>
       <ImageBackground

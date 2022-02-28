@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
-import { FontVariants } from "../../styles";
+import { FontVariants, Colors } from "../../styles";
 
 export const Clock = () => {
   let time = new Date();
@@ -9,6 +9,7 @@ export const Clock = () => {
   function update() {
     setcurrtime(new Date())
   }
+
   useEffect(() => {
     setInterval(update, 1000);
   });
@@ -25,5 +26,6 @@ const stylesheet = StyleSheet.create({
     ...FontVariants.headerLarge,
     textAlign: "center",
     justifyContent: "center",
+    color: Colors.grey20
   },
 });
