@@ -1,11 +1,12 @@
-import { Image, TouchableOpacity } from "react-native";
+import { Image, TouchableOpacity, StyleProp, ViewStyle } from "react-native";
 import { useState } from "react";
 
 type Props = {
   onPress?: () => void;
+  style: StyleProp<ViewStyle>
 };
 
-export const PlayButton = ({ onPress, ...props }: Props) => {
+export const PlayButton = ({ onPress, style }: Props) => {
   const [start, setStart] = useState(true);
 
   return (
@@ -14,7 +15,7 @@ export const PlayButton = ({ onPress, ...props }: Props) => {
         setStart(!start);
         onPress;
       }}
-      {...props}
+      style={style}
     >
       {start ? (
         <Image source={require("../../assets/images/play.png")} />

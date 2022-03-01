@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, ImageBackground, StyleSheet, View } from "react-native";
+import { Text, ImageBackground, StyleSheet, View, Image } from "react-native";
 import { PlayButton } from "../../components/common/PlayButton";
 import { ScreenWrapper } from "../../components/common/ScreenWrapper.tsx";
 import { Clock } from "../../components/logs/Clock";
@@ -24,7 +24,10 @@ export const LogsScreen = () => {
         style={styles.imgcontainer}
       >
         <PlayButton style={styles.btn} />
-        <Text>nfofsdno</Text>
+        <View style={[styles.capsule, styles.flex, { marginTop: 100 }]}>
+          <Text style={[FontVariants.subtitleThin, { marginRight: 30, color: Colors.grey20 }]}>I'm awake</Text>
+          <Image source={require("../../assets/icons/forward.png")} />
+        </View>
       </ImageBackground>
     </ScreenWrapper>
   );
@@ -43,12 +46,13 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
     alignSelf: "center",
     marginTop: 5,
-    marginBottom: 80,
+    marginBottom: 100,
   },
   flex: {
     flexDirection: "row",
     paddingVertical: 5,
     paddingHorizontal: 15,
+    alignItems: "center"
   },
   border: {
     borderRightWidth: 1,
@@ -60,6 +64,6 @@ const styles = StyleSheet.create({
   },
   btn: {
     alignItems: "center",
-    marginTop: -50
+    marginTop: -50,
   }
 });
