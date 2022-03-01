@@ -3,7 +3,7 @@ import { useState } from "react";
 
 type Props = {
   onPress?: () => void;
-  style: StyleProp<ViewStyle>
+  style: StyleProp<ViewStyle>;
 };
 
 export const PlayButton = ({ onPress, style }: Props) => {
