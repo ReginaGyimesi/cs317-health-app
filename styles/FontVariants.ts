@@ -29,6 +29,11 @@ export const FontVariants = StyleSheet.create({
     fontFamily: FontWeights.Roboto700,
     lineHeight: LineHeights.ML26_6,
   },
+  subtitleThin: {
+    fontSize: FontSizes.L20,
+    fontFamily: FontWeights.Roboto300,
+    lineHeight: LineHeights.ML26_6,
+  },
   headerThin: {
     fontSize: FontSizes.M16,
     fontFamily: FontWeights.Roboto300,
