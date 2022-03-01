@@ -8,6 +8,7 @@ type CardProps = {
   title: String;
   number: String;
   nav: String;
+  onPress?: () => void;
 };
 
 export const FeaturedCardWrapper = ({ style, title, number, onPress }: CardProps) => {
