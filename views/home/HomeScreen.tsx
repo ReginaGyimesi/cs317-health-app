@@ -7,11 +7,7 @@ import { Colors, FontVariants } from "../../styles";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation, StackActions } from "@react-navigation/native";
-import { SoundsScreen } from "../sound/SoundsScreen";
-import { LogsScreen } from "../logs/LogsScreen";
-import { SoundsScreenNavName } from "../sound/SoundsScreen";
-import { LogScreenNavName } from "../logs/LogsScreen";
-import { AlarmScreenNavName } from "../alarm/AlarmScreen";
+import { AlarmScreenNavName, LogScreenNavName, SoundsScreenNavName } from "..";
 
 export const HomeScreenNavName = "Home";
 export const HomeScreen = () => {

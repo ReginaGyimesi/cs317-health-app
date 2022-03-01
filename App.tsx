@@ -2,6 +2,7 @@ import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 import React from "react";
 import { Navigator } from "./navigation/BottomTabNav";
+import 'react-native-gesture-handler';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
