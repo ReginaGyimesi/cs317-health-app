@@ -4,7 +4,7 @@ import { Colors, FontVariants } from "../../styles";
 let currtime = new Date().getHours();
 const nighttime = currtime >= 18;
 export const WelcomeView = () => {
-  const morningtime = 5 < currtime && currtime < 12;
+  const morningtime = 5 <= currtime && currtime < 12;
   const afternoontime = 12 <= currtime && currtime < 18;
 
   return (

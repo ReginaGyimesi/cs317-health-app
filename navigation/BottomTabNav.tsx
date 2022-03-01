@@ -7,11 +7,18 @@ import FoundationIcons from "react-native-vector-icons/Foundation";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Colors } from "../styles";
-import { HomeScreen } from "../views/home/HomeScreen";
-import { LogsScreen } from "../views/logs/LogsScreen";
-import { ProfileScreen } from "../views/profile/ProfileScreen";
-import { SoundsScreen } from "../views/sound/SoundsScreen";
-import { TrackerScreen } from "../views/tracker/TrackerScreen";
+import {
+  LogsScreen,
+  ProfileScreen,
+  SoundsScreen,
+  TrackerScreen,
+  HomeScreenNavName,
+  LogScreenNavName,
+  SoundsScreenNavName,
+  TrackerScreenNavName,
+  ProfileScreenNavName
+} from "../views";
+import { HomeToAlarmNavigator, LogToSingleLogNavigator } from "./StackNavigation";
 
 const Tab = createBottomTabNavigator();
 
@@ -48,8 +55,8 @@ export const Navigator = () => {
         }}
       >
         <Tab.Screen
-          name="Home"
-          component={HomeScreen}
+          name={HomeScreenNavName}
+          component={HomeToAlarmNavigator}
           options={{
             tabBarIcon: ({ color }) => (
               <FeatherIcons name="home" color={color} size={20} />
@@ -57,7 +64,7 @@ export const Navigator = () => {
           }}
         />
         <Tab.Screen
-          name="Sounds"
+          name={SoundsScreenNavName}
           component={SoundsScreen}
           options={{
             tabBarIcon: ({ color }) => (
@@ -66,8 +73,8 @@ export const Navigator = () => {
           }}
         />
         <Tab.Screen
-          name="Log"
-          component={LogsScreen}
+          name={LogScreenNavName}
+          component={LogToSingleLogNavigator}
           options={{
             tabBarIcon: () => (
               <View style={styles.logbtn}>
@@ -77,7 +84,7 @@ export const Navigator = () => {
           }}
         />
         <Tab.Screen
-          name="Tracker"
+          name={TrackerScreenNavName}
           component={TrackerScreen}
           options={{
             tabBarIcon: ({ color }) => (
@@ -86,7 +93,7 @@ export const Navigator = () => {
           }}
         />
         <Tab.Screen
-          name="Me"
+          name={ProfileScreenNavName}
           component={ProfileScreen}
           options={{
             tabBarIcon: ({ color }) => (

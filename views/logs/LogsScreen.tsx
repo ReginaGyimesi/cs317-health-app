@@ -1,11 +1,17 @@
 import React from "react";
-import { Text, ImageBackground, StyleSheet, View, Image } from "react-native";
+import { Text, ImageBackground, StyleSheet, View, Image, Pressable } from "react-native";
 import { PlayButton } from "../../components/common/PlayButton";
 import { ScreenWrapper } from "../../components/common/ScreenWrapper.tsx";
 import { Clock } from "../../components/logs/Clock";
 import { Colors, FontVariants } from "../../styles";
+import { useNavigation, StackActions } from "@react-navigation/native";
+import { SingleLogScreenNavName } from "..";
 
+export const LogScreenNavName = "Log";
 export const LogsScreen = () => {
+  const navigation = useNavigation();
+  const onAwakePressed = () => navigation.dispatch(StackActions.push(SingleLogScreenNavName));
+  
   return (
     <ScreenWrapper title="Sleep logging" text="Start logging your sleep.">
       {/* <Clock /> */}
@@ -24,10 +30,10 @@ export const LogsScreen = () => {
         style={styles.imgcontainer}
       >
         <PlayButton style={styles.btn} />
-        <View style={[styles.capsule, styles.flex, { marginTop: 100 }]}>
+        <Pressable onPress={onAwakePressed} style={[styles.capsule, styles.flex, { marginTop: 100 }]}>
           <Text style={[FontVariants.subtitleThin, { marginRight: 30, color: Colors.grey20 }]}>I'm awake</Text>
           <Image source={require("../../assets/icons/forward.png")} />
-        </View>
+        </Pressable>
       </ImageBackground>
     </ScreenWrapper>
   );
