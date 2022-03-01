@@ -1,18 +1,32 @@
 import React from "react";
-import { Text, View, StyleSheet, ScrollView, Image } from "react-native";
+import { Text, View, StyleSheet, ScrollView, Image, Pressable } from "react-native";
 import { FeaturedCardWrapper } from "../../components/home/FeaturedCardWrapper";
 import { FeaturedTabWrapper } from "../../components/home/FeaturedTabWrapper";
 import { WelcomeView } from "../../components/home/WelcomeView";
 import { Colors, FontVariants } from "../../styles";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { useNavigation, StackActions } from "@react-navigation/native";
+import { SoundsScreen } from "../sound/SoundsScreen";
+import { LogsScreen } from "../logs/LogsScreen";
+import { SoundsScreenNavName } from "../sound/SoundsScreen";
+import { LogScreenNavName } from "../logs/LogsScreen";
+import { AlarmScreenNavName } from "../alarm/AlarmScreen";
 
+export const HomeScreenNavName = "Home";
 export const HomeScreen = () => {
+  const navigation = useNavigation();
+
+  const onAlarmPressed = () => navigation.dispatch(StackActions.push(AlarmScreenNavName));
+  const onSoundPressed = () => navigation.navigate(SoundsScreenNavName);
+  const onLogPressed = () => navigation.navigate(LogScreenNavName);
+
   const featuredcards = [
-    { style: styles.bgcolor1, title: "sounds", num: "01" },
-    { style: styles.bgcolor2, title: "logging", num: "02" },
-    { style: styles.bgcolor3, title: "alarm", num: "03" },
+    { style: styles.bgcolor1, title: "sounds", num: "01", nav: onSoundPressed },
+    { style: styles.bgcolor2, title: "logging", num: "02", nav: onLogPressed },
+    { style: styles.bgcolor3, title: "alarm", num: "03", nav: onAlarmPressed },
   ];
+
   return (
     <ScrollView>
       <View style={styles.basemargin}>
@@ -29,6 +43,7 @@ export const HomeScreen = () => {
                       style={featured.style}
                       title={featured.title}
                       number={featured.num}
+                      onPress={featured.nav}
                     />
                   );
                 })}
@@ -38,7 +53,7 @@ export const HomeScreen = () => {
           <View>
             <View style={[styles.rowjustify]}>
               <Text style={styles.title}>Your alarms</Text>
-              <Text style={styles.plustext}>+</Text>
+              <Pressable onPress={onAlarmPressed}><Text style={styles.plustext}>+</Text></Pressable>
             </View>
             <FeaturedTabWrapper
               icon={
@@ -56,7 +71,7 @@ export const HomeScreen = () => {
           <View>
             <View style={[styles.rowjustify]}>
               <Text style={styles.title}>Your sounds</Text>
-              <Text style={styles.plustext}>+</Text>
+              <Pressable onPress={onSoundPressed}><Text style={styles.plustext}>+</Text></Pressable>
             </View>
 
             <FeaturedTabWrapper

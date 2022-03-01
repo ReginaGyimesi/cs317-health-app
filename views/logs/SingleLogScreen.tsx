@@ -2,10 +2,10 @@ import React from "react";
 import { ScreenWrapper } from "../../components/common/ScreenWrapper.tsx";
 import { Text } from "react-native";
 
-export const AlarmScreenNavName = "Alarm";
-export const AlarmScreen = () => {
+export const SingleLogScreenNavName = "SingleLog";
+export const SingleLogScreen = () => {
   return (
-    <ScreenWrapper title="Set alarm" text="">
+    <ScreenWrapper title="Good morning" text="Let's see how well you slept last night.">
       <Text>children</Text>
     </ScreenWrapper>
   );
