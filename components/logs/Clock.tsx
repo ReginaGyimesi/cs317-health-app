@@ -12,7 +12,7 @@ export const Clock = () => {
 
   useEffect(() => {
     setInterval(update, 1000);
-  });
+  }, []);
 
   return (
     <View>

@@ -1,5 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
-import { StyleSheet, StyleProp, TextStyle, View, Text } from "react-native";
+import { StyleProp, StyleSheet, Text, TextStyle } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Colors, FontVariants } from "../../styles";
 
@@ -11,8 +10,12 @@ type CardProps = {
   onPress?: () => void;
 };
 
-export const FeaturedCardWrapper = ({ style, title, number, onPress }: CardProps) => {
-
+export const FeaturedCardWrapper = ({
+  style,
+  title,
+  number,
+  onPress,
+}: CardProps) => {
   return (
     <TouchableOpacity onPress={onPress} style={[styles.container, style]}>
       <Text style={styles.text}>{title}</Text>
