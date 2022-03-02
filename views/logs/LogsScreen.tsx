@@ -19,7 +19,7 @@ export const LogsScreen = () => {
 
   return (
     <ScreenWrapper title="Sleep logging" text="Start logging your sleep.">
-      {/* <Clock /> */}
+      <Clock />
       <View style={styles.capsule}>
         <View style={[styles.flex, styles.border]}>
           <Text style={styles.body}>alarm</Text>
