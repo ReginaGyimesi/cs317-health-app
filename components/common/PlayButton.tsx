@@ -3,18 +3,16 @@ import { useState } from "react";
 
 type Props = {
   onPress?: () => void;
+  start: Boolean;
   style: StyleProp<ViewStyle>;
 };
 
-export const PlayButton = ({ onPress, style }: Props) => {
-  const [start, setStart] = useState(true);
-
+export const PlayButton = ({ onPress, start, style }: Props) => {
   return (
     <TouchableOpacity
-      onPress={() => {
-        setStart(!start);
-        onPress;
-      }}
+      onPress={
+        onPress
+      }
       style={style}
     >
       {start ? (
