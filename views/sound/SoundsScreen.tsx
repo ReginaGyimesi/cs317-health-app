@@ -4,6 +4,7 @@ import { Colors, FontSizes, FontVariants, FontWeights } from "../../styles";
 import { Audio } from 'expo-av';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
+import { ScreenWrapper } from "../../components/common/ScreenWrapper.tsx";
 
 const ENABLE_BACKGROUND_AUDIO = {
   interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS,
@@ -189,9 +190,7 @@ export const SoundsScreen = () => {
 
 
   return (
-    <View>
-      <Text style={[FontVariants.headerBold, SoundStyles.header]}>Sleep Soundscape</Text>
-      <Text style={[FontVariants.subtitleThin, SoundStyles.subtitle]}>Mix and match a relaxing soundscape to{"\n"}ease the mind into a restful night's sleep.</Text>
+    <ScreenWrapper title="Sleep Soundscape" text="Mix and match a relaxing soundscape to ease the mind into a restful night's sleep.">
       <View style={SoundStyles.soundButtons}>
 
         <View style={[SoundStyles.soundButton, SoundStyles.rainButton]}>
@@ -255,7 +254,7 @@ export const SoundsScreen = () => {
         </View>
 
       </View>
-    </View>
+    </ScreenWrapper>
   );
 };
 
@@ -272,8 +271,8 @@ const SoundStyles = StyleSheet.create({
     display: 'flex',
     flexWrap: 'wrap',
     flexDirection: 'row',
-    width: 130,
-    height: 120,
+    width: 120,
+    height: 90,
     margin: 10,
     borderRadius: 10,
     borderWidth: 5,
@@ -290,7 +289,7 @@ const SoundStyles = StyleSheet.create({
     display: 'flex',
   },
   volumeButtonPlaying: {
-    height: 55,
+    height: 45,
     backgroundColor: Colors.grey10,
   },
   volumeButton: {
@@ -299,21 +298,18 @@ const SoundStyles = StyleSheet.create({
   volumeText: {
     color: Colors.white,
     textAlign: 'center',
-    lineHeight: 50,
     fontSize: FontSizes.XL24,
     fontWeight: '700',
   },
   buttonText: {
     color: Colors.white,
     fontWeight: '700',
-    padding: 15,
   },
   soundButtons: {
     display: 'flex',
     flexDirection: "row",
     justifyContent: 'space-evenly',
     flexWrap: 'wrap',
-    padding: 15,
   },
   rainButton: {
     backgroundColor: Colors.opBlue,
