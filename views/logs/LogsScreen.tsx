@@ -5,7 +5,7 @@ import {
   StyleSheet,
   View,
   Image,
-  Pressable
+  Pressable,
 } from "react-native";
 import { PlayButton } from "../../components/common/PlayButton";
 import { ScreenWrapper } from "../../components/common/ScreenWrapper.tsx";
@@ -19,6 +19,8 @@ import { useState, useEffect } from "react";
 import { Accelerometer } from "expo-sensors";
 import { millisToTime } from "../../utils/millisToTime";
 
+// this is shake sensitivity - lowering this will give high sensitivity and increasing this will give lower sensitivity
+const THRESHOLD = 0.2;
 export const LogScreenNavName = "Log";
 export const LogsScreen = () => {
   const navigation = useNavigation();
@@ -29,24 +31,36 @@ export const LogsScreen = () => {
   // if (hasProximity) return <BlackScreen />;
 
   const [subscription, setSubscription] = useState(null);
-  const [data, setData] = useState({
-    x: 0,
-    y: 0,
-    z: 0,
-  });
-
-  const [start, setStart] = useState(new Date())
+  const [start, setStart] = useState(new Date());
   const _subscribe = () => {
     setStart(new Date());
     Accelerometer.setUpdateInterval(1000);
+    let last_x, last_y, last_z;
+
+    let lastUpdate = 0;
     setSubscription(
       Accelerometer.addListener((accelerometerData) => {
-        setData(accelerometerData);
+        let { x, y, z } = accelerometerData;
+        let currTime = Date.now();
+        if (currTime - lastUpdate > 100) {
+          let diffTime = currTime - lastUpdate;
+          lastUpdate = currTime;
+          let speed =
+            (Math.abs(x + y + z - last_x - last_y - last_z) / diffTime) * 10000;
+          if (speed > THRESHOLD) {
+            console.log("shake");
+          } else {
+            console.log("no shake");
+          }
+          last_x = x;
+          last_y = y;
+          last_z = z;
+        }
       })
     );
   };
 
-  const [end, setEnd] = useState(new Date())
+  const [end, setEnd] = useState(new Date());
   const _unsubscribe = () => {
     subscription && subscription.remove();
     setEnd(new Date());
@@ -55,11 +69,10 @@ export const LogsScreen = () => {
 
   useEffect(() => {
     _subscribe;
-  }, [_subscribe, _unsubscribe])
+  }, [_subscribe, _unsubscribe]);
 
   let timeInBed = millisToTime(end.getTime() - start.getTime());
 
-  const { x, y, z } = data;
   return (
     <ScreenWrapper title="Sleep logging" text="Start logging your sleep.">
       <Clock />
@@ -96,9 +109,6 @@ export const LogsScreen = () => {
           </Text>
           <Image source={require("../../assets/icons/forward.png")} />
         </Pressable>
-        <Text style={{ color: Colors.white }}>
-          x: {Math.round(x)} y: {Math.round(y)} z: {Math.round(z)}
-        </Text>
       </ImageBackground>
     </ScreenWrapper>
   );
