@@ -6,16 +6,16 @@ import { Clock } from "../../components/logs/Clock";
 import { Colors, FontVariants } from "../../styles";
 import { useNavigation, StackActions } from "@react-navigation/native";
 import { SingleLogScreenNavName } from "..";
-import useProximity from "../../utils/useProximity";
+//import useProximity from "../../utils/useProximity";
 import { BlackScreen } from "../../components/logs/BlackScreen";
 
 export const LogScreenNavName = "Log";
 export const LogsScreen = () => {  
-  const { hasProximity } = useProximity();
+  //const { hasProximity } = useProximity();
   const navigation = useNavigation();
   const onAwakePressed = () => navigation.dispatch(StackActions.push(SingleLogScreenNavName));
 
-  if (hasProximity) return <BlackScreen />;
+  //if (hasProximity) return <BlackScreen />;
 
   return (
     <ScreenWrapper title="Sleep logging" text="Start logging your sleep.">
