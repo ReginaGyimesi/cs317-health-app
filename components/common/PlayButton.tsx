@@ -1,5 +1,4 @@
 import { Image, TouchableOpacity, StyleProp, ViewStyle } from "react-native";
-import { useState } from "react";
 
 type Props = {
   onPress?: () => void;
@@ -7,7 +6,7 @@ type Props = {
   style: StyleProp<ViewStyle>;
 };
 
-export const PlayButton = ({ onPress, start, style }: Props) => {
+export const PlayButton = ({ onPress, start=false, style }: Props) => {
   return (
     <TouchableOpacity
       onPress={

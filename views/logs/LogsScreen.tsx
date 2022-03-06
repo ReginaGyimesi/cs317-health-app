@@ -17,6 +17,7 @@ import { SingleLogScreenNavName } from "..";
 // import { BlackScreen } from "../../components/logs/BlackScreen";
 import { useState, useEffect } from "react";
 import { Accelerometer } from "expo-sensors";
+import { millisToTime } from "../../utils/millisToTime";
 
 export const LogScreenNavName = "Log";
 export const LogsScreen = () => {
@@ -26,6 +27,7 @@ export const LogsScreen = () => {
 
   // const { hasProximity } = useProximity();
   // if (hasProximity) return <BlackScreen />;
+
   const [subscription, setSubscription] = useState(null);
   const [data, setData] = useState({
     x: 0,
@@ -33,7 +35,10 @@ export const LogsScreen = () => {
     z: 0,
   });
 
+  const [start, setStart] = useState(new Date())
   const _subscribe = () => {
+    setStart(new Date());
+    Accelerometer.setUpdateInterval(1000);
     setSubscription(
       Accelerometer.addListener((accelerometerData) => {
         setData(accelerometerData);
@@ -41,15 +46,18 @@ export const LogsScreen = () => {
     );
   };
 
+  const [end, setEnd] = useState(new Date())
   const _unsubscribe = () => {
     subscription && subscription.remove();
+    setEnd(new Date());
     setSubscription(null);
   };
 
   useEffect(() => {
-    _subscribe();
-    return () => _unsubscribe();
-  }, []);
+    _subscribe;
+  }, [_subscribe, _unsubscribe])
+
+  let timeInBed = millisToTime(end.getTime() - start.getTime());
 
   const { x, y, z } = data;
   return (
