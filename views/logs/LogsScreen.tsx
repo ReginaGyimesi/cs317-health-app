@@ -17,26 +17,26 @@ import { SingleLogScreenNavName } from "..";
 // import { BlackScreen } from "../../components/logs/BlackScreen";
 import { useState, useEffect } from "react";
 import { Accelerometer } from "expo-sensors";
-import { millisToTime } from "../../utils/millisToTime";
 
 // this is shake sensitivity - lowering this will give high sensitivity and increasing this will give lower sensitivity
-const THRESHOLD = 0.2;
+const THRESHOLD = 0.3;
 export const LogScreenNavName = "Log";
 export const LogsScreen = () => {
   const navigation = useNavigation();
-  const onAwakePressed = () =>
+  const onAwakePressed = () => {
     navigation.dispatch(StackActions.push(SingleLogScreenNavName));
+  };
 
   // const { hasProximity } = useProximity();
   // if (hasProximity) return <BlackScreen />;
 
   const [subscription, setSubscription] = useState(null);
   const [start, setStart] = useState(new Date());
+  const [shakes, setShakes] = useState(0);
   const _subscribe = () => {
     setStart(new Date());
     Accelerometer.setUpdateInterval(1000);
     let last_x, last_y, last_z;
-
     let lastUpdate = 0;
     setSubscription(
       Accelerometer.addListener((accelerometerData) => {
@@ -48,9 +48,7 @@ export const LogsScreen = () => {
           let speed =
             (Math.abs(x + y + z - last_x - last_y - last_z) / diffTime) * 10000;
           if (speed > THRESHOLD) {
-            console.log("shake");
-          } else {
-            console.log("no shake");
+            setShakes((count) => count + 1);
           }
           last_x = x;
           last_y = y;
@@ -71,7 +69,9 @@ export const LogsScreen = () => {
     _subscribe;
   }, [_subscribe, _unsubscribe]);
 
-  let timeInBed = millisToTime(end.getTime() - start.getTime());
+  let timeInBed = end.getTime() - start.getTime();
+  let lightSleep = shakes * 1000;
+  let deepSleep = timeInBed - lightSleep;
 
   return (
     <ScreenWrapper title="Sleep logging" text="Start logging your sleep.">

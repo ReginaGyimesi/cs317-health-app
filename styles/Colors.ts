@@ -26,5 +26,6 @@ export const Colors = {
   opPurple: "rgba(164, 79, 171, 0.4)",
   opGreen: "rgba(81, 171, 79, 0.4)",
   opPink: "rgba(234, 73, 179, 0.4)",
-  opBlue: "rgba(79, 83, 171, 0.4)"
+  opBlue: "rgba(79, 83, 171, 0.4)",
 };
+
