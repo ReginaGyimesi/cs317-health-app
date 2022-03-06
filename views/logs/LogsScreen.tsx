@@ -17,15 +17,13 @@ import { SingleLogScreenNavName } from "..";
 // import { BlackScreen } from "../../components/logs/BlackScreen";
 import { useState, useEffect } from "react";
 import { Accelerometer } from "expo-sensors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // this is shake sensitivity - lowering this will give high sensitivity and increasing this will give lower sensitivity
 const THRESHOLD = 0.3;
 export const LogScreenNavName = "Log";
 export const LogsScreen = () => {
   const navigation = useNavigation();
-  const onAwakePressed = () => {
-    navigation.dispatch(StackActions.push(SingleLogScreenNavName));
-  };
 
   // const { hasProximity } = useProximity();
   // if (hasProximity) return <BlackScreen />;
@@ -72,6 +70,19 @@ export const LogsScreen = () => {
   let timeInBed = end.getTime() - start.getTime();
   let lightSleep = shakes * 1000;
   let deepSleep = timeInBed - lightSleep;
+
+  const sleepData = {
+    "timeInBed": timeInBed,
+    "lightSleep": lightSleep,
+    "deepSleep": deepSleep,
+    "added": end
+  };
+
+  const onAwakePressed = async () => {
+    await AsyncStorage.setItem("loggedhours", JSON.stringify(sleepData));
+    AsyncStorage.getItem("loggedhours").then(value => console.log(value))
+    navigation.dispatch(StackActions.push(SingleLogScreenNavName));
+  };
 
   return (
     <ScreenWrapper title="Sleep logging" text="Start logging your sleep.">
