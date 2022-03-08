@@ -39,7 +39,6 @@ export const SoundsScreen = () => {
   const [noiseSoundPlaying, setNoiseSoundPlaying] = useState(false)
   const [noiseSoundStatus, setNoiseSoundStatus] = useState({'volume': 1});
 
-
   // Function to toggle audio playback
   async function toggleSound(audio : Audio.Sound) {
     switch(audio) {
@@ -273,7 +272,7 @@ const SoundStyles = StyleSheet.create({
     flexDirection: 'row',
     width: 120,
     height: 90,
-    margin: 10,
+    margin: 5,
     borderRadius: 10,
     borderWidth: 5,
     overflow: 'hidden',
