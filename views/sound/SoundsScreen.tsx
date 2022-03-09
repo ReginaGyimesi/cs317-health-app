@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { Colors, FontSizes, FontVariants, FontWeights } from "../../styles";
 import { Audio } from 'expo-av';
@@ -19,174 +19,46 @@ export const SoundsScreen = () => {
   Audio.setAudioModeAsync(ENABLE_BACKGROUND_AUDIO);
   
   // Variable definitions for audio
-  const [rainSound, setRainSound] = useState(new Audio.Sound());
-  const [rainSoundPlaying, setRainSoundPlaying] = useState(false);
-  const [rainSoundStatus, setRainSoundStatus] = useState({'volume': 1});
+  const [playCount, setPlayCount] = useState(0);
+  const [rainSound, setRainSound] = useState({'sound': new Audio.Sound, 'volume': 1, 'isPlaying': false, 'path': require('../../assets/sounds/rain.mp3')});
+  const [fireSound, setFireSound] = useState({'sound': new Audio.Sound, 'volume': 1, 'isPlaying': false, 'path': require('../../assets/sounds/fire.mp3')});
+  const [waveSound, setWaveSound] = useState({'sound': new Audio.Sound, 'volume': 1, 'isPlaying': false, 'path': require('../../assets/sounds/waves.mp3')});
+  const [forestSound, setForestSound] = useState({'sound': new Audio.Sound, 'volume': 1, 'isPlaying': false, 'path': require('../../assets/sounds/forest.mp3')});
+  const [noiseSound, setNoiseSound] = useState({'sound': new Audio.Sound, 'volume': 1, 'isPlaying': false, 'path': require('../../assets/sounds/noise.mp3')});
 
-  const [fireSound, setFireSound] = useState(new Audio.Sound());
-  const [fireSoundPlaying, setFireSoundPlaying] = useState(false)
-  const [fireSoundStatus, setFireSoundStatus] = useState({'volume': 1});
-
-  const [waveSound, setWaveSound] = useState(new Audio.Sound());
-  const [waveSoundPlaying, setWaveSoundPlaying] = useState(false)
-  const [waveSoundStatus, setWaveSoundStatus] = useState({'volume': 1});
-
-  const [forestSound, setForestSound] = useState(new Audio.Sound());
-  const [forestSoundPlaying, setForestSoundPlaying] = useState(false)
-  const [forestSoundStatus, setForestSoundStatus] = useState({'volume': 1});
-
-  const [noiseSound, setNoiseSound] = useState(new Audio.Sound());
-  const [noiseSoundPlaying, setNoiseSoundPlaying] = useState(false)
-  const [noiseSoundStatus, setNoiseSoundStatus] = useState({'volume': 1});
+  useEffect(() => {}, [rainSound, fireSound, waveSound, forestSound, noiseSound]);
 
   // Function to toggle audio playback
-  async function toggleSound(audio : Audio.Sound) {
-    switch(audio) {
-      case rainSound: {
-        if(!rainSoundPlaying) {
-          await rainSound.loadAsync(require('../../assets/sounds/rain.mp3'));
-          await rainSound.playAsync();
-          rainSound.setIsLoopingAsync(true);
-          setRainSoundPlaying(true);
-        }
-        else {
-          await rainSound.stopAsync();
-          await rainSound.unloadAsync();
-          setRainSoundPlaying(false);
-          break;
-        }
-        break;
-      }
-      case fireSound: {
-        if(!fireSoundPlaying) {
-          await fireSound.loadAsync(require('../../assets/sounds/fire.mp3'));
-          await fireSound.playAsync();
-          fireSound.setIsLoopingAsync(true);
-          setFireSoundPlaying(true);
-        }
-        else {
-          await fireSound.stopAsync();
-          await fireSound.unloadAsync();
-          setFireSoundPlaying(false);
-        }
-        break;
-      }
-      case waveSound: {
-        if(!waveSoundPlaying) {
-          await waveSound.loadAsync(require('../../assets/sounds/waves.mp3'));
-          await waveSound.playAsync();
-          waveSound.setIsLoopingAsync(true);
-          setWaveSoundPlaying(true);
-        }
-        else {
-          await waveSound.stopAsync();
-          await waveSound.unloadAsync();
-          setWaveSoundPlaying(false);
-        }
-        break;
-      }
-      case forestSound: {
-        if(!forestSoundPlaying) {
-          await forestSound.loadAsync(require('../../assets/sounds/forest.mp3'));
-          await forestSound.playAsync();
-          forestSound.setIsLoopingAsync(true);
-          setForestSoundPlaying(true);
-        }
-        else {
-          await forestSound.stopAsync();
-          await forestSound.unloadAsync();
-          setForestSoundPlaying(false);
-        }
-        break;
-      }
-      case noiseSound: {
-        if(!noiseSoundPlaying) {
-          await noiseSound.loadAsync(require('../../assets/sounds/noise.mp3'));
-          await noiseSound.playAsync();
-          noiseSound.setIsLoopingAsync(true);
-          setNoiseSoundPlaying(true);
-        }
-        else {
-          await noiseSound.stopAsync();
-          await noiseSound.unloadAsync();
-          setNoiseSoundPlaying(false);
-        }
-        break;
-      }
+  async function toggleSound(audio: { sound: Audio.Sound, volume: number, isPlaying: boolean, path: any }) {
+    if(audio.isPlaying === false) {
+      await audio.sound.loadAsync(audio.path);
+      await audio.sound.playAsync();
+      audio.sound.setIsLoopingAsync(true);
+      audio.isPlaying = true;
+      setPlayCount(playCount+1);
+    }
+    else {
+      await audio.sound.stopAsync();
+      await audio.sound.unloadAsync();
+      audio.isPlaying = false;
+      setPlayCount(playCount-1)
     }
   }
 
-  // Converts audio status information to dictionary format
-  async function updateAudioStatus(audio : Audio.Sound) {
-    let statusDict: any = {};
-    await audio.getStatusAsync().then((data => {
-      statusDict.volume = data.volume;
-      switch(audio) {
-        case rainSound: {
-          setRainSoundStatus(statusDict);
-          break;
-        }
-        case fireSound: {
-          setFireSoundStatus(statusDict);
-          break;
-        }
-        case waveSound: {
-          setWaveSoundStatus(statusDict);
-          break;
-        }
-        case forestSound: {
-          setForestSoundStatus(statusDict);
-          break;
-        }
-        case noiseSound: {
-          setNoiseSoundStatus(statusDict);
-          break;
-        }
-      }
+  // Updates local volume variable
+  async function updateStatus(audio: { sound: Audio.Sound, volume: number, isPlaying: boolean, path: any }) {
+    await audio.sound.getStatusAsync().then((data => {
+      audio.volume = data.volume;
     }));
   }
 
   // Changes volume of audio playback based on increment/decrement
-  async function changeVolume(audio : Audio.Sound, change : number) {
-    switch(audio) {
-      case rainSound: {
-        if(rainSoundStatus.volume + change >= 0 && rainSoundStatus.volume + change <= 1) {
-          rainSound.setVolumeAsync(rainSoundStatus.volume + change);
-          updateAudioStatus(rainSound);
-        }
-        break;
-      }
-      case fireSound: {
-        if(fireSoundStatus.volume + change >= 0 && fireSoundStatus.volume + change <= 1) {
-          fireSound.setVolumeAsync(fireSoundStatus.volume + change);
-          updateAudioStatus(fireSound);
-        }
-        break;
-      }
-      case waveSound: {
-        if(waveSoundStatus.volume + change >= 0 && waveSoundStatus.volume + change <= 1) {
-          waveSound.setVolumeAsync(waveSoundStatus.volume + change);
-          updateAudioStatus(waveSound);
-        }
-        break;
-      }
-      case forestSound: {
-        if(forestSoundStatus.volume + change >= 0 && forestSoundStatus.volume + change <= 1) {
-          forestSound.setVolumeAsync(forestSoundStatus.volume + change);
-          updateAudioStatus(forestSound);
-        }
-        break;
-      }
-      case noiseSound: {
-        if(noiseSoundStatus.volume + change >= 0 && noiseSoundStatus.volume + change <= 1) {
-          noiseSound.setVolumeAsync(noiseSoundStatus.volume + change);
-          updateAudioStatus(noiseSound);
-        }
-        break;
-      }
+  async function changeVolume(audio: { sound: Audio.Sound, volume: number, isPlaying: boolean, path: any }, change : number) {
+    if(audio.volume + change >= 0 && audio.volume + change <= 1) {
+      audio.sound.setVolumeAsync(audio.volume + change);
+      updateStatus(audio);
     }
   }
-
 
   return (
     <ScreenWrapper title="Sleep Soundscape" text="Mix and match a relaxing soundscape to ease the mind into a restful night's sleep.">
@@ -195,60 +67,60 @@ export const SoundsScreen = () => {
         <View style={[SoundStyles.soundButton, SoundStyles.rainButton]}>
           <TouchableOpacity style={SoundStyles.playbackButton} onPress={() => toggleSound(rainSound)}>
             <Text style={SoundStyles.buttonText}>Rain</Text>
-            {!rainSoundPlaying && <MaterialCommunityIcons name="play" color={Colors.white} size={50} />}
-            {rainSoundPlaying && <MaterialCommunityIcons name="pause" color={Colors.white} size={50} />}
+            {!rainSound.isPlaying && <MaterialCommunityIcons name="play" color={Colors.white} size={50} />}
+            {rainSound.isPlaying && <MaterialCommunityIcons name="pause" color={Colors.white} size={50} />}
           </TouchableOpacity>
           <View style={SoundStyles.volumeButtons}>
-            <TouchableOpacity style={[rainSoundPlaying && SoundStyles.volumeButtonPlaying, SoundStyles.volumeButton]} onPress={() => changeVolume(rainSound, +0.1)}>{rainSoundPlaying && <Text style={SoundStyles.volumeText}>+</Text>}</TouchableOpacity>
-            <TouchableOpacity style={[rainSoundPlaying && SoundStyles.volumeButtonPlaying, SoundStyles.volumeButton]} onPress={() => changeVolume(rainSound, -0.1)}>{rainSoundPlaying && <Text style={SoundStyles.volumeText}>-</Text>}</TouchableOpacity>
+            <TouchableOpacity style={[rainSound.isPlaying && SoundStyles.volumeButtonPlaying, SoundStyles.volumeButton]} onPress={() => changeVolume(rainSound, +0.1)}>{rainSound.isPlaying && <Text style={SoundStyles.volumeText}>+</Text>}</TouchableOpacity>
+            <TouchableOpacity style={[rainSound.isPlaying && SoundStyles.volumeButtonPlaying, SoundStyles.volumeButton]} onPress={() => changeVolume(rainSound, -0.1)}>{rainSound.isPlaying && <Text style={SoundStyles.volumeText}>-</Text>}</TouchableOpacity>
           </View>
         </View>
 
         <View style={[SoundStyles.soundButton, SoundStyles.fireButton]}>
           <TouchableOpacity style={SoundStyles.playbackButton} onPress={() => toggleSound(fireSound)}>
             <Text style={SoundStyles.buttonText}>Fire</Text>
-            {!fireSoundPlaying && <MaterialCommunityIcons name="play" color={Colors.white} size={50} />}
-            {fireSoundPlaying && <MaterialCommunityIcons name="pause" color={Colors.white} size={50} />}
+            {!fireSound.isPlaying && <MaterialCommunityIcons name="play" color={Colors.white} size={50} />}
+            {fireSound.isPlaying && <MaterialCommunityIcons name="pause" color={Colors.white} size={50} />}
           </TouchableOpacity>
           <View style={SoundStyles.volumeButtons}>
-            <TouchableOpacity style={[fireSoundPlaying && SoundStyles.volumeButtonPlaying, SoundStyles.volumeButton]} onPress={() => changeVolume(fireSound, +0.1)}>{fireSoundPlaying && <Text style={SoundStyles.volumeText}>+</Text>}</TouchableOpacity>
-            <TouchableOpacity style={[fireSoundPlaying && SoundStyles.volumeButtonPlaying, SoundStyles.volumeButton]} onPress={() => changeVolume(fireSound, -0.1)}>{fireSoundPlaying && <Text style={SoundStyles.volumeText}>-</Text>}</TouchableOpacity>
+            <TouchableOpacity style={[fireSound.isPlaying && SoundStyles.volumeButtonPlaying, SoundStyles.volumeButton]} onPress={() => changeVolume(fireSound, +0.1)}>{fireSound.isPlaying && <Text style={SoundStyles.volumeText}>+</Text>}</TouchableOpacity>
+            <TouchableOpacity style={[fireSound.isPlaying && SoundStyles.volumeButtonPlaying, SoundStyles.volumeButton]} onPress={() => changeVolume(fireSound, -0.1)}>{fireSound.isPlaying && <Text style={SoundStyles.volumeText}>-</Text>}</TouchableOpacity>
           </View>
         </View>
 
         <View style={[SoundStyles.soundButton, SoundStyles.waveButton]}>
           <TouchableOpacity style={SoundStyles.playbackButton} onPress={() => toggleSound(waveSound)}>
             <Text style={SoundStyles.buttonText}>Waves</Text>
-            {!waveSoundPlaying && <MaterialCommunityIcons name="play" color={Colors.white} size={50} />}
-            {waveSoundPlaying && <MaterialCommunityIcons name="pause" color={Colors.white} size={50} />}
+            {!waveSound.isPlaying && <MaterialCommunityIcons name="play" color={Colors.white} size={50} />}
+            {waveSound.isPlaying && <MaterialCommunityIcons name="pause" color={Colors.white} size={50} />}
           </TouchableOpacity>
           <View style={SoundStyles.volumeButtons}>
-            <TouchableOpacity style={[waveSoundPlaying && SoundStyles.volumeButtonPlaying, SoundStyles.volumeButton]} onPress={() => changeVolume(waveSound, +0.1)}>{waveSoundPlaying && <Text style={SoundStyles.volumeText}>+</Text>}</TouchableOpacity>
-            <TouchableOpacity style={[waveSoundPlaying && SoundStyles.volumeButtonPlaying, SoundStyles.volumeButton]} onPress={() => changeVolume(waveSound, -0.1)}>{waveSoundPlaying && <Text style={SoundStyles.volumeText}>-</Text>}</TouchableOpacity>
+            <TouchableOpacity style={[waveSound.isPlaying && SoundStyles.volumeButtonPlaying, SoundStyles.volumeButton]} onPress={() => changeVolume(waveSound, +0.1)}>{waveSound.isPlaying && <Text style={SoundStyles.volumeText}>+</Text>}</TouchableOpacity>
+            <TouchableOpacity style={[waveSound.isPlaying && SoundStyles.volumeButtonPlaying, SoundStyles.volumeButton]} onPress={() => changeVolume(waveSound, -0.1)}>{waveSound.isPlaying && <Text style={SoundStyles.volumeText}>-</Text>}</TouchableOpacity>
           </View>
         </View>
 
         <View style={[SoundStyles.soundButton, SoundStyles.forestButton]}>
           <TouchableOpacity style={SoundStyles.playbackButton} onPress={() => toggleSound(forestSound)}>
             <Text style={SoundStyles.buttonText}>Forest</Text>
-            {!forestSoundPlaying && <MaterialCommunityIcons name="play" color={Colors.white} size={50} />}
-            {forestSoundPlaying && <MaterialCommunityIcons name="pause" color={Colors.white} size={50} />}
+            {!forestSound.isPlaying && <MaterialCommunityIcons name="play" color={Colors.white} size={50} />}
+            {forestSound.isPlaying && <MaterialCommunityIcons name="pause" color={Colors.white} size={50} />}
           </TouchableOpacity>
           <View style={SoundStyles.volumeButtons}>
-            <TouchableOpacity style={[forestSoundPlaying && SoundStyles.volumeButtonPlaying, SoundStyles.volumeButton]} onPress={() => changeVolume(forestSound, +0.1)}>{forestSoundPlaying && <Text style={SoundStyles.volumeText}>+</Text>}</TouchableOpacity>
-            <TouchableOpacity style={[forestSoundPlaying && SoundStyles.volumeButtonPlaying, SoundStyles.volumeButton]} onPress={() => changeVolume(forestSound, -0.1)}>{forestSoundPlaying && <Text style={SoundStyles.volumeText}>-</Text>}</TouchableOpacity>
+            <TouchableOpacity style={[forestSound.isPlaying && SoundStyles.volumeButtonPlaying, SoundStyles.volumeButton]} onPress={() => changeVolume(forestSound, +0.1)}>{forestSound.isPlaying && <Text style={SoundStyles.volumeText}>+</Text>}</TouchableOpacity>
+            <TouchableOpacity style={[forestSound.isPlaying && SoundStyles.volumeButtonPlaying, SoundStyles.volumeButton]} onPress={() => changeVolume(forestSound, -0.1)}>{forestSound.isPlaying && <Text style={SoundStyles.volumeText}>-</Text>}</TouchableOpacity>
           </View>
         </View>
 
         <View style={[SoundStyles.soundButton, SoundStyles.noiseButton]}>
           <TouchableOpacity style={SoundStyles.playbackButton} onPress={() => toggleSound(noiseSound)}>
             <Text style={SoundStyles.buttonText}>Noise</Text>
-            {!noiseSoundPlaying && <MaterialCommunityIcons name="play" color={Colors.white} size={50} />}
-            {noiseSoundPlaying && <MaterialCommunityIcons name="pause" color={Colors.white} size={50} />}
+            {!noiseSound.isPlaying && <MaterialCommunityIcons name="play" color={Colors.white} size={50} />}
+            {noiseSound.isPlaying && <MaterialCommunityIcons name="pause" color={Colors.white} size={50} />}
           </TouchableOpacity>
           <View style={SoundStyles.volumeButtons}>
-            <TouchableOpacity style={[noiseSoundPlaying && SoundStyles.volumeButtonPlaying, SoundStyles.volumeButton]} onPress={() => changeVolume(noiseSound, +0.1)}>{noiseSoundPlaying && <Text style={SoundStyles.volumeText}>+</Text>}</TouchableOpacity>
-            <TouchableOpacity style={[noiseSoundPlaying && SoundStyles.volumeButtonPlaying, SoundStyles.volumeButton]} onPress={() => changeVolume(noiseSound, -0.1)}>{noiseSoundPlaying && <Text style={SoundStyles.volumeText}>-</Text>}</TouchableOpacity>
+            <TouchableOpacity style={[noiseSound.isPlaying && SoundStyles.volumeButtonPlaying, SoundStyles.volumeButton]} onPress={() => changeVolume(noiseSound, +0.1)}>{noiseSound.isPlaying && <Text style={SoundStyles.volumeText}>+</Text>}</TouchableOpacity>
+            <TouchableOpacity style={[noiseSound.isPlaying && SoundStyles.volumeButtonPlaying, SoundStyles.volumeButton]} onPress={() => changeVolume(noiseSound, -0.1)}>{noiseSound.isPlaying && <Text style={SoundStyles.volumeText}>-</Text>}</TouchableOpacity>
           </View>
         </View>
 
@@ -331,3 +203,7 @@ const SoundStyles = StyleSheet.create({
     borderColor: Colors.warningYellow,
   },
 });
+
+function setRainSound(audio: { sound: Audio.Sound; volume: number; isPlaying: boolean; }) {
+  throw new Error("Function not implemented.");
+}
