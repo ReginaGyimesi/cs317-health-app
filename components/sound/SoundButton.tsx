@@ -1,27 +1,21 @@
-import { StyleSheet, View, Text } from "react-native"
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native"
 import { Colors, FontSizes } from "../../styles";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import React from "react";
 import { Audio } from "expo-av";
+import {toggleSound, updateStatus, changeVolume, SoundButtonProps} from "../../utils/soundFunctions";
 
-type SoundButtonProps = {
-  sound : Audio.Sound,
-  soundPlaying : boolean,
-  soundStatus : {}
-};
-
-export const SoundButton = ({ sound, soundPlaying, soundStatus }: SoundButtonProps) => {
+export const SoundButton = (audio : SoundButtonProps) => {
     return (
         <View style={[styles.soundButton, styles.rainButton]}>
-          <TouchableOpacity style={styles.playbackButton} onPress={() => toggleSound(sound)}>
-            <Text style={styles.buttonText}>Rain</Text>
-            {!soundPlaying && <MaterialCommunityIcons name="play" color={Colors.white} size={50} />}
-            {soundPlaying && <MaterialCommunityIcons name="pause" color={Colors.white} size={50} />}
+          <TouchableOpacity style={styles.playbackButton} onPress={() => toggleSound(audio)}>
+            <Text style={styles.buttonText}>{audio.name}</Text>
+            {!audio.isPlaying && <MaterialCommunityIcons name="play" color={Colors.white} size={50} />}
+            {audio.isPlaying && <MaterialCommunityIcons name="pause" color={Colors.white} size={50} />}
           </TouchableOpacity>
           <View style={styles.volumeButtons}>
-            <TouchableOpacity style={[soundPlaying && styles.volumeButtonPlaying, styles.volumeButton]} onPress={() => changeVolume(sound, +0.1)}>{soundPlaying && <Text style={styles.volumeText}>+</Text>}</TouchableOpacity>
-            <TouchableOpacity style={[soundPlaying && styles.volumeButtonPlaying, styles.volumeButton]} onPress={() => changeVolume(sound, -0.1)}>{soundPlaying && <Text style={styles.volumeText}>-</Text>}</TouchableOpacity>
+            <TouchableOpacity style={[audio.isPlaying && styles.volumeButtonPlaying, styles.volumeButton]} onPress={() => changeVolume(audio, +0.1)}>{audio.isPlaying && <Text style={styles.volumeText}>+</Text>}</TouchableOpacity>
+            <TouchableOpacity style={[audio.isPlaying && styles.volumeButtonPlaying, styles.volumeButton]} onPress={() => changeVolume(audio, -0.1)}>{audio.isPlaying && <Text style={styles.volumeText}>-</Text>}</TouchableOpacity>
           </View>
         </View>
     );
