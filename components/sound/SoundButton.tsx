@@ -2,8 +2,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native"
 import { Colors, FontSizes } from "../../styles";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import React from "react";
-import { Audio } from "expo-av";
-import {toggleSound, updateStatus, changeVolume, SoundButtonProps} from "../../utils/soundFunctions";
+import {toggleSound, changeVolume, SoundButtonProps} from "../../utils/soundFunctions";
 
 export const SoundButton = (audio : SoundButtonProps) => {
     return (

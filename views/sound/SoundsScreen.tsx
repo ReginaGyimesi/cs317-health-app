@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import { Colors, FontSizes, FontVariants, FontWeights } from "../../styles";
+import { StyleSheet, View } from "react-native";
+import { Colors, FontSizes } from "../../styles";
 import { Audio } from 'expo-av';
 import { useNavigation } from "@react-navigation/native";
 import { ScreenWrapper } from "../../components/common/ScreenWrapper.tsx";

@@ -1,5 +1,4 @@
 import { Audio } from "expo-av";
-import { useState } from "react";
 
 export type SoundButtonProps = {
     sound: Audio.Sound,
