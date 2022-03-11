@@ -20,25 +20,25 @@ export async function toggleSound({ isPlaying, sound, path }: SoundProps) {
   }
 }
 
-export type VolumeProps = {
+// Updates local volume variable
+export type StatusProps = {
   sound: Audio.Sound;
   volume: number;
-  change: number;
 };
 
-// Updates local volume variable
 export async function updateStatus({ sound, volume }: StatusProps) {
   await sound.getStatusAsync().then((data) => {
     volume = data.volume;
   });
 }
 
-export type StatusProps = {
+// Changes volume of audio playback based on increment/decrement
+export type VolumeProps = {
   sound: Audio.Sound;
   volume: number;
+  change: number;
 };
 
-// Changes volume of audio playback based on increment/decrement
 export async function changeVolume({ sound, volume, change }: VolumeProps) {
   if (volume + change >= 0 && volume + change <= 1) {
     sound.setVolumeAsync(volume + change);

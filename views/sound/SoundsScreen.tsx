@@ -48,7 +48,7 @@ export const SoundsScreen = () => {
       title="Sleep Soundscape"
       text="Mix and match a relaxing soundscape to ease the mind into a restful night's sleep."
     >
-      <View style={SoundStyles.soundButtons}>
+      <View style={styles.soundButtons}>
         {sounds.map((sound, idx) => {
           return (
             <SoundButton
@@ -66,85 +66,11 @@ export const SoundsScreen = () => {
   );
 };
 
-const SoundStyles = StyleSheet.create({
-  header: {
-    paddingLeft: 20,
-    paddingTop: 50,
-  },
-  subtitle: {
-    paddingLeft: 20,
-    paddingTop: 10,
-  },
-  soundButton: {
-    display: "flex",
-    flexWrap: "wrap",
-    flexDirection: "row",
-    width: 120,
-    height: 90,
-    margin: 5,
-    borderRadius: 10,
-    borderWidth: 5,
-    overflow: "hidden",
-    opacity: 0.7,
-  },
-  playbackButton: {
-    flex: 2,
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  volumeButtons: {
-    flex: 1,
-    display: "flex",
-  },
-  volumeButtonPlaying: {
-    height: 45,
-    backgroundColor: Colors.grey10,
-  },
-  volumeButton: {
-    opacity: 0.4,
-  },
-  volumeText: {
-    color: Colors.white,
-    textAlign: "center",
-    fontSize: FontSizes.XL24,
-    fontWeight: "700",
-  },
-  buttonText: {
-    color: Colors.white,
-    fontWeight: "700",
-  },
+const styles = StyleSheet.create({
   soundButtons: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-evenly",
     flexWrap: "wrap",
   },
-  rainButton: {
-    backgroundColor: Colors.opBlue,
-    borderColor: Colors.opBlue,
-  },
-  fireButton: {
-    backgroundColor: Colors.dangerRed,
-    borderColor: Colors.dangerRed,
-  },
-  waveButton: {
-    backgroundColor: Colors.opPurple,
-    borderColor: Colors.opPurple,
-  },
-  forestButton: {
-    backgroundColor: Colors.acceptGreen,
-    borderColor: Colors.acceptGreen,
-  },
-  noiseButton: {
-    backgroundColor: Colors.warningYellow,
-    borderColor: Colors.warningYellow,
-  },
 });
-
-function setRainSound(audio: {
-  sound: Audio.Sound;
-  volume: number;
-  isPlaying: boolean;
-}) {
-  throw new Error("Function not implemented.");
-}

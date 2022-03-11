@@ -85,19 +85,17 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     opacity: 0.7,
   },
-  Rain: {
-    backgroundColor: Colors.opBlue,
-    borderColor: Colors.opBlue,
-  },
   volumeText: {
     color: Colors.white,
     textAlign: "center",
-    fontSize: FontSizes.XL24,
+    fontSize: FontSizes.XXL28,
     fontWeight: "700",
   },
   buttonText: {
     color: Colors.white,
     fontWeight: "700",
+    paddingLeft: 10,
+    paddingTop: 5,
   },
   playbackButton: {
     flex: 2,
@@ -109,10 +107,9 @@ const styles = StyleSheet.create({
     display: "flex",
   },
   volumeButtonPlaying: {
-    height: 45,
-    backgroundColor: Colors.grey10,
+    height: 40,
   },
   volumeButton: {
-    opacity: 0.4,
+    opacity: 0.6,
   },
 });
