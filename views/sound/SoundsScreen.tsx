@@ -19,22 +19,27 @@ export const SoundsScreen = () => {
     {
       name: "Rain",
       path: require("../../assets/sounds/rain.mp3"),
+      colour: Colors.opBlue,
     },
     {
       name: "Fire",
       path: require("../../assets/sounds/fire.mp3"),
+      colour: Colors.dangerRed,
     },
     {
       name: "Waves",
       path: require("../../assets/sounds/waves.mp3"),
+      colour: Colors.opPurple,
     },
     {
       name: "Forest",
       path: require("../../assets/sounds/forest.mp3"),
+      colour: Colors.acceptGreen,
     },
     {
       name: "Noise",
       path: require("../../assets/sounds/noise.mp3"),
+      colour: Colors.warningYellow,
     },
   ];
 
@@ -52,6 +57,7 @@ export const SoundsScreen = () => {
               name={sound.name}
               volume={1}
               path={sound.path}
+              colour={sound.colour}
             />
           );
         })}

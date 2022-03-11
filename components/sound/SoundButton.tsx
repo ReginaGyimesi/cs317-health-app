@@ -11,6 +11,7 @@ export type SoundButtonProps = {
   name: string;
   volume: number;
   path: any;
+  colour: string;
 };
 
 export const SoundButton = ({
@@ -18,10 +19,19 @@ export const SoundButton = ({
   name,
   volume,
   path,
+  colour,
 }: SoundButtonProps) => {
   const [playing, setPlaying] = useState(false);
+
+  const background = function() {
+    return {
+      backgroundColor: colour,
+      borderColor: colour,
+    }
+  }
+
   return (
-    <View style={[styles.soundButton, styles.rainButton]}>
+    <View style={[styles.soundButton, background()]}>
       <TouchableOpacity
         style={styles.playbackButton}
         onPress={() => {
@@ -75,7 +85,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     opacity: 0.7,
   },
-  rainButton: {
+  Rain: {
     backgroundColor: Colors.opBlue,
     borderColor: Colors.opBlue,
   },
