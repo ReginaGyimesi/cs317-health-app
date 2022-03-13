@@ -10,6 +10,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.16.1",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-community/viewpager": "^5.0.11",
     "@react-navigation/bottom-tabs": "^6.2.0",
@@ -23,6 +24,7 @@
     "react-native": "0.64.3",
     "react-native-chart-kit": "^6.12.0",
     "react-native-gesture-handler": "~2.1.0",
+    "react-native-paper": "^4.11.2",
     "react-native-proximity": "github:pakt-digital/react-native-proximity#584f46494111c639655303cf7e4bae925641dc4a",
     "react-native-reanimated": "~2.3.1",
     "react-native-safe-area-context": "3.3.2",
