@@ -55,7 +55,6 @@ export const SoundsScreen = () => {
               key={idx}
               sound={new Audio.Sound()}
               name={sound.name}
-              volume={1}
               path={sound.path}
               colour={sound.colour}
             />
@@ -73,6 +72,5 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     marginBottom: 50,
     justifyContent: "space-evenly",
-
   },
 });

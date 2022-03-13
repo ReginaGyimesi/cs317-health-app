@@ -26,22 +26,17 @@ export type StatusProps = {
   volume: number;
 };
 
-export async function updateStatus({ sound, volume }: StatusProps) {
-  await sound.getStatusAsync().then((data) => {
-    volume = data.volume;
-  });
-}
-
 // Changes volume of audio playback based on increment/decrement
 export type VolumeProps = {
   sound: Audio.Sound;
   volume: number;
-  change: number;
 };
 
-export async function changeVolume({ sound, volume, change }: VolumeProps) {
-  if (volume + change >= 0 && volume + change <= 1) {
-    sound.setVolumeAsync(volume + change);
-    updateStatus({ sound, volume });
+export async function changeVolume({ sound, volume }: VolumeProps) {
+  if (volume >= 0 && volume <= 1) {
+    sound.setVolumeAsync(volume);
+    await sound.getStatusAsync().then((data) => {
+      volume = data.volume;
+    });
   }
 }

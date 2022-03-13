@@ -9,7 +9,6 @@ import { useState } from "react";
 export type SoundButtonProps = {
   sound: Audio.Sound;
   name: string;
-  volume: number;
   path: any;
   colour: string;
 };
@@ -17,11 +16,11 @@ export type SoundButtonProps = {
 export const SoundButton = ({
   sound,
   name,
-  volume,
   path,
   colour,
 }: SoundButtonProps) => {
   const [playing, setPlaying] = useState(false);
+  const [vol, setVolume] = useState(1);
 
   return (
     <View
@@ -51,16 +50,18 @@ export const SoundButton = ({
       </TouchableOpacity>
       <View style={styles.volumeButtons}>
         <TouchableOpacity
-          onPress={() =>
-            changeVolume({ sound: sound, volume: volume, change: 0.1 })
-          }
+          onPress={() => {
+            setVolume(vol + 0.1);
+            changeVolume({ sound: sound, volume: vol });
+          }}
         >
           {playing && <Text style={styles.volumeText}>+</Text>}
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() =>
-            changeVolume({ sound: sound, volume: volume, change: -0.1 })
-          }
+          onPress={() => {
+            setVolume(vol - 0.1);
+            changeVolume({ sound: sound, volume: vol });
+          }}
         >
           {playing && <Text style={styles.volumeText}>-</Text>}
         </TouchableOpacity>
