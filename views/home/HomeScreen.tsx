@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, StyleSheet, ScrollView, Image, Pressable } from "react-native";
+import { Text, View, StyleSheet, ScrollView, Pressable } from "react-native";
 import { FeaturedCardWrapper } from "../../components/home/FeaturedCardWrapper";
 import { FeaturedTabWrapper } from "../../components/home/FeaturedTabWrapper";
 import { WelcomeView } from "../../components/home/WelcomeView";
@@ -80,16 +80,6 @@ export const HomeScreen = () => {
               }
               text="water by a stream"
             />
-            {/* <FeaturedTabWrapper
-              icon={
-                <MaterialCommunityIcons
-                  name="account-music-outline"
-                  color={Colors.white}
-                  size={20}
-                />
-              }
-              text="wind in the trees"
-            /> */}
           </View>
         </View>
       </View>
@@ -106,7 +96,7 @@ const styles = StyleSheet.create({
     marginLeft: 30,
   },
   basemargin: {
-    marginBottom: 40,
+    marginBottom: 50,
   },
   bgcolor1: { backgroundColor: Colors.opPurple, marginLeft: 30 },
   bgcolor2: { backgroundColor: Colors.opGreen, marginLeft: 15 },
