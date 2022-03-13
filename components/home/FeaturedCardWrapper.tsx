@@ -1,12 +1,11 @@
-import { StyleProp, StyleSheet, Text, TextStyle } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import React from "react";
+import { StyleProp, StyleSheet, Text, TextStyle, TouchableOpacity } from "react-native";
 import { Colors, FontVariants } from "../../styles";
 
 type CardProps = {
   style?: StyleProp<TextStyle>;
   title: String;
   number: String;
-  nav: String;
   onPress?: () => void;
 };
 

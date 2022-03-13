@@ -1,5 +1,6 @@
 import { StyleSheet, ViewStyle, View, Text, StyleProp } from "react-native";
 import { Colors, FontVariants } from "../../styles";
+import React from "react";
 
 type TabProps = {
   title: any,
