@@ -121,7 +121,7 @@ export const LogsScreen = () => {
         <Pressable
           onPress={onAwakePressed}
           style={[styles.capsule, styles.flex, { marginTop: 100, borderColor: (subscription || disabled) ? Colors.grey40 : Colors.grey20 }]}
-          disabled={subscription ? true : false}
+          disabled={(subscription || disabled) ? true : false}
         >
           <Text
             style={[
