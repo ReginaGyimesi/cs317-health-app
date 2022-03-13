@@ -18,13 +18,13 @@ import { SingleLogScreenNavName } from "..";
 import { useState, useEffect } from "react";
 import { Accelerometer } from "expo-sensors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 // this is shake sensitivity - lowering this will give high sensitivity and increasing this will give lower sensitivity
 const THRESHOLD = 0.3;
 export const LogScreenNavName = "Log";
 export const LogsScreen = () => {
   const navigation = useNavigation();
-
   // const { hasProximity } = useProximity();
   // if (hasProximity) return <BlackScreen />;
 
@@ -71,23 +71,35 @@ export const LogsScreen = () => {
   let lightSleep = shakes * 1000;
   let deepSleep = timeInBed - lightSleep;
 
-  const sleepData = {
-    "timeInBed": timeInBed,
-    "lightSleep": lightSleep,
-    "deepSleep": deepSleep,
-    "added": end
+  let sleepData = {
+    timeInBed: timeInBed,
+    lightSleep: lightSleep,
+    deepSleep: deepSleep,
+    added: end,
   };
 
+  let disabled = sleepData.timeInBed === 0
+
   const onAwakePressed = async () => {
-    await AsyncStorage.setItem("loggedhours", JSON.stringify(sleepData));
-    AsyncStorage.getItem("loggedhours").then(value => console.log(value))
+    let data;
+    data = await AsyncStorage.getItem("loggedHours");
+
+    if (!data) {
+      data = [];
+    } else {
+      data = JSON.parse(data);
+    }
+
+    data.push(sleepData);
+    data = JSON.stringify(data);
+    AsyncStorage.setItem("loggedHours", data);
     navigation.dispatch(StackActions.push(SingleLogScreenNavName));
   };
 
   return (
     <ScreenWrapper title="Sleep logging" text="Start logging your sleep.">
       <Clock />
-      <View style={styles.capsule}>
+      <View style={[styles.capsule, {borderColor: Colors.grey20}]}>
         <View style={[styles.flex, styles.border]}>
           <Text style={styles.body}>alarm</Text>
           <Text style={FontVariants.headerThin}>07:00</Text>
@@ -108,17 +120,22 @@ export const LogsScreen = () => {
         />
         <Pressable
           onPress={onAwakePressed}
-          style={[styles.capsule, styles.flex, { marginTop: 100 }]}
+          style={[styles.capsule, styles.flex, { marginTop: 100, borderColor: (subscription || disabled) ? Colors.grey40 : Colors.grey20 }]}
+          disabled={subscription ? true : false}
         >
           <Text
             style={[
               FontVariants.subtitleThin,
-              { marginRight: 30, color: Colors.grey20 },
+              { marginRight: 30, color: (subscription || disabled) ? Colors.grey40 : Colors.grey20 },
             ]}
           >
             I'm awake
           </Text>
-          <Image source={require("../../assets/icons/forward.png")} />
+          <MaterialCommunityIcons
+        name={"chevron-right"}
+        color={(subscription || disabled) ? Colors.grey40 : Colors.grey20}
+        size={20}
+      />
         </Pressable>
       </ImageBackground>
     </ScreenWrapper>
@@ -134,7 +151,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderWidth: 1,
     borderRadius: 20,
-    borderColor: Colors.grey20,
     textAlignVertical: "center",
     alignSelf: "center",
     marginTop: 5,
