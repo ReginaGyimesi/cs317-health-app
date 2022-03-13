@@ -1,3 +1,4 @@
+import React from "react";
 import { StyleSheet, Text, ScrollView, View } from "react-native";
 import { Colors, FontVariants } from "../../styles";
 import { BackToHomeButton } from "./BackToHomeButton";

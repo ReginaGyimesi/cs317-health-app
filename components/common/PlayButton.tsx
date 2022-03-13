@@ -1,4 +1,5 @@
 import { Image, TouchableOpacity, StyleProp, ViewStyle } from "react-native";
+import React from "react";
 
 type Props = {
   onPress?: () => void;
