@@ -1,5 +1,6 @@
 import { StyleSheet, View, Text, ImageBackground } from "react-native";
 import { Colors, FontVariants } from "../../styles";
+import React from "react";
 
 let currtime = new Date().getHours();
 const nighttime = currtime >= 18;
