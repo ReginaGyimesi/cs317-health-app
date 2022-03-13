@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import { Colors, FontSizes } from "../../styles";
+import { Colors, FontSizes, FontVariants } from "../../styles";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import React from "react";
 import { toggleSound, changeVolume } from "../../utils/soundFunctions";
@@ -23,17 +23,14 @@ export const SoundButton = ({
 }: SoundButtonProps) => {
   const [playing, setPlaying] = useState(false);
 
-  const background = function() {
-    return {
-      backgroundColor: colour,
-      borderColor: colour,
-    }
-  }
-
   return (
-    <View style={[styles.soundButton, background()]}>
+    <View
+      style={[
+        styles.soundButton,
+        { backgroundColor: colour, borderColor: colour },
+      ]}
+    >
       <TouchableOpacity
-        style={styles.playbackButton}
         onPress={() => {
           setPlaying(!playing);
           toggleSound({
@@ -44,23 +41,23 @@ export const SoundButton = ({
         }}
       >
         <Text style={styles.buttonText}>{name}</Text>
-        <MaterialCommunityIcons
-          name={!playing ? "play" : "pause"}
-          color={Colors.white}
-          size={50}
-        />
+        <View style={styles.wrapper}>
+          <MaterialCommunityIcons
+            name={!playing ? "play" : "pause"}
+            color={Colors.primaryPink}
+            size={35}
+          />
+        </View>
       </TouchableOpacity>
       <View style={styles.volumeButtons}>
         <TouchableOpacity
-          style={[playing && styles.volumeButtonPlaying, styles.volumeButton]}
           onPress={() =>
-            changeVolume({ sound: sound, volume: volume, change: +0.1 })
+            changeVolume({ sound: sound, volume: volume, change: 0.1 })
           }
         >
           {playing && <Text style={styles.volumeText}>+</Text>}
         </TouchableOpacity>
         <TouchableOpacity
-          style={[playing && styles.volumeButtonPlaying, styles.volumeButton]}
           onPress={() =>
             changeVolume({ sound: sound, volume: volume, change: -0.1 })
           }
@@ -78,38 +75,39 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     flexDirection: "row",
     width: 120,
-    height: 90,
+    height: 120,
     margin: 5,
-    borderRadius: 10,
-    borderWidth: 5,
+    borderRadius: 20,
     overflow: "hidden",
-    opacity: 0.7,
+    padding: 5,
   },
   volumeText: {
-    color: Colors.white,
+    color: Colors.primaryPink,
     textAlign: "center",
     fontSize: FontSizes.XXL28,
     fontWeight: "700",
   },
   buttonText: {
-    color: Colors.white,
+    ...FontVariants.headerBold,
+    color: Colors.grey40,
     fontWeight: "700",
     paddingLeft: 10,
     paddingTop: 5,
-  },
-  playbackButton: {
-    flex: 2,
-    display: "flex",
-    justifyContent: "space-between",
+    paddingBottom: 20,
   },
   volumeButtons: {
     flex: 1,
     display: "flex",
+    justifyContent: "space-between",
   },
-  volumeButtonPlaying: {
-    height: 40,
-  },
-  volumeButton: {
-    opacity: 0.6,
+  wrapper: {
+    borderRadius: 50,
+    backgroundColor: Colors.opGrey,
+    height: 50,
+    width: 50,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 5,
   },
 });

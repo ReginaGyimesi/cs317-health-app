@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     marginLeft: 30,
   },
   basemargin: {
-    marginBottom: 40,
+    marginBottom: 50,
   },
   bgcolor1: { backgroundColor: Colors.opPurple, marginLeft: 30 },
   bgcolor2: { backgroundColor: Colors.opGreen, marginLeft: 15 },

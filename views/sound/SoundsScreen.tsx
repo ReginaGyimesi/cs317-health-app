@@ -24,7 +24,7 @@ export const SoundsScreen = () => {
     {
       name: "Fire",
       path: require("../../assets/sounds/fire.mp3"),
-      colour: Colors.dangerRed,
+      colour: Colors.opOrange,
     },
     {
       name: "Waves",
@@ -34,12 +34,12 @@ export const SoundsScreen = () => {
     {
       name: "Forest",
       path: require("../../assets/sounds/forest.mp3"),
-      colour: Colors.acceptGreen,
+      colour: Colors.opGreen,
     },
     {
       name: "Noise",
       path: require("../../assets/sounds/noise.mp3"),
-      colour: Colors.warningYellow,
+      colour: Colors.opYellow,
     },
   ];
 
@@ -70,7 +70,9 @@ const styles = StyleSheet.create({
   soundButtons: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-evenly",
     flexWrap: "wrap",
+    marginBottom: 50,
+    justifyContent: "space-evenly",
+
   },
 });
