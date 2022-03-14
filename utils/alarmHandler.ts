@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-root-toast';
+import * as Notifications from 'expo-notifications';
 
 export async function triggerAlarms() {
   
@@ -67,7 +68,20 @@ export function parseDate(clockValue) {
  * @returns 
  */
 export async function saveAlarm(clockValue, selectedSound, isEnabled) {
-    await AsyncStorage.clear();
+
+    await Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: true,
+      }),
+    });
+    
+    await Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.HIGH,
+    });
+  
     if(!clockValue){
       Toast.show('Save alarm failed', {
         duration: 1000,
@@ -122,6 +136,24 @@ export async function saveAlarm(clockValue, selectedSound, isEnabled) {
     });
 
     console.log(alarms);
+
+    await schedulePushNotification(newAlarm["triggerTime"].getHours(), newAlarm["triggerTime"].getMinutes());
+}
+
+async function schedulePushNotification(hour, minute) {
+  console.log("Hours: " + hour);
+  console.log("Minute: " + minute);
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "It's time to wake up!",
+    }, 
+    trigger: { 
+      hour: hour, 
+      minute: minute,
+      repeats: true,
+      channelId: 'default'
+    },
+  });
 }
 
 export function addZeroToDigits(digit){
@@ -132,4 +164,18 @@ export function addZeroToDigits(digit){
     else {
       return `00`;
     }
+}
+
+export async function fetchActiveAlarms(){
+  let alarms;
+  alarms = await AsyncStorage.getItem('alarms');
+
+  if(!alarms){
+    console.log("New array");
+    alarms = [];
+  }
+  else{
+    alarms = JSON.parse(alarms);
+  }
+  return alarms;
 }

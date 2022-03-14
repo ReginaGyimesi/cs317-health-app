@@ -4,8 +4,6 @@ import React from "react";
 import { Navigator } from "./navigation/BottomTabNav";
 import 'react-native-gesture-handler';
 import { RootSiblingParent } from 'react-native-root-siblings';
-import PushNotificationIOS from "@react-native-community/push-notification-ios";
-import PushNotification from "react-native-push-notification";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
