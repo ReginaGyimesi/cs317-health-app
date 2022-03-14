@@ -19,6 +19,8 @@ import { useState, useEffect } from "react";
 import { Accelerometer } from "expo-sensors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
+import { useFocusEffect } from "@react-navigation/native";
+import { fetchNextAlarm, calcTimeToSleep } from "../../utils/alarmHandler";
 
 // this is shake sensitivity - lowering this will give high sensitivity and increasing this will give lower sensitivity
 const THRESHOLD = 0.3;
@@ -96,17 +98,52 @@ export const LogsScreen = () => {
     navigation.dispatch(StackActions.push(SingleLogScreenNavName));
   };
 
+  // Set the initial alarms screen
+  const [data, setData] = useState(null);
+  const [timeToSleep, setTimeToSleep] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetch = async () => {
+        try {
+          setLoading(true);
+          const data = await fetchNextAlarm(new Date());
+          const timeToSleep = await calcTimeToSleep(data, new Date());
+          setData(data);
+          setTimeToSleep(timeToSleep);
+          setLoading(false);
+        } catch (error) {
+          setLoading(false);
+          console.log(error);
+        }
+      };
+
+      fetch();
+    }, [])
+  );
+
+  let nextAlarmDisplay;
+  let hoursToSleep;
+  if (!data || !timeToSleep || loading) {
+    nextAlarmDisplay = <Text style={FontVariants.headerThin}>--:--</Text>;
+    hoursToSleep = <Text style={FontVariants.headerThin}>--:--</Text>;
+  } else {
+    nextAlarmDisplay = <Text style={FontVariants.headerThin}>{data["displayTime"]}</Text>;
+    hoursToSleep = <Text style={FontVariants.headerThin}>{timeToSleep["hours"]}:{timeToSleep["minutes"]}</Text>;
+  }
+
   return (
     <ScreenWrapper title="Sleep logging" text="Start logging your sleep.">
       <Clock />
       <View style={[styles.capsule, {borderColor: Colors.grey20}]}>
         <View style={[styles.flex, styles.border]}>
           <Text style={styles.body}>alarm</Text>
-          <Text style={FontVariants.headerThin}>07:00</Text>
+          {nextAlarmDisplay}
         </View>
         <View style={styles.flex}>
           <Text style={styles.body}>time to sleep</Text>
-          <Text style={FontVariants.headerThin}>08:00</Text>
+          {hoursToSleep}
         </View>
       </View>
       <ImageBackground

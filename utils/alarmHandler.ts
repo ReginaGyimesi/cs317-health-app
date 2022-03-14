@@ -159,12 +159,108 @@ export async function fetchActiveAlarms() {
   alarms = await AsyncStorage.getItem("alarms");
 
   if (!alarms) {
-    console.log("New array");
     alarms = [];
   } else {
     alarms = JSON.parse(alarms);
   }
   return alarms;
+}
+
+export async function fetchNextAlarm(dateFrom) {
+  let nextAlarm;
+  let fetched;
+  fetched = await AsyncStorage.getItem("alarms");
+
+  if (!fetched) {
+    fetched = [];
+  } else {
+    fetched = JSON.parse(fetched);
+  }
+
+  for(let i = 0; i < fetched.length; i++){
+    let currentItem = fetched[i];
+    let currentAlarm = new Date(currentItem["triggerTime"]);
+    let currentAlarmHour = currentAlarm.getHours();
+    let currentAlarmMinute = currentAlarm.getMinutes();
+
+    if(currentAlarmHour >= dateFrom.getHours()){
+      if(currentAlarmMinute >= dateFrom.getMinutes()){
+        if(!nextAlarm){
+          nextAlarm = currentItem;
+          continue;
+        }
+        let nextAlarmDate = new Date(nextAlarm["triggerTime"]);
+        let nextAlarmHour = nextAlarmDate.getHours();
+        let nextAlarmMinute = nextAlarmDate.getMinutes();
+
+        if(currentAlarmHour < nextAlarmHour){
+          nextAlarm = currentItem;
+          continue;
+        }
+
+        if(currentAlarmHour === nextAlarmHour && currentAlarmMinute < nextAlarmMinute){
+          nextAlarm = currentItem;
+          continue;
+        }
+      }
+    }
+  }
+
+  // We should search the next day item
+  if(!nextAlarm){
+    for(let i = 0; i < fetched.length; i++){
+      let currentItem = fetched[i];
+      let currentAlarm = new Date(currentItem["triggerTime"]);
+      let currentAlarmHour = currentAlarm.getHours();
+      let currentAlarmMinute = currentAlarm.getMinutes();
+
+      if(currentAlarmHour+1 < dateFrom.getHours()){
+        if(currentAlarmMinute < dateFrom.getMinutes()){
+          if(!nextAlarm){
+            nextAlarm = currentItem;
+            continue;
+          }
+          let nextAlarmDate = new Date(nextAlarm["triggerTime"]);
+          let nextAlarmHour = nextAlarmDate.getHours();
+          let nextAlarmMinute = nextAlarmDate.getMinutes();
+  
+          if(currentAlarmHour < nextAlarmHour){
+            nextAlarm = currentItem;
+            continue;
+          }
+  
+          if(currentAlarmHour === nextAlarmHour && currentAlarmMinute < nextAlarmMinute){
+            nextAlarm = currentItem;
+            continue;
+          }
+        }
+      }
+    }
+  }
+
+  return nextAlarm;
+}
+
+export async function calcTimeToSleep(alarm, currentTime) {
+    let fromDate = currentTime;
+    let alarmDate = new Date(alarm["triggerTime"]);
+    let toDate = new Date();
+    let toDateHour = alarmDate.getHours();
+    let toDateMinute = alarmDate.getMinutes();
+    toDate.setHours(toDateHour);
+    toDate.setMinutes(toDateMinute);
+
+    // Increase day
+    if(toDateHour < fromDate.getHours()){
+      toDate.setDate(toDate.getDate()+1);
+    }
+
+    let diff = toDate - fromDate;
+    console.log("diff " + diff);
+    let hoursToSleep = Math.abs(Math.round(diff / (1000*60*60)));
+    let minutesToSleep = Math.abs(Math.round((diff - (1000*60*60*hoursToSleep)) / (1000*60)));
+
+    return {hours:addZeroToDigits(hoursToSleep), minutes:addZeroToDigits(minutesToSleep)}
 }
 
 const styles = StyleSheet.create({
