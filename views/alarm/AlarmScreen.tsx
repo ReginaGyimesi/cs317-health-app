@@ -87,7 +87,7 @@ export const AlarmScreen = () => {
       <View style={styles.dateTimeSelectorContainer}>
         <RNDateTimeSelector
           dataSet={dataSet}
-          onValueChange={(value) => {
+          onValueChange={(value: any) => {
             clockValue = value;
           }}
           containerStyle={styles.dateTimeSelector}
@@ -109,7 +109,7 @@ export const AlarmScreen = () => {
           }}
         />
       </View>
-      <View style={styles.vibrationHolder}>
+      <View style={styles.wrapper}>
         <Text style={styles.vibrationText}>Alarm with vibration</Text>
         <View style={styles.vibrationSwitchHolder}>
           <Switch
@@ -121,7 +121,7 @@ export const AlarmScreen = () => {
           />
         </View>
       </View>
-      <View style={styles.saveAlarmHolder}>
+      <View style={[styles.wrapper, { justifyContent: "center" }]}>
         <Button
           title="Save"
           onPress={() => saveAlarm(clockValue, isEnabled)}
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
   dateTimeSelectorContainer: {
     width: wp(80),
     height: wp(65),
-    backgroundColor: Colors.lightPurple,
+    backgroundColor: Colors.opPurple,
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
   scrollPickerOptionsTextStyle: {
     fontSize: selectedItemTextSize,
   },
-  vibrationHolder: {
+  wrapper: {
     display: "flex",
     flexDirection: "row",
     width: wp(80),
@@ -179,18 +179,5 @@ const styles = StyleSheet.create({
     color: Colors.white,
     marginLeft: "auto",
     marginRight: "auto",
-  },
-  saveAlarmHolder: {
-    display: "flex",
-    flexDirection: "row",
-    width: wp(80),
-    height: wp(10),
-    textAlign: "center",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 10,
-    marginLeft: "auto",
-    marginRight: "auto",
-    marginTop: hp(5),
   },
 });
