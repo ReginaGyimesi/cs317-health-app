@@ -15,8 +15,8 @@ export const ProfileScreen = () => {
       <View style={styles.container}>
         <View style={{ marginBottom: 20 }}>
           <Text style={styles.title}>Account</Text>
-          <Text style={styles.text}>Bob Test</Text>
-          <Text style={styles.text}>test@test.com</Text>
+          <Text style={styles.text}>Name</Text>
+          <Text style={styles.text}>Email</Text>
         </View>
         <View>
           <Text style={[styles.title, { marginTop: 10 }]}>Other</Text>
