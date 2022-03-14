@@ -13,7 +13,8 @@ export const HomeScreenNavName = "Home";
 export const HomeScreen = () => {
   const navigation = useNavigation();
 
-  const onAlarmPressed = () => navigation.dispatch(StackActions.push(AlarmScreenNavName));
+  const onAlarmPressed = () =>
+    navigation.dispatch(StackActions.push(AlarmScreenNavName));
   const onSoundPressed = () => navigation.navigate(SoundsScreenNavName);
   const onLogPressed = () => navigation.navigate(LogScreenNavName);
 
@@ -49,7 +50,9 @@ export const HomeScreen = () => {
           <View>
             <View style={[styles.rowjustify]}>
               <Text style={styles.title}>Your alarms</Text>
-              <Pressable onPress={onAlarmPressed}><Text style={styles.plustext}>+</Text></Pressable>
+              <Pressable onPress={onAlarmPressed}>
+                <Text style={styles.plustext}>+</Text>
+              </Pressable>
             </View>
             <FeaturedTabWrapper
               icon={
@@ -67,7 +70,9 @@ export const HomeScreen = () => {
           <View>
             <View style={[styles.rowjustify]}>
               <Text style={styles.title}>Your sounds</Text>
-              <Pressable onPress={onSoundPressed}><Text style={styles.plustext}>+</Text></Pressable>
+              <Pressable onPress={onSoundPressed}>
+                <Text style={styles.plustext}>+</Text>
+              </Pressable>
             </View>
 
             <FeaturedTabWrapper
@@ -78,7 +83,7 @@ export const HomeScreen = () => {
                   size={20}
                 />
               }
-              text="water by a stream"
+              text="waves"
             />
           </View>
         </View>
