@@ -1,5 +1,12 @@
-import React, {useState, useEffect } from "react";
-import { Text, View, StyleSheet, ScrollView, Image, Pressable } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  ScrollView,
+  Image,
+  Pressable,
+} from "react-native";
 import { FeaturedCardWrapper } from "../../components/home/FeaturedCardWrapper";
 import { FeaturedTabWrapper } from "../../components/home/FeaturedTabWrapper";
 import { WelcomeView } from "../../components/home/WelcomeView";
@@ -8,14 +15,15 @@ import IonIcons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation, StackActions } from "@react-navigation/native";
 import { AlarmScreenNavName, LogScreenNavName, SoundsScreenNavName } from "..";
-import { fetchActiveAlarms} from "../../utils/alarmHandler";
-import { useFocusEffect } from '@react-navigation/native';
+import { fetchActiveAlarms } from "../../utils/alarmHandler";
+import { useFocusEffect } from "@react-navigation/native";
 
 export const HomeScreenNavName = "Home";
 export const HomeScreen = () => {
   const navigation = useNavigation();
 
-  const onAlarmPressed = () => navigation.dispatch(StackActions.push(AlarmScreenNavName));
+  const onAlarmPressed = () =>
+    navigation.dispatch(StackActions.push(AlarmScreenNavName));
   const onSoundPressed = () => navigation.navigate(SoundsScreenNavName);
   const onLogPressed = () => navigation.navigate(LogScreenNavName);
 
@@ -31,34 +39,27 @@ export const HomeScreen = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-
-      const fetch = async() => {
+      const fetch = async () => {
         try {
           setLoading(true);
           const data = await fetchActiveAlarms();
           setData(data);
           setLoading(false);
-        } 
-        catch (error) {
+        } catch (error) {
           setLoading(false);
           console.log(error);
         }
-      }
+      };
 
       fetch();
     }, [])
   );
 
   let alarms = [];
-  if(!data || data.length ===0 || loading){
-    alarms.push(
-      <FeaturedTabWrapper
-        text="No alarms to display"
-      />
-    );
-  }
-  else{
-    for(let i = 0; i < data.length; i++){
+  if (!data || data.length === 0 || loading) {
+    alarms.push(<FeaturedTabWrapper text="No alarms to display" />);
+  } else {
+    for (let i = 0; i < data.length; i++) {
       let currentItem = data[i];
       alarms.push(
         <FeaturedTabWrapper
@@ -97,16 +98,21 @@ export const HomeScreen = () => {
           <View>
             <View style={[styles.rowjustify]}>
               <Text style={styles.title}>Your alarms</Text>
-              <Pressable onPress={onAlarmPressed}><Text style={styles.plustext}>+</Text></Pressable>
+              <Pressable onPress={onAlarmPressed}>
+                <Text style={styles.plustext}>+</Text>
+              </Pressable>
+              <Pressable onPress={onAlarmPressed}>
+                <Text style={styles.plustext}>+</Text>
+              </Pressable>
             </View>
-            <View>
-              {alarms}
-            </View> 
+            <View>{alarms}</View>
           </View>
           <View>
             <View style={[styles.rowjustify]}>
               <Text style={styles.title}>Your sounds</Text>
-              <Pressable onPress={onSoundPressed}><Text style={styles.plustext}>+</Text></Pressable>
+              <Pressable onPress={onSoundPressed}>
+                <Text style={styles.plustext}>+</Text>
+              </Pressable>
             </View>
 
             <FeaturedTabWrapper
