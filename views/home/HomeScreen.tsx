@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, ScrollView, Pressable } from "react-native";
 import { FeaturedCardWrapper } from "../../components/home/FeaturedCardWrapper";
 import { FeaturedTabWrapper } from "../../components/home/FeaturedTabWrapper";
@@ -8,12 +8,15 @@ import IonIcons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation, StackActions } from "@react-navigation/native";
 import { AlarmScreenNavName, LogScreenNavName, SoundsScreenNavName } from "..";
+import { fetchActiveAlarms } from "../../utils/alarmHandler";
+import { useFocusEffect } from "@react-navigation/native";
 
 export const HomeScreenNavName = "Home";
 export const HomeScreen = () => {
   const navigation = useNavigation();
 
-  const onAlarmPressed = () => navigation.dispatch(StackActions.push(AlarmScreenNavName));
+  const onAlarmPressed = () =>
+    navigation.dispatch(StackActions.push(AlarmScreenNavName));
   const onSoundPressed = () => navigation.navigate(SoundsScreenNavName);
   const onLogPressed = () => navigation.navigate(LogScreenNavName);
 
@@ -22,6 +25,45 @@ export const HomeScreen = () => {
     { style: styles.bgcolor2, title: "logging", num: "02", nav: onLogPressed },
     { style: styles.bgcolor3, title: "alarm", num: "03", nav: onAlarmPressed },
   ];
+
+  // Set the initial alarms screen
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetch = async () => {
+        try {
+          setLoading(true);
+          const data = await fetchActiveAlarms();
+          setData(data);
+          setLoading(false);
+        } catch (error) {
+          setLoading(false);
+          console.log(error);
+        }
+      };
+
+      fetch();
+    }, [])
+  );
+
+  let alarms = [];
+  if (!data || data.length === 0 || loading) {
+    alarms.push(<FeaturedTabWrapper text="No alarms to display" />);
+  } else {
+    for (let i = 0; i < data.length; i++) {
+      let currentItem = data[i];
+      alarms.push(
+        <FeaturedTabWrapper
+          icon={
+            <IonIcons name="alarm-outline" color={Colors.white} size={20} />
+          }
+          text={currentItem["displayTime"]}
+        />
+      );
+    }
+  }
 
   return (
     <ScrollView>
@@ -49,25 +91,18 @@ export const HomeScreen = () => {
           <View>
             <View style={[styles.rowjustify]}>
               <Text style={styles.title}>Your alarms</Text>
-              <Pressable onPress={onAlarmPressed}><Text style={styles.plustext}>+</Text></Pressable>
+              <Pressable onPress={onAlarmPressed}>
+                <Text style={styles.plustext}>+</Text>
+              </Pressable>
             </View>
-            <FeaturedTabWrapper
-              icon={
-                <IonIcons name="alarm-outline" color={Colors.white} size={20} />
-              }
-              text="07:15"
-            />
-            <FeaturedTabWrapper
-              icon={
-                <IonIcons name="alarm-outline" color={Colors.white} size={20} />
-              }
-              text="07:30"
-            />
+            <View>{alarms}</View>
           </View>
           <View>
             <View style={[styles.rowjustify]}>
               <Text style={styles.title}>Your sounds</Text>
-              <Pressable onPress={onSoundPressed}><Text style={styles.plustext}>+</Text></Pressable>
+              <Pressable onPress={onSoundPressed}>
+                <Text style={styles.plustext}>+</Text>
+              </Pressable>
             </View>
 
             <FeaturedTabWrapper

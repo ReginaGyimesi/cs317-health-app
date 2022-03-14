@@ -3,6 +3,7 @@ import { useFonts } from "expo-font";
 import React from "react";
 import { Navigator } from "./navigation/BottomTabNav";
 import 'react-native-gesture-handler';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -14,8 +15,16 @@ export default function App() {
   });
 
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return (
+      <RootSiblingParent>
+        <AppLoading />
+      </RootSiblingParent>
+    );
   } else {
-    return <Navigator />;
+    return (
+      <RootSiblingParent>
+        <Navigator />
+      </RootSiblingParent>
+    );
   }
 }
