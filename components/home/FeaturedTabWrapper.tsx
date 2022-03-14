@@ -1,5 +1,6 @@
 import { StyleSheet, StyleProp, TextStyle, View, Text } from "react-native";
 import { Colors, FontVariants } from "../../styles";
+import React from "react";
 
 type TabProps = {
   icon: any,
