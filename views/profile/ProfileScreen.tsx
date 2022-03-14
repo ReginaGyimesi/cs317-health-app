@@ -13,7 +13,7 @@ export const ProfileScreen = () => {
         style={styles.imgcontainer}
       />
       <View style={styles.container}>
-        <View style={{ marginBottom: 20}}>
+        <View style={{ marginBottom: 20 }}>
           <Text style={styles.title}>Account</Text>
           <Text style={styles.text}>Bob Test</Text>
           <Text style={styles.text}>test@test.com</Text>
@@ -23,14 +23,28 @@ export const ProfileScreen = () => {
           <Text style={styles.text}>Subscription</Text>
           <Text style={styles.text}>Terms and conditions</Text>
           <Text style={styles.text}>Privacy policy</Text>
-          <Text style={[styles.text, { color: Colors.dangerRed }]}>
-            Delete account
-          </Text>
+          <ModalWrapper
+            title={"Delete account"}
+            text={
+              "Are you sure you want to delete your account? You will lose all your data."
+            }
+            _onClick={() => console.log("take me to login screen")}
+          >
+            <Text style={[styles.text, { color: Colors.dangerRed }]}>
+              Delete account
+            </Text>
+          </ModalWrapper>
         </View>
-        <ModalWrapper title={"Log out"} text={"Are you sure you want to log out?"}>
-        <View style={styles.capsule}>
-          <Text style={{...FontVariants.headerThin, color: Colors.white,}}>Log out</Text>
-        </View>
+        <ModalWrapper
+          title={"Log out"}
+          text={"Are you sure you want to log out?"}
+          _onClick={() => console.log("take me to login screen")}
+        >
+          <View style={styles.capsule}>
+            <Text style={{ ...FontVariants.headerThin, color: Colors.white }}>
+              Log out
+            </Text>
+          </View>
         </ModalWrapper>
       </View>
     </ScreenWrapper>
@@ -65,8 +79,9 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    alignSelf: "center",
     width: 80,
     padding: 2,
     marginTop: 40,
-  }
+  },
 });

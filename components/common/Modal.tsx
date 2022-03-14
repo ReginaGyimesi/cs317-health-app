@@ -18,54 +18,62 @@ export const ModalWrapper = ({
 }: ModalProps) => {
   const [modalVisible, setModalVisible] = useState(false);
   return (
-    <View style={styles.centeredView}>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View
-          style={[styles.centeredView, { backgroundColor: "rgba(0,0,0,0.5)" }]}
+    <View>
+      <View style={styles.centeredView}>
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
         >
-          <View style={styles.modalView}>
-            <View style={[styles.flex, { justifyContent: "space-between" }]}>
-              <View style={{ width: 20 }} />
-              <Text style={styles.title}>{title}</Text>
-              <Pressable onPress={() => setModalVisible(!modalVisible)}>
-                <MaterialCommunityIcons
-                  name={"close-circle-outline"}
-                  color={Colors.grey20}
-                  size={20}
-                />
-              </Pressable>
-            </View>
-            <View>
-              <Text style={styles.text}>{text}</Text>
-            </View>
-            <View style={[styles.flex, { justifyContent: "space-evenly" }]}>
-              <Pressable
-                style={[styles.btnwrapper, { borderColor: Colors.dangerRed }]}
-                onPress={() => setModalVisible(false)}
-              >
-                <Text style={[styles.btntext, { color: Colors.dangerRed }]}>
-                  Cancel
-                </Text>
-              </Pressable>
-              <Pressable
-                style={[styles.btnwrapper, { borderColor: Colors.acceptGreen }]}
-                onPress={() => _onClick}
-              >
-                <Text style={[styles.btntext, { color: Colors.acceptGreen }]}>
-                  Yes
-                </Text>
-              </Pressable>
+          <View
+            style={[
+              styles.centeredView,
+              { backgroundColor: "rgba(0,0,0,0.5)" },
+            ]}
+          >
+            <View style={styles.modalView}>
+              <View style={[styles.flex, { justifyContent: "space-between" }]}>
+                <View style={{ width: 20 }} />
+                <Text style={styles.title}>{title}</Text>
+                <Pressable onPress={() => setModalVisible(!modalVisible)}>
+                  <MaterialCommunityIcons
+                    name={"close-circle-outline"}
+                    color={Colors.grey20}
+                    size={20}
+                  />
+                </Pressable>
+              </View>
+              <View>
+                <Text style={styles.text}>{text}</Text>
+              </View>
+              <View style={[styles.flex, { justifyContent: "space-evenly" }]}>
+                <Pressable
+                  style={[styles.btnwrapper, { borderColor: Colors.dangerRed }]}
+                  onPress={() => setModalVisible(false)}
+                >
+                  <Text style={[styles.btntext, { color: Colors.dangerRed }]}>
+                    Cancel
+                  </Text>
+                </Pressable>
+                <Pressable
+                  style={[
+                    styles.btnwrapper,
+                    { borderColor: Colors.acceptGreen },
+                  ]}
+                  onPress={() => _onClick}
+                >
+                  <Text style={[styles.btntext, { color: Colors.acceptGreen }]}>
+                    Yes
+                  </Text>
+                </Pressable>
+              </View>
             </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
+      </View>
       <Pressable onPress={() => setModalVisible(true)}>{children}</Pressable>
     </View>
   );
