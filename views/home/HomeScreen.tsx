@@ -101,9 +101,6 @@ export const HomeScreen = () => {
               <Pressable onPress={onAlarmPressed}>
                 <Text style={styles.plustext}>+</Text>
               </Pressable>
-              <Pressable onPress={onAlarmPressed}>
-                <Text style={styles.plustext}>+</Text>
-              </Pressable>
             </View>
             <View>{alarms}</View>
           </View>
