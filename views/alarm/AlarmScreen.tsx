@@ -192,5 +192,6 @@ const styles = StyleSheet.create({
     marginLeft: "auto",
     marginRight: "auto",
     marginTop: hp(5),
+    marginBottom: 60
   },
 });

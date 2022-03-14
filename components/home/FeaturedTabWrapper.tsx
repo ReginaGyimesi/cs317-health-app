@@ -1,21 +1,32 @@
-import { StyleSheet, StyleProp, TextStyle, View, Text, Pressable } from "react-native";
+import {
+  StyleSheet,
+  StyleProp,
+  TextStyle,
+  View,
+  Text,
+  Pressable,
+} from "react-native";
 import { Colors, FontVariants } from "../../styles";
 import React from "react";
 
 type TabProps = {
-  id: any,
-  icon: any,
-  text: String,
-  longPressCallback: any,
-  opac: number
+  icon: any;
+  text: String;
+  longPressCallback: any;
+  pressOutCallback: any;
+  op: any
 };
 
-export const FeaturedTabWrapper = ({ id, icon, text, longPressCallback, opac }: TabProps) => {
+export const FeaturedTabWrapper = ({
+  icon,
+  text,
+  longPressCallback,
+  pressOutCallback,
+  op
+}: TabProps) => {
   return (
-    <Pressable
-      onLongPress={longPressCallback}
-    >
-      <View style={[styles.container,{opacity:opac}]}>
+    <Pressable onLongPress={longPressCallback} onPressOut={pressOutCallback}>
+      <View style={[styles.container, {opacity: op}]}>
         {icon}
         <Text style={styles.text}>{text}</Text>
       </View>
@@ -32,7 +43,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: Colors.grey60,
     flexDirection: "row",
-    padding: 15
+    padding: 15,
   },
   text: {
     ...FontVariants.headerThin,

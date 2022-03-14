@@ -48,26 +48,38 @@ export const HomeScreen = () => {
     }, [])
   );
 
-  const [deleted, setDeleted] = useState(false);
+  const [idx, setIdx] = useState(-1);
+  console.log(idx);
 
   let alarms = [];
   if (!data || data.length === 0 || loading) {
-    alarms.push(<FeaturedTabWrapper text="No alarms to display" />);
+    alarms.push(
+      <FeaturedTabWrapper
+        text="No alarms to display"
+        longPressCallback={null}
+        pressOutCallback={null}
+        op={1}
+        icon={null}
+      />
+    );
   } else {
     for (let i = 0; i < data.length; i++) {
       let currentItem = data[i];
       alarms.push(
         <FeaturedTabWrapper
-          id={currentItem["id"]}
+          key={i}
           icon={
             <IonIcons name="alarm-outline" color={Colors.white} size={20} />
           }
           text={currentItem["displayTime"]}
           longPressCallback={() => {
-              deleteAlarm(currentItem["id"]);
-              // Set opacity
-            }
-          }
+            setIdx(i);
+            deleteAlarm(currentItem["id"]);
+          }}
+          pressOutCallback={() => {
+            setIdx(-1);
+          }}
+          op={idx === i ? 0.3 : 1}
         />
       );
     }
@@ -122,6 +134,9 @@ export const HomeScreen = () => {
                 />
               }
               text="water by a stream"
+              longPressCallback={null}
+              pressOutCallback={null}
+              op={1}
             />
           </View>
         </View>
