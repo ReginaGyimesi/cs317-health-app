@@ -27,7 +27,7 @@ export const ProfileScreen = () => {
             Delete account
           </Text>
         </View>
-        <ModalWrapper title={"Log out"}>
+        <ModalWrapper title={"Log out"} text={"Are you sure you want to log out?"}>
         <View style={styles.capsule}>
           <Text style={{...FontVariants.headerThin, color: Colors.white,}}>Log out</Text>
         </View>
