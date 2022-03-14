@@ -27,7 +27,9 @@ export const ModalWrapper = ({
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={styles.centeredView}>
+        <View
+          style={[styles.centeredView, { backgroundColor: "rgba(0,0,0,0.5)" }]}
+        >
           <View style={styles.modalView}>
             <View style={[styles.flex, { justifyContent: "space-between" }]}>
               <View style={{ width: 20 }} />
