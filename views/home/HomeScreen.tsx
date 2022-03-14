@@ -113,7 +113,7 @@ export const HomeScreen = () => {
                   size={20}
                 />
               }
-              text="water by a stream"
+              text="waves"
             />
           </View>
         </View>
