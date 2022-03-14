@@ -183,8 +183,8 @@ export async function fetchNextAlarm(dateFrom) {
     let currentAlarmHour = currentAlarm.getHours();
     let currentAlarmMinute = currentAlarm.getMinutes();
 
-    if(currentAlarmHour >= dateFrom.getHours()){
-      if(currentAlarmMinute >= dateFrom.getMinutes()){
+    if(currentAlarmHour > dateFrom.getHours()){
+      if(currentAlarmMinute > dateFrom.getMinutes()){
         if(!nextAlarm){
           nextAlarm = currentItem;
           continue;
@@ -214,7 +214,7 @@ export async function fetchNextAlarm(dateFrom) {
       let currentAlarmHour = currentAlarm.getHours();
       let currentAlarmMinute = currentAlarm.getMinutes();
 
-      if(currentAlarmHour+1 < dateFrom.getHours()){
+      if(currentAlarmHour < dateFrom.getHours()){
         if(currentAlarmMinute < dateFrom.getMinutes()){
           if(!nextAlarm){
             nextAlarm = currentItem;
@@ -263,6 +263,36 @@ export async function calcTimeToSleep(alarm, currentTime) {
     return {hours:addZeroToDigits(hoursToSleep), minutes:addZeroToDigits(minutesToSleep)}
 }
 
+export async function deleteAlarm(id) {
+  let alarms;
+  alarms = await AsyncStorage.getItem("alarms");
+  console.log("ID to be deleted " + id)
+
+  if (!alarms) {
+    alarms = [];
+  } else {
+    alarms = JSON.parse(alarms);
+  }
+
+  let removedText = "No alarm deleted";
+  var removed = alarms.filter(function(value, index, arr){ 
+    if(value["id"] === id){
+      removedText = "Alarm deleted: " + value["displayTime"];
+    }
+    return value["id"] !== id;
+  });
+  
+  removed = JSON.stringify(removed);
+
+  Toast.show(removedText, {
+    duration: 1000,
+    containerStyle: styles.warnToast,
+    opacity: 1,
+  });
+
+  await AsyncStorage.setItem("alarms", removed);
+}
+
 const styles = StyleSheet.create({
   failedToast: {
     backgroundColor: Colors.dangerRed,
@@ -276,4 +306,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
   },
+  warnToast: {
+    backgroundColor: Colors.warningYellow,
+    opacity: 1,
+    borderRadius: 5,
+    padding: 10,
+  }
 });

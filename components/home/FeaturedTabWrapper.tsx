@@ -1,18 +1,25 @@
-import { StyleSheet, StyleProp, TextStyle, View, Text } from "react-native";
+import { StyleSheet, StyleProp, TextStyle, View, Text, Pressable } from "react-native";
 import { Colors, FontVariants } from "../../styles";
 import React from "react";
 
 type TabProps = {
+  id: any,
   icon: any,
-  text: String
+  text: String,
+  longPressCallback: any,
+  opac: number
 };
 
-export const FeaturedTabWrapper = ({ icon, text }: TabProps) => {
+export const FeaturedTabWrapper = ({ id, icon, text, longPressCallback, opac }: TabProps) => {
   return (
-    <View style={[styles.container]}>
-      {icon}
-      <Text style={styles.text}>{text}</Text>
-    </View>
+    <Pressable
+      onLongPress={longPressCallback}
+    >
+      <View style={[styles.container,{opacity:opac}]}>
+        {icon}
+        <Text style={styles.text}>{text}</Text>
+      </View>
+    </Pressable>
   );
 };
 

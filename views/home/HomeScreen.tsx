@@ -8,7 +8,7 @@ import IonIcons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation, StackActions } from "@react-navigation/native";
 import { AlarmScreenNavName, LogScreenNavName, SoundsScreenNavName } from "..";
-import { fetchActiveAlarms } from "../../utils/alarmHandler";
+import { fetchActiveAlarms, deleteAlarm } from "../../utils/alarmHandler";
 import { useFocusEffect } from "@react-navigation/native";
 
 export const HomeScreenNavName = "Home";
@@ -48,6 +48,8 @@ export const HomeScreen = () => {
     }, [])
   );
 
+  const [deleted, setDeleted] = useState(false);
+
   let alarms = [];
   if (!data || data.length === 0 || loading) {
     alarms.push(<FeaturedTabWrapper text="No alarms to display" />);
@@ -56,10 +58,16 @@ export const HomeScreen = () => {
       let currentItem = data[i];
       alarms.push(
         <FeaturedTabWrapper
+          id={currentItem["id"]}
           icon={
             <IonIcons name="alarm-outline" color={Colors.white} size={20} />
           }
           text={currentItem["displayTime"]}
+          longPressCallback={() => {
+              deleteAlarm(currentItem["id"]);
+              // Set opacity
+            }
+          }
         />
       );
     }
