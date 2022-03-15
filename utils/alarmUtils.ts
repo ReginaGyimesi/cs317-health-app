@@ -6,7 +6,7 @@ import * as Notifications from "expo-notifications";
  * @param clockValue  Object from Time Picker
  * @returns     Date object with set hours, minute
  */
-export function parseDate(clockValue) {
+export function parseDate(clockValue: any) {
   if (!clockValue) {
     return null;
   }
@@ -15,13 +15,11 @@ export function parseDate(clockValue) {
   let minute = parseInt(clockValue[1]["index"]);
   let amPm = clockValue[2]["value"];
 
-  if(hour == 12 && amPm === "PM"){
+  if (hour == 12 && amPm === "PM") {
     hour = 12;
-  }
-  else if(hour == 12 && amPm === "AM"){
+  } else if (hour == 12 && amPm === "AM") {
     hour = 0;
-  }
-  else if (amPm === "PM") {
+  } else if (amPm === "PM") {
     hour += 12;
   }
 
@@ -43,7 +41,7 @@ export function parseDate(clockValue) {
  * @param isEnabled
  * @returns   true if alarm save was successful, false otherwise
  */
-export async function saveAlarm(clockValue, isEnabled) {
+export async function saveAlarm(clockValue: any, isEnabled: boolean) {
   await Notifications.setNotificationHandler({
     handleNotification: async () => ({
       shouldShowAlert: true,
@@ -87,7 +85,7 @@ export async function saveAlarm(clockValue, isEnabled) {
   alarms = await AsyncStorage.getItem("alarms");
 
   if (!alarms) {
-    alarms = [];  // No alarms created before
+    alarms = []; // No alarms created before
   } else {
     alarms = JSON.parse(alarms);
   }
@@ -105,7 +103,7 @@ export async function saveAlarm(clockValue, isEnabled) {
   return true;
 }
 
-async function schedulePushNotification(hour, minute) {
+async function schedulePushNotification(hour: any, minute: any) {
   await Notifications.scheduleNotificationAsync({
     content: {
       title: "It's time to wake up!",
@@ -124,7 +122,7 @@ async function schedulePushNotification(hour, minute) {
  * @param digit
  * @returns
  */
-export function addZeroToDigits(digit) {
+export function addZeroToDigits(digit: number) {
   if (digit) {
     let zeroAdded = `0${digit}`;
     return zeroAdded.substring(zeroAdded.length - 2);
@@ -151,7 +149,7 @@ export async function fetchActiveAlarms() {
   let dateFrom = new Date();
   let alarmsIntoDates = [];
 
-  for(let i = 0; i < alarms.length; i++){
+  for (let i = 0; i < alarms.length; i++) {
     let currentItem = alarms[i];
     let currentAlarm = new Date(currentItem["triggerTime"]);
     let currentAlarmHour = currentAlarm.getHours();
@@ -162,29 +160,29 @@ export async function fetchActiveAlarms() {
     newDate.setMinutes(currentAlarmMinute);
 
     alarmsIntoDates.push({
-        date: newDate,
-        alarm: currentItem
+      date: newDate,
+      alarm: currentItem,
     });
   }
 
   // Sorting dates array ascending
-  alarmsIntoDates.sort(function(a,b){
+  alarmsIntoDates.sort(function (a: any, b: any) {
     return a.date - b.date;
   });
 
   let sortedAlarms = [];
-  for(let i = 0; i < alarmsIntoDates.length; i++){
+  for (let i = 0; i < alarmsIntoDates.length; i++) {
     sortedAlarms.push(alarmsIntoDates[i].alarm);
   }
 
   return sortedAlarms;
 }
 
-export async function fetchNextAlarm(dateFrom) {
+export async function fetchNextAlarm(dateFrom: Date) {
   let fetched = await fetchActiveAlarms();
   let alarmsIntoDates = [];
 
-  for(let i = 0; i < fetched.length; i++){
+  for (let i = 0; i < fetched.length; i++) {
     let currentItem = fetched[i];
     let currentAlarm = new Date(currentItem["triggerTime"]);
     let currentAlarmHour = currentAlarm.getHours();
@@ -195,54 +193,56 @@ export async function fetchNextAlarm(dateFrom) {
     newDate.setMinutes(currentAlarmMinute);
 
     alarmsIntoDates.push({
-        date: newDate,
-        alarm: currentItem
+      date: newDate,
+      alarm: currentItem,
     });
   }
 
   // Sorting dates array ascending
-  alarmsIntoDates.sort(function(a,b){
+  alarmsIntoDates.sort(function (a: any, b: any) {
     return a.date - b.date;
   });
 
-  for(let i = 0; i < alarmsIntoDates.length; i++){
-    if(alarmsIntoDates[i].date>dateFrom){
+  for (let i = 0; i < alarmsIntoDates.length; i++) {
+    if (alarmsIntoDates[i].date > dateFrom) {
       return alarmsIntoDates[i].alarm;
     }
   }
 
-  if(!alarmsIntoDates[0])
-    return null;
+  if (!alarmsIntoDates[0]) return null;
 
   // Return first item, probably next day
   return alarmsIntoDates[0].alarm;
 }
 
-export async function calcTimeToSleep(alarm, currentTime) {
+export async function calcTimeToSleep(alarm: any, currentTime: any) {
+  if (!alarm) return;
+  let fromDate = currentTime;
+  let alarmDate = new Date(alarm["triggerTime"]);
+  let toDate = new Date();
+  let toDateHour = alarmDate.getHours();
+  let toDateMinute = alarmDate.getMinutes();
+  toDate.setHours(toDateHour);
+  toDate.setMinutes(toDateMinute);
 
-    if(!alarm)
-      return;
-    let fromDate = currentTime;
-    let alarmDate = new Date(alarm["triggerTime"]);
-    let toDate = new Date();
-    let toDateHour = alarmDate.getHours();
-    let toDateMinute = alarmDate.getMinutes();
-    toDate.setHours(toDateHour);
-    toDate.setMinutes(toDateMinute);
+  // Increase day
+  if (toDateHour < fromDate.getHours()) {
+    toDate.setDate(toDate.getDate() + 1);
+  }
 
-    // Increase day
-    if(toDateHour < fromDate.getHours()){
-      toDate.setDate(toDate.getDate()+1);
-    }
+  let diff = toDate - fromDate;
+  let hoursToSleep = Math.abs(Math.round(diff / (1000 * 60 * 60)));
+  let minutesToSleep = Math.abs(
+    Math.round((diff - 1000 * 60 * 60 * hoursToSleep) / (1000 * 60))
+  );
 
-    let diff = toDate - fromDate;
-    let hoursToSleep = Math.abs(Math.round(diff / (1000*60*60)));
-    let minutesToSleep = Math.abs(Math.round((diff - (1000*60*60*hoursToSleep)) / (1000*60)));
-
-    return {hours:addZeroToDigits(hoursToSleep), minutes:addZeroToDigits(minutesToSleep)}
+  return {
+    hours: addZeroToDigits(hoursToSleep),
+    minutes: addZeroToDigits(minutesToSleep),
+  };
 }
 
-export async function deleteAlarm(id) {
+export async function deleteAlarm(id: number) {
   let alarms;
   alarms = await AsyncStorage.getItem("alarms");
 
@@ -253,13 +253,13 @@ export async function deleteAlarm(id) {
   }
 
   let removedText = "No alarm deleted";
-  var removed = alarms.filter(function(value, index, arr){ 
-    if(value["id"] === id){
+  var removed = alarms.filter(function (value: any) {
+    if (value["id"] === id) {
       removedText = "Alarm deleted: " + value["displayTime"];
     }
     return value["id"] !== id;
   });
-  
+
   removed = JSON.stringify(removed);
 
   await AsyncStorage.setItem("alarms", removed);
