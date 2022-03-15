@@ -10,11 +10,11 @@ import { Colors, FontVariants } from "../../styles";
 import React from "react";
 
 type TabProps = {
-  icon: any;
+  icon?: any;
   text: String;
-  longPressCallback: any;
-  pressOutCallback: any;
-  op: any
+  longPressCallback?: any;
+  pressOutCallback?: any;
+  op?: any
 };
 
 export const FeaturedTabWrapper = ({

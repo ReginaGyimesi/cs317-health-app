@@ -10,31 +10,19 @@ import { saveAlarm, addZeroToDigits } from "../../utils/alarmUtils";
 import { Colors } from "../../styles";
 import Toast from "react-native-root-toast";
 
+type ToastProps = {
+  success: boolean;
+  message: string;
+};
+
 // Time Picker initialization
 const borderWidth = 45;
 const setTimerWidthHeight = wp(85);
 const selectedItemTextSize = 30;
 const wrapperHeight = setTimerWidthHeight - borderWidth * 2;
-
-const dataSet = {
-  data: {
-    firstColumn: [...Array(12).keys()].map((item, idx) => {
-      return { value: addZeroToDigits(item + 1), index: idx + 1 };
-    }),
-    secondColumn: [...Array(60).keys()].map((item, idx) => {
-      return { value: addZeroToDigits(item), index: idx };
-    }),
-    thirdColumn: [
-      { value: "AM", index: 0 },
-      { value: "PM", index: 1 },
-    ],
-  },
-  initials: [8, 25, 0],
-};
-
 export const AlarmScreenNavName = "Alarm";
 export const AlarmScreen = () => {
-  const [clockValue, setClockValue] = useState([
+  let clockValue = [
     {
       index: 8,
       value: "09",
@@ -47,7 +35,23 @@ export const AlarmScreen = () => {
       index: 0,
       value: "AM",
     },
-  ]);
+  ];
+
+  const dataSet = {
+    data: {
+      firstColumn: [...Array(12).keys()].map((item, idx) => {
+        return { value: addZeroToDigits(item + 1), index: idx + 1 };
+      }),
+      secondColumn: [...Array(60).keys()].map((item, idx) => {
+        return { value: addZeroToDigits(item), index: idx };
+      }),
+      thirdColumn: [
+        { value: "AM", index: 0 },
+        { value: "PM", index: 1 },
+      ],
+    },
+    initials: [8, 25, 0],
+  };
 
   // Vibration switch toggle
   const [isVibrate, setIsVibrate] = useState(false);
@@ -55,8 +59,8 @@ export const AlarmScreen = () => {
     setIsVibrate((previousState) => !previousState);
   };
 
-  const displayToast = (success, message) => {
-    if(success === true){
+  const displayToast = ({ success, message }: ToastProps) => {
+    if (success === true) {
       Toast.show(message, {
         duration: 1000,
         containerStyle: styles.successToast,
@@ -70,31 +74,6 @@ export const AlarmScreen = () => {
       containerStyle: styles.failedToast,
       opacity: 1,
     });
-  }
-
-  const separatorComponentRendererOne = () => {
-    return (
-      <Text
-        style={{
-          fontSize: selectedItemTextSize,
-          lineHeight: setTimerWidthHeight * 0.15,
-          color: "white",
-        }}
-      >
-        :
-      </Text>
-    );
-  };
-  const separatorComponentRendererTwo = () => {
-    return (
-      <Text
-        style={{
-          fontSize: selectedItemTextSize,
-          lineHeight: setTimerWidthHeight * 0.15,
-          color: "white",
-        }}
-      ></Text>
-    );
   };
 
   return (
@@ -106,8 +85,10 @@ export const AlarmScreen = () => {
             clockValue = value;
           }}
           containerStyle={styles.dateTimeSelector}
-          firstSeperatorComponent={separatorComponentRendererOne}
-          secondSeperatorComponent={separatorComponentRendererTwo}
+          firstSeperatorComponent={() => <Text style={styles.separator}></Text>}
+          secondSeperatorComponent={() => (
+            <Text style={styles.separator}></Text>
+          )}
           seperatorContainerStyle={{ width: wp(10) }}
           scrollPickerOptions={{
             fontSize: 90,
@@ -136,12 +117,14 @@ export const AlarmScreen = () => {
           />
         </View>
       </View>
-      <View style={[styles.wrapper, { justifyContent: "center" }]}>
+      <View
+        style={[styles.wrapper, { justifyContent: "center", marginBottom: 60 }]}
+      >
         <Button
           title="Save"
-          onPress={async() => {
+          onPress={async () => {
             let success = await saveAlarm(clockValue, isVibrate);
-            displayToast(success, "Alarm saved");
+            displayToast({ success: success, message: "Alarm saved" });
           }}
           color={Colors.opPurple}
         />
@@ -197,5 +180,28 @@ const styles = StyleSheet.create({
     color: Colors.white,
     marginLeft: "auto",
     marginRight: "auto",
+  },
+  separator: {
+    fontSize: selectedItemTextSize,
+    lineHeight: setTimerWidthHeight * 0.15,
+    color: "white",
+  },
+  failedToast: {
+    backgroundColor: Colors.dangerRed,
+    opacity: 1,
+    borderRadius: 5,
+    padding: 10,
+  },
+  successToast: {
+    backgroundColor: Colors.acceptGreen,
+    opacity: 1,
+    borderRadius: 5,
+    padding: 10,
+  },
+  warnToast: {
+    backgroundColor: Colors.warningYellow,
+    opacity: 1,
+    borderRadius: 5,
+    padding: 10,
   },
 });

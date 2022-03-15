@@ -1,6 +1,9 @@
 // proximity
 declare module "react-native-proximity";
 
+// date picker
+declare module 'react-native-date-time-scroll-picker';
+
 // icons
 declare module "react-native-vector-icons/Ionicons";
 declare module "react-native-vector-icons/MaterialCommunityIcons";
