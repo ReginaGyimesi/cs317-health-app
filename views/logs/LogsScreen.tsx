@@ -1,26 +1,14 @@
-import React from "react";
-import {
-  Text,
-  ImageBackground,
-  StyleSheet,
-  View,
-  Image,
-  Pressable,
-} from "react-native";
-import { PlayButton } from "../../components/logs/PlayButton";
-import { ScreenWrapper } from "../../components/common/ScreenWrapper.tsx";
-import { Clock } from "../../components/logs/Clock";
-import { Colors, FontVariants } from "../../styles";
-import { useNavigation, StackActions } from "@react-navigation/native";
-import { SingleLogScreenNavName } from "..";
-// import useProximity from "../../utils/useProximity";
-// import { BlackScreen } from "../../components/logs/BlackScreen";
-import { useState, useEffect } from "react";
-import { Accelerometer } from "expo-sensors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
-import { useFocusEffect } from "@react-navigation/native";
-import { fetchNextAlarm, calcTimeToSleep } from "../../utils/alarmUtils";
+import { StackActions, useNavigation } from "@react-navigation/native";
+import { Accelerometer } from "expo-sensors";
+import React, { useEffect, useState } from "react";
+import { ImageBackground, Pressable, StyleSheet, Text } from "react-native";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { SingleLogScreenNavName } from "..";
+import { ScreenWrapper } from "../../components/common/ScreenWrapper.tsx";
+import { PlayButton } from "../../components/logs/PlayButton";
+import { Colors, FontVariants } from "../../styles";
+import { Main } from "../../components/logs/Main";
 
 // src: https://medium.com/@charana.am/react-native-shake-event-w-expo-9dbf17033ea9
 // this is shake sensitivity - lowering this will give high sensitivity and increasing this will give lower sensitivity
@@ -81,7 +69,7 @@ export const LogsScreen = () => {
     added: end,
   };
 
-  let disabled = sleepData.timeInBed === 0
+  let disabled = sleepData.timeInBed === 0;
 
   const onAwakePressed = async () => {
     let data;
@@ -99,52 +87,9 @@ export const LogsScreen = () => {
     navigation.dispatch(StackActions.push(SingleLogScreenNavName));
   };
 
-  // Set the initial alarms screen data --------------------------------------------------
-  const [nextAlarm, setNextAlarm] = useState(null);
-  const [timeToSleep, setTimeToSleep] = useState(null);
-
-  const fetchTimesForDisplay = async () => {
-    try {
-      let newDate = new Date();
-      const nextAlarm = await fetchNextAlarm(newDate);
-      const timeToSleep = await calcTimeToSleep(nextAlarm, newDate);
-      setNextAlarm(nextAlarm);
-      setTimeToSleep(timeToSleep);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // To display nextAlarm and timeToSleep on componentDidMount
-  useFocusEffect(
-    React.useCallback(() => {
-      fetchTimesForDisplay();
-    }, [])
-  );
-
-  let nextAlarmDisplay;
-  let hoursToSleep;
-  if (!nextAlarm || !timeToSleep) {
-    nextAlarmDisplay = <Text style={FontVariants.headerThin}>--:--</Text>;
-    hoursToSleep = <Text style={FontVariants.headerThin}>--:--</Text>;
-  } else {
-    nextAlarmDisplay = <Text style={FontVariants.headerThin}>{nextAlarm["displayTime"]}</Text>;
-    hoursToSleep = <Text style={FontVariants.headerThin}>{timeToSleep["hours"]}:{timeToSleep["minutes"]}</Text>;
-  }
-
   return (
     <ScreenWrapper title="Sleep logging" text="Start logging your sleep.">
-      <Clock updateCallback={fetchTimesForDisplay}/>
-      <View style={[styles.capsule, {borderColor: Colors.grey20}]}>
-        <View style={[styles.flex, styles.border]}>
-          <Text style={styles.body}>alarm</Text>
-          {nextAlarmDisplay}
-        </View>
-        <View style={styles.flex}>
-          <Text style={styles.body}>time to sleep</Text>
-          {hoursToSleep}
-        </View>
-      </View>
+      <Main />
       <ImageBackground
         source={require("../../assets/images/semicircle.png")}
         style={styles.imgcontainer}
@@ -156,22 +101,33 @@ export const LogsScreen = () => {
         />
         <Pressable
           onPress={onAwakePressed}
-          style={[styles.capsule, styles.flex, { marginTop: 100, borderColor: (subscription || disabled) ? Colors.grey40 : Colors.grey20 }]}
-          disabled={(subscription || disabled) ? true : false}
+          style={[
+            styles.capsule,
+            styles.flex,
+            {
+              marginTop: 100,
+              borderColor:
+                subscription || disabled ? Colors.grey40 : Colors.grey20,
+            },
+          ]}
+          disabled={subscription || disabled ? true : false}
         >
           <Text
             style={[
               FontVariants.subtitleThin,
-              { marginRight: 30, color: (subscription || disabled) ? Colors.grey40 : Colors.grey20 },
+              {
+                marginRight: 30,
+                color: subscription || disabled ? Colors.grey40 : Colors.grey20,
+              },
             ]}
           >
             I'm awake
           </Text>
           <MaterialCommunityIcons
-        name={"chevron-right"}
-        color={(subscription || disabled) ? Colors.grey40 : Colors.grey20}
-        size={20}
-      />
+            name={"chevron-right"}
+            color={subscription || disabled ? Colors.grey40 : Colors.grey20}
+            size={20}
+          />
         </Pressable>
       </ImageBackground>
     </ScreenWrapper>
