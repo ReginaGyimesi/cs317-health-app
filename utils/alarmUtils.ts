@@ -11,8 +11,6 @@ export function parseDate(clockValue) {
     return null;
   }
 
-  console.log(clockValue);
-
   let hour = parseInt(clockValue[0]["index"]) + 1;
   let minute = parseInt(clockValue[1]["index"]);
   let amPm = clockValue[2]["value"];
@@ -66,7 +64,6 @@ export async function saveAlarm(clockValue, isEnabled) {
 
   // Parse the value from the picker as date, if fails, display failure and return
   let date = parseDate(clockValue);
-  console.log(date);
   if (!date || date === null) {
     return false;
   }
@@ -149,7 +146,38 @@ export async function fetchActiveAlarms() {
   } else {
     alarms = JSON.parse(alarms);
   }
-  return alarms;
+
+  // Sort alarms for better UX
+  let dateFrom = new Date();
+  let alarmsIntoDates = [];
+
+  for(let i = 0; i < alarms.length; i++){
+    let currentItem = alarms[i];
+    let currentAlarm = new Date(currentItem["triggerTime"]);
+    let currentAlarmHour = currentAlarm.getHours();
+    let currentAlarmMinute = currentAlarm.getMinutes();
+
+    let newDate = new Date(dateFrom);
+    newDate.setHours(currentAlarmHour);
+    newDate.setMinutes(currentAlarmMinute);
+
+    alarmsIntoDates.push({
+        date: newDate,
+        alarm: currentItem
+    });
+  }
+
+  // Sorting dates array ascending
+  alarmsIntoDates.sort(function(a,b){
+    return a.date - b.date;
+  });
+
+  let sortedAlarms = [];
+  for(let i = 0; i < alarmsIntoDates.length; i++){
+    sortedAlarms.push(alarmsIntoDates[i].alarm);
+  }
+
+  return sortedAlarms;
 }
 
 export async function fetchNextAlarm(dateFrom) {
