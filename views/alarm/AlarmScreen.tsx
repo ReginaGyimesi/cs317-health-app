@@ -102,8 +102,8 @@ export const AlarmScreen = () => {
       <View style={styles.dateTimeSelectorContainer}>
         <RNDateTimeSelector
           dataSet={dataSet}
-          onValueChange={(value) => {
-            setClockValue(value);
+          onValueChange={(value: any) => {
+            clockValue = value;
           }}
           containerStyle={styles.dateTimeSelector}
           firstSeperatorComponent={separatorComponentRendererOne}
@@ -124,7 +124,7 @@ export const AlarmScreen = () => {
           }}
         />
       </View>
-      <View style={styles.vibrationHolder}>
+      <View style={styles.wrapper}>
         <Text style={styles.vibrationText}>Alarm with vibration</Text>
         <View style={styles.vibrationSwitchHolder}>
           <Switch
@@ -136,7 +136,7 @@ export const AlarmScreen = () => {
           />
         </View>
       </View>
-      <View style={styles.saveAlarmHolder}>
+      <View style={[styles.wrapper, { justifyContent: "center" }]}>
         <Button
           title="Save"
           onPress={async() => {
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   dateTimeSelectorContainer: {
     width: wp(80),
     height: wp(65),
-    backgroundColor: Colors.lightPurple,
+    backgroundColor: Colors.opPurple,
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
   scrollPickerOptionsTextStyle: {
     fontSize: selectedItemTextSize,
   },
-  vibrationHolder: {
+  wrapper: {
     display: "flex",
     flexDirection: "row",
     width: wp(80),
@@ -198,36 +198,4 @@ const styles = StyleSheet.create({
     marginLeft: "auto",
     marginRight: "auto",
   },
-  saveAlarmHolder: {
-    display: "flex",
-    flexDirection: "row",
-    width: wp(80),
-    height: wp(10),
-    textAlign: "center",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 10,
-    marginLeft: "auto",
-    marginRight: "auto",
-    marginTop: hp(5),
-    marginBottom: 60
-  },
-  failedToast: {
-    backgroundColor: Colors.dangerRed,
-    opacity: 1,
-    borderRadius: 5,
-    padding: 10,
-  },
-  successToast: {
-    backgroundColor: Colors.acceptGreen,
-    opacity: 1,
-    borderRadius: 5,
-    padding: 10,
-  },
-  warnToast: {
-    backgroundColor: Colors.warningYellow,
-    opacity: 1,
-    borderRadius: 5,
-    padding: 10,
-  }
 });

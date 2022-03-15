@@ -134,10 +134,7 @@ export const HomeScreen = () => {
                   size={20}
                 />
               }
-              text="water by a stream"
-              longPressCallback={null}
-              pressOutCallback={null}
-              op={1}
+              text="waves"
             />
           </View>
         </View>

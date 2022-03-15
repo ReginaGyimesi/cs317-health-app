@@ -7,7 +7,7 @@ import {
   Image,
   Pressable,
 } from "react-native";
-import { PlayButton } from "../../components/common/PlayButton";
+import { PlayButton } from "../../components/logs/PlayButton";
 import { ScreenWrapper } from "../../components/common/ScreenWrapper.tsx";
 import { Clock } from "../../components/logs/Clock";
 import { Colors, FontVariants } from "../../styles";
@@ -22,6 +22,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { useFocusEffect } from "@react-navigation/native";
 import { fetchNextAlarm, calcTimeToSleep } from "../../utils/alarmUtils";
 
+// src: https://medium.com/@charana.am/react-native-shake-event-w-expo-9dbf17033ea9
 // this is shake sensitivity - lowering this will give high sensitivity and increasing this will give lower sensitivity
 const THRESHOLD = 0.3;
 export const LogScreenNavName = "Log";
