@@ -34,7 +34,7 @@ const dataSet = {
 
 export const AlarmScreenNavName = "Alarm";
 export const AlarmScreen = () => {
-  let clockValue = [
+  const [clockValue, setClockValue] = useState([
     {
       index: 8,
       value: "09",
@@ -47,15 +47,12 @@ export const AlarmScreen = () => {
       index: 0,
       value: "AM",
     },
-  ];
-
-  let vibrate;
+  ]);
 
   // Vibration switch toggle
-  const [isEnabled, setIsEnabled] = useState(false);
+  const [isVibrate, setIsVibrate] = useState(false);
   const toggleVibration = () => {
-    setIsEnabled((previousState) => !previousState);
-    vibrate = !isEnabled;
+    setIsVibrate((previousState) => !previousState);
   };
 
   const displayToast = (success, message) => {
@@ -106,7 +103,7 @@ export const AlarmScreen = () => {
         <RNDateTimeSelector
           dataSet={dataSet}
           onValueChange={(value) => {
-            clockValue = value;
+            setClockValue(value);
           }}
           containerStyle={styles.dateTimeSelector}
           firstSeperatorComponent={separatorComponentRendererOne}
@@ -132,10 +129,10 @@ export const AlarmScreen = () => {
         <View style={styles.vibrationSwitchHolder}>
           <Switch
             trackColor={{ false: Colors.darkPurple, true: Colors.lightPurple }}
-            thumbColor={isEnabled ? Colors.white : Colors.grey20}
+            thumbColor={isVibrate ? Colors.white : Colors.grey20}
             ios_backgroundColor={Colors.darkPurple}
             onValueChange={toggleVibration}
-            value={isEnabled}
+            value={isVibrate}
           />
         </View>
       </View>
@@ -143,7 +140,7 @@ export const AlarmScreen = () => {
         <Button
           title="Save"
           onPress={async() => {
-            let success = await saveAlarm(clockValue, isEnabled);
+            let success = await saveAlarm(clockValue, isVibrate);
             displayToast(success, "Alarm saved");
           }}
           color={Colors.opPurple}

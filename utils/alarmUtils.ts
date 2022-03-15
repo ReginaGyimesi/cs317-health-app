@@ -11,11 +11,19 @@ export function parseDate(clockValue) {
     return null;
   }
 
+  console.log(clockValue);
+
   let hour = parseInt(clockValue[0]["index"]) + 1;
   let minute = parseInt(clockValue[1]["index"]);
   let amPm = clockValue[2]["value"];
 
-  if (amPm === "PM") {
+  if(hour == 12 && amPm === "PM"){
+    hour = 12;
+  }
+  else if(hour == 12 && amPm === "AM"){
+    hour = 0;
+  }
+  else if (amPm === "PM") {
     hour += 12;
   }
 
@@ -58,6 +66,7 @@ export async function saveAlarm(clockValue, isEnabled) {
 
   // Parse the value from the picker as date, if fails, display failure and return
   let date = parseDate(clockValue);
+  console.log(date);
   if (!date || date === null) {
     return false;
   }
