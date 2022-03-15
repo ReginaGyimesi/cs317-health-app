@@ -6,8 +6,9 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { saveAlarm, addZeroToDigits } from "../../utils/alarmHandler";
+import { saveAlarm, addZeroToDigits } from "../../utils/alarmUtils";
 import { Colors } from "../../styles";
+import Toast from "react-native-root-toast";
 
 // Time Picker initialization
 const borderWidth = 45;
@@ -56,6 +57,23 @@ export const AlarmScreen = () => {
     setIsEnabled((previousState) => !previousState);
     vibrate = !isEnabled;
   };
+
+  const displayToast = (success, message) => {
+    if(success === true){
+      Toast.show(message, {
+        duration: 1000,
+        containerStyle: styles.successToast,
+        opacity: 1,
+      });
+      return;
+    }
+
+    Toast.show(message + " failed", {
+      duration: 1000,
+      containerStyle: styles.failedToast,
+      opacity: 1,
+    });
+  }
 
   const separatorComponentRendererOne = () => {
     return (
@@ -124,7 +142,10 @@ export const AlarmScreen = () => {
       <View style={styles.saveAlarmHolder}>
         <Button
           title="Save"
-          onPress={() => saveAlarm(clockValue, isEnabled)}
+          onPress={async() => {
+            let success = await saveAlarm(clockValue, isEnabled);
+            displayToast(success, "Alarm saved");
+          }}
           color={Colors.opPurple}
         />
       </View>
@@ -194,4 +215,22 @@ const styles = StyleSheet.create({
     marginTop: hp(5),
     marginBottom: 60
   },
+  failedToast: {
+    backgroundColor: Colors.dangerRed,
+    opacity: 1,
+    borderRadius: 5,
+    padding: 10,
+  },
+  successToast: {
+    backgroundColor: Colors.acceptGreen,
+    opacity: 1,
+    borderRadius: 5,
+    padding: 10,
+  },
+  warnToast: {
+    backgroundColor: Colors.warningYellow,
+    opacity: 1,
+    borderRadius: 5,
+    padding: 10,
+  }
 });

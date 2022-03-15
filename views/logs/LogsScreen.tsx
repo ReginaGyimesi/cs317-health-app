@@ -20,7 +20,7 @@ import { Accelerometer } from "expo-sensors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import { useFocusEffect } from "@react-navigation/native";
-import { fetchNextAlarm, calcTimeToSleep } from "../../utils/alarmHandler";
+import { fetchNextAlarm, calcTimeToSleep } from "../../utils/alarmUtils";
 
 // this is shake sensitivity - lowering this will give high sensitivity and increasing this will give lower sensitivity
 const THRESHOLD = 0.3;
@@ -98,44 +98,42 @@ export const LogsScreen = () => {
     navigation.dispatch(StackActions.push(SingleLogScreenNavName));
   };
 
-  // Set the initial alarms screen
-  const [data, setData] = useState(null);
+  // Set the initial alarms screen data --------------------------------------------------
+  const [nextAlarm, setNextAlarm] = useState(null);
   const [timeToSleep, setTimeToSleep] = useState(null);
-  const [loading, setLoading] = useState(true);
 
+  const fetchTimesForDisplay = async () => {
+    try {
+      let newDate = new Date();
+      const nextAlarm = await fetchNextAlarm(newDate);
+      const timeToSleep = await calcTimeToSleep(nextAlarm, newDate);
+      setNextAlarm(nextAlarm);
+      setTimeToSleep(timeToSleep);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // To display nextAlarm and timeToSleep on componentDidMount
   useFocusEffect(
     React.useCallback(() => {
-      const fetch = async () => {
-        try {
-          setLoading(true);
-          const data = await fetchNextAlarm(new Date());
-          const timeToSleep = await calcTimeToSleep(data, new Date());
-          setData(data);
-          setTimeToSleep(timeToSleep);
-          setLoading(false);
-        } catch (error) {
-          setLoading(false);
-          console.log(error);
-        }
-      };
-
-      fetch();
+      fetchTimesForDisplay();
     }, [])
   );
 
   let nextAlarmDisplay;
   let hoursToSleep;
-  if (!data || !timeToSleep || loading) {
+  if (!nextAlarm || !timeToSleep) {
     nextAlarmDisplay = <Text style={FontVariants.headerThin}>--:--</Text>;
     hoursToSleep = <Text style={FontVariants.headerThin}>--:--</Text>;
   } else {
-    nextAlarmDisplay = <Text style={FontVariants.headerThin}>{data["displayTime"]}</Text>;
+    nextAlarmDisplay = <Text style={FontVariants.headerThin}>{nextAlarm["displayTime"]}</Text>;
     hoursToSleep = <Text style={FontVariants.headerThin}>{timeToSleep["hours"]}:{timeToSleep["minutes"]}</Text>;
   }
 
   return (
     <ScreenWrapper title="Sleep logging" text="Start logging your sleep.">
-      <Clock />
+      <Clock updateCallback={fetchTimesForDisplay}/>
       <View style={[styles.capsule, {borderColor: Colors.grey20}]}>
         <View style={[styles.flex, styles.border]}>
           <Text style={styles.body}>alarm</Text>

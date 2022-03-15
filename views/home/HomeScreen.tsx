@@ -8,7 +8,7 @@ import IonIcons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation, StackActions } from "@react-navigation/native";
 import { AlarmScreenNavName, LogScreenNavName, SoundsScreenNavName } from "..";
-import { fetchActiveAlarms, deleteAlarm } from "../../utils/alarmHandler";
+import { fetchActiveAlarms, deleteAlarm } from "../../utils/alarmUtils";
 import { useFocusEffect } from "@react-navigation/native";
 
 export const HomeScreenNavName = "Home";
@@ -75,6 +75,7 @@ export const HomeScreen = () => {
           longPressCallback={() => {
             setIdx(i);
             deleteAlarm(currentItem["id"]);
+            // Show toast here from other component?
           }}
           pressOutCallback={() => {
             setIdx(-1);

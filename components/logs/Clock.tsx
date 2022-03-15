@@ -2,12 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { FontVariants, Colors } from "../../styles";
 
-export const Clock = () => {
+type ClockProps = {
+  updateCallback: any;
+};
+
+export const Clock = ({updateCallback}:ClockProps) => {
   let time = new Date();
   const [currtime, setcurrtime] = useState(time);
 
   function update() {
-    setcurrtime(new Date())
+    setcurrtime(new Date());
+    updateCallback();
   }
 
   useEffect(() => {

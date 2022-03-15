@@ -1,8 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Toast from "react-native-root-toast";
 import * as Notifications from "expo-notifications";
-import { StyleSheet } from "react-native";
-import { Colors } from "../styles";
 
 /**
  * Parsing the Time Picker object into a new Date object
@@ -14,7 +11,6 @@ export function parseDate(clockValue) {
     return null;
   }
 
-  console.log(clockValue);
   let hour = parseInt(clockValue[0]["index"]) + 1;
   let minute = parseInt(clockValue[1]["index"]);
   let amPm = clockValue[2]["value"];
@@ -39,7 +35,7 @@ export function parseDate(clockValue) {
  * @param clockValue
  * @param selectedSound
  * @param isEnabled
- * @returns
+ * @returns   true if alarm save was successful, false otherwise
  */
 export async function saveAlarm(clockValue, isEnabled) {
   await Notifications.setNotificationHandler({
@@ -55,25 +51,18 @@ export async function saveAlarm(clockValue, isEnabled) {
     importance: Notifications.AndroidImportance.HIGH,
   });
 
+  // Somehow the data from the picker is not there -> display failure and return
   if (!clockValue) {
-    Toast.show("Save alarm failed", {
-      duration: 1000,
-      containerStyle: styles.failedToast,
-      opacity: 1,
-    });
-    return;
+    return false;
   }
 
+  // Parse the value from the picker as date, if fails, display failure and return
   let date = parseDate(clockValue);
   if (!date || date === null) {
-    Toast.show("Save alarm failed", {
-      duration: 1000,
-      containerStyle: styles.failedToast,
-      opacity: 1,
-    });
-    return;
+    return false;
   }
 
+  // Create the new alarm object
   let newAlarm = {
     id: Math.round(Math.random() * 1000000000),
     displayTime:
@@ -87,42 +76,30 @@ export async function saveAlarm(clockValue, isEnabled) {
     isVibrate: isEnabled,
   };
 
-  console.log(newAlarm);
-
+  // Fetch alarms from local storage and add new alarm
   let alarms;
   alarms = await AsyncStorage.getItem("alarms");
 
   if (!alarms) {
-    console.log("New array");
-    alarms = [];
+    alarms = [];  // No alarms created before
   } else {
     alarms = JSON.parse(alarms);
   }
 
   alarms.push(newAlarm);
-
   alarms = JSON.stringify(alarms);
-
   AsyncStorage.setItem("alarms", alarms);
-
-  Toast.show("Alarm saved", {
-    duration: 1000,
-    containerStyle: styles.successToast,
-    opacity: 1,
-  });
-
-  console.log(alarms);
 
   // Schedule notification
   await schedulePushNotification(
     newAlarm["triggerTime"].getHours(),
     newAlarm["triggerTime"].getMinutes()
   );
+
+  return true;
 }
 
 async function schedulePushNotification(hour, minute) {
-  console.log("Hours: " + hour);
-  console.log("Minute: " + minute);
   await Notifications.scheduleNotificationAsync({
     content: {
       title: "It's time to wake up!",
@@ -167,15 +144,8 @@ export async function fetchActiveAlarms() {
 }
 
 export async function fetchNextAlarm(dateFrom) {
-  let nextAlarm;
-  let fetched;
-  fetched = await AsyncStorage.getItem("alarms");
-
-  if (!fetched) {
-    fetched = [];
-  } else {
-    fetched = JSON.parse(fetched);
-  }
+  let fetched = await fetchActiveAlarms();
+  let alarmsIntoDates = [];
 
   for(let i = 0; i < fetched.length; i++){
     let currentItem = fetched[i];
@@ -183,65 +153,38 @@ export async function fetchNextAlarm(dateFrom) {
     let currentAlarmHour = currentAlarm.getHours();
     let currentAlarmMinute = currentAlarm.getMinutes();
 
-    if(currentAlarmHour > dateFrom.getHours()){
-      if(currentAlarmMinute > dateFrom.getMinutes()){
-        if(!nextAlarm){
-          nextAlarm = currentItem;
-          continue;
-        }
-        let nextAlarmDate = new Date(nextAlarm["triggerTime"]);
-        let nextAlarmHour = nextAlarmDate.getHours();
-        let nextAlarmMinute = nextAlarmDate.getMinutes();
+    let newDate = new Date(dateFrom);
+    newDate.setHours(currentAlarmHour);
+    newDate.setMinutes(currentAlarmMinute);
 
-        if(currentAlarmHour < nextAlarmHour){
-          nextAlarm = currentItem;
-          continue;
-        }
+    alarmsIntoDates.push({
+        date: newDate,
+        alarm: currentItem
+    });
+  }
 
-        if(currentAlarmHour === nextAlarmHour && currentAlarmMinute < nextAlarmMinute){
-          nextAlarm = currentItem;
-          continue;
-        }
-      }
+  // Sorting dates array ascending
+  alarmsIntoDates.sort(function(a,b){
+    return a.date - b.date;
+  });
+
+  for(let i = 0; i < alarmsIntoDates.length; i++){
+    if(alarmsIntoDates[i].date>dateFrom){
+      return alarmsIntoDates[i].alarm;
     }
   }
 
-  // We should search the next day item
-  if(!nextAlarm){
-    for(let i = 0; i < fetched.length; i++){
-      let currentItem = fetched[i];
-      let currentAlarm = new Date(currentItem["triggerTime"]);
-      let currentAlarmHour = currentAlarm.getHours();
-      let currentAlarmMinute = currentAlarm.getMinutes();
+  if(!alarmsIntoDates[0])
+    return null;
 
-      if(currentAlarmHour < dateFrom.getHours()){
-        if(currentAlarmMinute < dateFrom.getMinutes()){
-          if(!nextAlarm){
-            nextAlarm = currentItem;
-            continue;
-          }
-          let nextAlarmDate = new Date(nextAlarm["triggerTime"]);
-          let nextAlarmHour = nextAlarmDate.getHours();
-          let nextAlarmMinute = nextAlarmDate.getMinutes();
-  
-          if(currentAlarmHour < nextAlarmHour){
-            nextAlarm = currentItem;
-            continue;
-          }
-  
-          if(currentAlarmHour === nextAlarmHour && currentAlarmMinute < nextAlarmMinute){
-            nextAlarm = currentItem;
-            continue;
-          }
-        }
-      }
-    }
-  }
-
-  return nextAlarm;
+  // Return first item, probably next day
+  return alarmsIntoDates[0].alarm;
 }
 
 export async function calcTimeToSleep(alarm, currentTime) {
+
+    if(!alarm)
+      return;
     let fromDate = currentTime;
     let alarmDate = new Date(alarm["triggerTime"]);
     let toDate = new Date();
@@ -256,7 +199,6 @@ export async function calcTimeToSleep(alarm, currentTime) {
     }
 
     let diff = toDate - fromDate;
-    console.log("diff " + diff);
     let hoursToSleep = Math.abs(Math.round(diff / (1000*60*60)));
     let minutesToSleep = Math.abs(Math.round((diff - (1000*60*60*hoursToSleep)) / (1000*60)));
 
@@ -266,7 +208,6 @@ export async function calcTimeToSleep(alarm, currentTime) {
 export async function deleteAlarm(id) {
   let alarms;
   alarms = await AsyncStorage.getItem("alarms");
-  console.log("ID to be deleted " + id)
 
   if (!alarms) {
     alarms = [];
@@ -284,32 +225,5 @@ export async function deleteAlarm(id) {
   
   removed = JSON.stringify(removed);
 
-  Toast.show(removedText, {
-    duration: 1000,
-    containerStyle: styles.warnToast,
-    opacity: 1,
-  });
-
   await AsyncStorage.setItem("alarms", removed);
 }
-
-const styles = StyleSheet.create({
-  failedToast: {
-    backgroundColor: Colors.dangerRed,
-    opacity: 1,
-    borderRadius: 5,
-    padding: 10,
-  },
-  successToast: {
-    backgroundColor: Colors.acceptGreen,
-    opacity: 1,
-    borderRadius: 5,
-    padding: 10,
-  },
-  warnToast: {
-    backgroundColor: Colors.warningYellow,
-    opacity: 1,
-    borderRadius: 5,
-    padding: 10,
-  }
-});
