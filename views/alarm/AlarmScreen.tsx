@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { ScreenWrapper } from "../../components/common/ScreenWrapper.tsx";
-import { Text, View, Button, Switch, StyleSheet, Animated } from "react-native";
+import { Text, View, Switch, StyleSheet, Animated } from "react-native";
 import RNDateTimeSelector from "react-native-date-time-scroll-picker";
 import {
   widthPercentageToDP as wp,
@@ -121,7 +121,7 @@ export const AlarmScreen = () => {
       </View>
       <TouchableWithoutFeedback
         onPress={async () => {
-          let success = await saveAlarm(clockValue, isVibrate);
+          const success = await saveAlarm(clockValue, isVibrate);
           showToast(
             success ? "Alarm saved!" : "Alarm dave failed!",
             success ? ToastType.SUCCESS : ToastType.FAILURE

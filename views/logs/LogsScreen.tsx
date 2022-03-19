@@ -69,7 +69,7 @@ export const LogsScreen = () => {
     added: end,
   };
 
-  let disabled = sleepData.timeInBed === 0;
+  const disabled = sleepData.timeInBed === 0;
 
   const onAwakePressed = async () => {
     let data;

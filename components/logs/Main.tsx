@@ -8,11 +8,11 @@ import { Clock } from "./Clock";
 export const Main = () => {
   // Set the initial alarms screen data
   const [nextAlarm, setNextAlarm] = useState(null);
-  const [timeToSleep, setTimeToSleep] = useState(null);
+  const [timeToSleep, setTimeToSleep] = useState();
 
   const fetchTimesForDisplay = async () => {
     try {
-      let newDate = new Date();
+      const newDate = new Date();
       const nextAlarm = await fetchNextAlarm(newDate);
       const timeToSleep = await calcTimeToSleep(nextAlarm, newDate);
       setNextAlarm(nextAlarm);

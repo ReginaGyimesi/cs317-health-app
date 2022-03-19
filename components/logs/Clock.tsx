@@ -7,11 +7,11 @@ type ClockProps = {
 };
 
 export const Clock = ({updateCallback}:ClockProps) => {
-  let time = new Date();
-  const [currtime, setcurrtime] = useState(time);
+  const time = new Date();
+  const [currTime, setCurrTime] = useState(time);
 
   function update() {
-    setcurrtime(new Date());
+    setCurrTime(new Date());
     updateCallback();
   }
 
@@ -21,7 +21,7 @@ export const Clock = ({updateCallback}:ClockProps) => {
 
   return (
     <View>
-      <Text style={stylesheet.text}>{currtime?.toLocaleTimeString()}</Text>
+      <Text style={stylesheet.text}>{currTime?.toLocaleTimeString()}</Text>
     </View>
   );
 };

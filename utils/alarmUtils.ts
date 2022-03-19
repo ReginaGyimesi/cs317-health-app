@@ -12,8 +12,8 @@ export function parseDate(clockValue: any) {
   }
 
   let hour = parseInt(clockValue[0].index) + 1;
-  let minute = parseInt(clockValue[1].index);
-  let amPm = clockValue[2].value;
+  const minute = parseInt(clockValue[1].index);
+  const amPm = clockValue[2].value;
 
   if (hour == 12 && amPm === "PM") {
     hour = 12;
@@ -23,7 +23,7 @@ export function parseDate(clockValue: any) {
     hour += 12;
   }
 
-  let currentDate = new Date();
+  const currentDate = new Date();
   currentDate.setHours(hour, minute, 0, 0);
 
   // Add plus one day if selected time passed today
@@ -61,13 +61,13 @@ export async function saveAlarm(clockValue: any, isEnabled: boolean) {
   }
 
   // Parse the value from the picker as date, if fails, return
-  let date = parseDate(clockValue);
+  const date = parseDate(clockValue);
   if (!date || date === null) {
     return false;
   }
 
   // Create the new alarm object
-  let newAlarm = {
+  const newAlarm = {
     id: "",
     displayTime:
       clockValue[0].value +
@@ -105,7 +105,7 @@ export async function saveAlarm(clockValue: any, isEnabled: boolean) {
 }
 
 async function schedulePushNotification(newAlarm: any, hour: any, minute: any) {
-  let identifier = await Notifications.scheduleNotificationAsync({
+  const identifier = await Notifications.scheduleNotificationAsync({
     content: {
       title: "It's time to wake up!",
     },
@@ -128,7 +128,7 @@ async function schedulePushNotification(newAlarm: any, hour: any, minute: any) {
  */
 export function addZeroToDigits(digit: number) {
   if (digit) {
-    let zeroAdded = `0${digit}`;
+    const zeroAdded = `0${digit}`;
     return zeroAdded.substring(zeroAdded.length - 2);
   } else {
     return `00`;
@@ -150,16 +150,16 @@ export async function fetchActiveAlarms() {
   }
 
   // Sort alarms for better UX
-  let dateFrom = new Date();
-  let alarmsIntoDates = [];
+  const dateFrom = new Date();
+  const alarmsIntoDates = [];
 
   for (let i = 0; i < alarms.length; i++) {
-    let currentItem = alarms[i];
-    let currentAlarm = new Date(currentItem.triggerTime);
-    let currentAlarmHour = currentAlarm.getHours();
-    let currentAlarmMinute = currentAlarm.getMinutes();
+    const currentItem = alarms[i];
+    const currentAlarm = new Date(currentItem.triggerTime);
+    const currentAlarmHour = currentAlarm.getHours();
+    const currentAlarmMinute = currentAlarm.getMinutes();
 
-    let newDate = new Date(dateFrom);
+    const newDate = new Date(dateFrom);
     newDate.setHours(currentAlarmHour);
     newDate.setMinutes(currentAlarmMinute);
 
@@ -174,7 +174,7 @@ export async function fetchActiveAlarms() {
     return a.date - b.date;
   });
 
-  let sortedAlarms = [];
+  const sortedAlarms = [];
   for (let i = 0; i < alarmsIntoDates.length; i++) {
     sortedAlarms.push(alarmsIntoDates[i].alarm);
   }
@@ -188,16 +188,16 @@ export async function fetchActiveAlarms() {
  * @returns
  */
 export async function fetchNextAlarm(dateFrom: Date) {
-  let fetched = await fetchActiveAlarms();
-  let alarmsIntoDates = [];
+  const fetched = await fetchActiveAlarms();
+  const alarmsIntoDates = [];
 
   for (let i = 0; i < fetched.length; i++) {
-    let currentItem = fetched[i];
-    let currentAlarm = new Date(currentItem.triggerTime);
-    let currentAlarmHour = currentAlarm.getHours();
-    let currentAlarmMinute = currentAlarm.getMinutes();
+    const currentItem = fetched[i];
+    const currentAlarm = new Date(currentItem.triggerTime);
+    const currentAlarmHour = currentAlarm.getHours();
+    const currentAlarmMinute = currentAlarm.getMinutes();
 
-    let newDate = new Date(dateFrom);
+    const newDate = new Date(dateFrom);
     newDate.setHours(currentAlarmHour);
     newDate.setMinutes(currentAlarmMinute);
 
@@ -232,11 +232,11 @@ export async function fetchNextAlarm(dateFrom: Date) {
  */
 export async function calcTimeToSleep(alarm: any, currentTime: any) {
   if (!alarm) return;
-  let fromDate = currentTime;
-  let alarmDate = new Date(alarm.triggerTime);
-  let toDate = new Date();
-  let toDateHour = alarmDate.getHours();
-  let toDateMinute = alarmDate.getMinutes();
+  const fromDate = currentTime;
+  const alarmDate = new Date(alarm.triggerTime);
+  const toDate = new Date();
+  const toDateHour = alarmDate.getHours();
+  const toDateMinute = alarmDate.getMinutes();
   toDate.setHours(toDateHour);
   toDate.setMinutes(toDateMinute);
 
@@ -257,9 +257,9 @@ export async function calcTimeToSleep(alarm: any, currentTime: any) {
       hours: "24",
       minutes: "00",
     };
-  }
+  } 
 
-  let diff = toDate - fromDate;
+  const diff = toDate - fromDate;
   let hoursToSleep = Math.abs(Math.round(diff / (1000 * 60 * 60)));
   if (hoursToSleep === 24) {
     hoursToSleep = 23;
@@ -304,7 +304,7 @@ export async function deleteAlarm(id: string) {
   }
 
   let removedText = "No alarm deleted";
-  var removed = alarms.filter(function (value: any) {
+  let removed = alarms.filter(function (value: any) {
     if (value.id === id) {
       removedText = "Alarm deleted: " + value.displayTime;
     }

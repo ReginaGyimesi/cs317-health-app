@@ -48,7 +48,7 @@ export const Alarms = () => {
                 setIdx(i);
               }}
               pressOutCallback={async () => {
-                let message = await deleteAlarm(item.id);
+                const message = await deleteAlarm(item.id);
                 setIdx(-1);
                 showToast(message, ToastType.SUCCESS);
                 fetch(); // reload state
