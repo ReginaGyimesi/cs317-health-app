@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { ScreenWrapper } from "../../components/common/ScreenWrapper.tsx";
-import { Text, View, Button, Switch, StyleSheet } from "react-native";
+import { Text, View, Button, Switch, StyleSheet, Animated } from "react-native";
 import RNDateTimeSelector from "react-native-date-time-scroll-picker";
 import {
   widthPercentageToDP as wp,
@@ -9,6 +9,8 @@ import {
 import { saveAlarm, addZeroToDigits } from "../../utils/alarmUtils";
 import { Colors } from "../../styles";
 import { showToast, ToastType } from "../../components/common/MessageToast";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
 
 // Time Picker initialization
 const borderWidth = 45;
@@ -17,6 +19,28 @@ const selectedItemTextSize = 30;
 const wrapperHeight = setTimerWidthHeight - borderWidth * 2;
 export const AlarmScreenNavName = "Alarm";
 export const AlarmScreen = () => {
+  const navigation = useNavigation();
+
+  // Button animation
+  const animatedButtonScale = new Animated.Value(1);
+  const onPressIn = () => {
+    Animated.spring(animatedButtonScale, {
+      toValue: 0.95,
+      speed: 999,
+      useNativeDriver: true,
+    }).start();
+  };
+  const onPressOut = () => {
+    Animated.spring(animatedButtonScale, {
+      toValue: 1,
+      useNativeDriver: true,
+    }).start();
+  };
+  const animatedScaleStyle = {
+    transform: [{ scale: animatedButtonScale }],
+  };
+
+  // Initial clock values
   const [clockValue, setClockValue] = useState([
     {
       index: 8,
@@ -95,21 +119,22 @@ export const AlarmScreen = () => {
           />
         </View>
       </View>
-      <View
-        style={[styles.wrapper, { justifyContent: "center", marginBottom: 60 }]}
+      <TouchableWithoutFeedback
+        onPress={async () => {
+          let success = await saveAlarm(clockValue, isVibrate);
+          showToast(
+            success ? "Alarm saved!" : "Alarm dave failed!",
+            success ? ToastType.SUCCESS : ToastType.FAILURE
+          );
+          navigation.goBack();
+        }}
+        onPressIn={onPressIn}
+        onPressOut={onPressOut}
       >
-        <Button
-          title="Save"
-          onPress={async () => {
-            let success = await saveAlarm(clockValue, isVibrate);
-            showToast(
-              success ? "Alarm saved!" : "Alarm dave failed!",
-              success ? ToastType.SUCCESS : ToastType.FAILURE
-            );
-          }}
-          color={Colors.opPurple}
-        />
-      </View>
+        <Animated.Text style={[styles.saveText, animatedScaleStyle]}>
+          Save alarm
+        </Animated.Text>
+      </TouchableWithoutFeedback>
     </ScreenWrapper>
   );
 };
@@ -165,24 +190,19 @@ const styles = StyleSheet.create({
   separator: {
     fontSize: selectedItemTextSize,
     lineHeight: setTimerWidthHeight * 0.15,
-    color: "white",
+    color: Colors.white,
   },
-  failedToast: {
-    backgroundColor: Colors.dangerRed,
-    opacity: 1,
+  saveText: {
+    backgroundColor: Colors.opPurple,
+    color: Colors.white,
+    width: wp(50),
+    fontSize: hp(3),
+    textAlign: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: hp(5),
     borderRadius: 5,
-    padding: 10,
-  },
-  successToast: {
-    backgroundColor: Colors.acceptGreen,
-    opacity: 1,
-    borderRadius: 5,
-    padding: 10,
-  },
-  warnToast: {
-    backgroundColor: Colors.warningYellow,
-    opacity: 1,
-    borderRadius: 5,
-    padding: 10,
   },
 });

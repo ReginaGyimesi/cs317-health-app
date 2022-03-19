@@ -1,30 +1,30 @@
 import { useFocusEffect } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import { FeaturedTabWrapper } from "../../components/home/FeaturedTabWrapper";
 import { Colors } from "../../styles";
 import { deleteAlarm, fetchActiveAlarms } from "../../utils/alarmUtils";
-import { showToast, ToastType } from "../../components/common/MessageToast"
+import { showToast, ToastType } from "../../components/common/MessageToast";
 
 export const Alarms = () => {
   // Set the initial alarms screen
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const fetch = async () => {
+    try {
+      setLoading(true);
+      const data = await fetchActiveAlarms();
+      setData(data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
   useFocusEffect(
     React.useCallback(() => {
-      const fetch = async () => {
-        try {
-          setLoading(true);
-          const data = await fetchActiveAlarms();
-          setData(data);
-          setLoading(false);
-        } catch (error) {
-          setLoading(false);
-          console.log(error);
-        }
-      };
-
       fetch();
     }, [])
   );
@@ -47,10 +47,11 @@ export const Alarms = () => {
               longPressCallback={() => {
                 setIdx(i);
               }}
-              pressOutCallback={async() => {
+              pressOutCallback={async () => {
                 let message = await deleteAlarm(item.id);
                 setIdx(-1);
                 showToast(message, ToastType.SUCCESS);
+                fetch(); // reload state
               }}
               op={idx === i ? 0.3 : 1}
             />
