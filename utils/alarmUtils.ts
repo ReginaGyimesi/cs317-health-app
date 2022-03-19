@@ -104,7 +104,7 @@ export async function saveAlarm(clockValue: any, isEnabled: boolean) {
   return true;
 }
 
-async function schedulePushNotification(newAlarm:any, hour: any, minute: any) {
+async function schedulePushNotification(newAlarm: any, hour: any, minute: any) {
   let identifier = await Notifications.scheduleNotificationAsync({
     content: {
       title: "It's time to wake up!",
@@ -185,7 +185,7 @@ export async function fetchActiveAlarms() {
 /**
  * Returns the next available alarm calculated from the passed Date
  * @param dateFrom    Date to be calculated from
- * @returns 
+ * @returns
  */
 export async function fetchNextAlarm(dateFrom: Date) {
   let fetched = await fetchActiveAlarms();
@@ -226,8 +226,8 @@ export async function fetchNextAlarm(dateFrom: Date) {
 
 /**
  * Calculates the time difference between the alarm and the time it was passed
- * @param alarm         
- * @param currentTime 
+ * @param alarm
+ * @param currentTime
  * @returns {hours, minutes}  eg.: {hours:03, minutes:25} or {hours:17, minutes:08}
  */
 export async function calcTimeToSleep(alarm: any, currentTime: any) {
@@ -243,45 +243,47 @@ export async function calcTimeToSleep(alarm: any, currentTime: any) {
   // Increase day
   if (toDateHour < fromDate.getHours()) {
     toDate.setDate(toDate.getDate() + 1);
-  }
-  else if(toDateHour === fromDate.getHours() && toDateMinute < fromDate.getMinutes()){
+  } else if (
+    toDateHour === fromDate.getHours() &&
+    toDateMinute < fromDate.getMinutes()
+  ) {
     toDate.setDate(toDate.getDate() + 1);
-  }
-  else if((toDateHour === fromDate.getHours() && toDateMinute === fromDate.getMinutes())) {
+  } else if (
+    toDateHour === fromDate.getHours() &&
+    toDateMinute === fromDate.getMinutes()
+  ) {
     // Exact minute where the alarm should be triggered
     return {
       hours: "24",
-      minutes: "00"
+      minutes: "00",
     };
   }
 
   let diff = toDate - fromDate;
   let hoursToSleep = Math.abs(Math.round(diff / (1000 * 60 * 60)));
-  if(hoursToSleep === 24){
+  if (hoursToSleep === 24) {
     hoursToSleep = 23;
   }
 
   let minutesToSleep = Math.abs(
-    Math.round((diff - (1000 * 60 * 60 * hoursToSleep)) / (1000 * 60))
+    Math.round((diff - 1000 * 60 * 60 * hoursToSleep) / (1000 * 60))
   );
-  if(minutesToSleep === 60){
+  if (minutesToSleep === 60) {
     minutesToSleep = 59;
   }
 
   return {
     hours: addZeroToDigits(hoursToSleep),
-    minutes: addZeroToDigits(minutesToSleep)
+    minutes: addZeroToDigits(minutesToSleep),
   };
 }
 
 /**
  * Removes the scheduled push notification by the passed alarm ID
- * @param id 
+ * @param id
  */
-async function removePushNotification(id:string) {
-  await Notifications.cancelScheduledNotificationAsync(
-    id
-  );
+async function removePushNotification(id: string) {
+  await Notifications.cancelScheduledNotificationAsync(id);
 }
 
 /**
@@ -290,7 +292,6 @@ async function removePushNotification(id:string) {
  * @returns toast message
  */
 export async function deleteAlarm(id: string) {
-
   await removePushNotification(id);
 
   let alarms;

@@ -8,7 +8,7 @@ import {
 } from "react-native-responsive-screen";
 import { saveAlarm, addZeroToDigits } from "../../utils/alarmUtils";
 import { Colors } from "../../styles";
-import { showToast, ToastType } from "../../components/common/MessageToast"
+import { showToast, ToastType } from "../../components/common/MessageToast";
 
 // Time Picker initialization
 const borderWidth = 45;
@@ -17,22 +17,20 @@ const selectedItemTextSize = 30;
 const wrapperHeight = setTimerWidthHeight - borderWidth * 2;
 export const AlarmScreenNavName = "Alarm";
 export const AlarmScreen = () => {
-  const [clockValue, setClockValue] = useState(
-    [
-      {
-        index: 8,
-        value: "09",
-      },
-      {
-        index: 25,
-        value: "25",
-      },
-      {
-        index: 0,
-        value: "AM",
-      },
-    ]
-  );
+  const [clockValue, setClockValue] = useState([
+    {
+      index: 8,
+      value: "09",
+    },
+    {
+      index: 25,
+      value: "25",
+    },
+    {
+      index: 0,
+      value: "AM",
+    },
+  ]);
 
   const dataSet = {
     data: {
@@ -104,7 +102,10 @@ export const AlarmScreen = () => {
           title="Save"
           onPress={async () => {
             let success = await saveAlarm(clockValue, isVibrate);
-            showToast(success ? "Alarm saved!" : "Alarm dave failed!", success ? ToastType.SUCCESS : ToastType.FAILURE);
+            showToast(
+              success ? "Alarm saved!" : "Alarm dave failed!",
+              success ? ToastType.SUCCESS : ToastType.FAILURE
+            );
           }}
           color={Colors.opPurple}
         />
