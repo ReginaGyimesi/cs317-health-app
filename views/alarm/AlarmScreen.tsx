@@ -8,12 +8,7 @@ import {
 } from "react-native-responsive-screen";
 import { saveAlarm, addZeroToDigits } from "../../utils/alarmUtils";
 import { Colors } from "../../styles";
-import Toast from "react-native-root-toast";
-
-type ToastProps = {
-  success: boolean;
-  message: string;
-};
+import { showToast, ToastType } from "../../components/common/MessageToast"
 
 // Time Picker initialization
 const borderWidth = 45;
@@ -22,20 +17,22 @@ const selectedItemTextSize = 30;
 const wrapperHeight = setTimerWidthHeight - borderWidth * 2;
 export const AlarmScreenNavName = "Alarm";
 export const AlarmScreen = () => {
-  let clockValue = [
-    {
-      index: 8,
-      value: "09",
-    },
-    {
-      index: 25,
-      value: "25",
-    },
-    {
-      index: 0,
-      value: "AM",
-    },
-  ];
+  const [clockValue, setClockValue] = useState(
+    [
+      {
+        index: 8,
+        value: "09",
+      },
+      {
+        index: 25,
+        value: "25",
+      },
+      {
+        index: 0,
+        value: "AM",
+      },
+    ]
+  );
 
   const dataSet = {
     data: {
@@ -59,30 +56,13 @@ export const AlarmScreen = () => {
     setIsVibrate((previousState) => !previousState);
   };
 
-  const displayToast = ({ success, message }: ToastProps) => {
-    if (success === true) {
-      Toast.show(message, {
-        duration: 1000,
-        containerStyle: styles.successToast,
-        opacity: 1,
-      });
-      return;
-    }
-
-    Toast.show(message + " failed", {
-      duration: 1000,
-      containerStyle: styles.failedToast,
-      opacity: 1,
-    });
-  };
-
   return (
     <ScreenWrapper title="Set alarm" text="">
       <View style={styles.dateTimeSelectorContainer}>
         <RNDateTimeSelector
           dataSet={dataSet}
           onValueChange={(value: any) => {
-            clockValue = value;
+            setClockValue(value);
           }}
           containerStyle={styles.dateTimeSelector}
           firstSeperatorComponent={() => <Text style={styles.separator}></Text>}
@@ -124,7 +104,7 @@ export const AlarmScreen = () => {
           title="Save"
           onPress={async () => {
             let success = await saveAlarm(clockValue, isVibrate);
-            displayToast({ success: success, message: "Alarm saved" });
+            showToast(success ? "Alarm saved!" : "Alarm dave failed!", success ? ToastType.SUCCESS : ToastType.FAILURE);
           }}
           color={Colors.opPurple}
         />

@@ -1,10 +1,10 @@
 import { useFocusEffect } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
-import { View } from "react-native";
+import React, { useState } from "react";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import { FeaturedTabWrapper } from "../../components/home/FeaturedTabWrapper";
 import { Colors } from "../../styles";
 import { deleteAlarm, fetchActiveAlarms } from "../../utils/alarmUtils";
+import { showToast, ToastType } from "../../components/common/MessageToast"
 
 export const Alarms = () => {
   // Set the initial alarms screen
@@ -46,11 +46,11 @@ export const Alarms = () => {
               text={item.displayTime}
               longPressCallback={() => {
                 setIdx(i);
-                // Show toast here from other component?
               }}
-              pressOutCallback={() => {
-                deleteAlarm(item.id);
+              pressOutCallback={async() => {
+                let message = await deleteAlarm(item.id);
                 setIdx(-1);
+                showToast(message, ToastType.SUCCESS);
               }}
               op={idx === i ? 0.3 : 1}
             />

@@ -11,9 +11,9 @@ export function parseDate(clockValue: any) {
     return null;
   }
 
-  let hour = parseInt(clockValue[0]["index"]) + 1;
-  let minute = parseInt(clockValue[1]["index"]);
-  let amPm = clockValue[2]["value"];
+  let hour = parseInt(clockValue[0].index) + 1;
+  let minute = parseInt(clockValue[1].index);
+  let amPm = clockValue[2].value;
 
   if (hour == 12 && amPm === "PM") {
     hour = 12;
@@ -60,7 +60,7 @@ export async function saveAlarm(clockValue: any, isEnabled: boolean) {
     return false;
   }
 
-  // Parse the value from the picker as date, if fails, display failure and return
+  // Parse the value from the picker as date, if fails, return
   let date = parseDate(clockValue);
   if (!date || date === null) {
     return false;
@@ -68,17 +68,24 @@ export async function saveAlarm(clockValue: any, isEnabled: boolean) {
 
   // Create the new alarm object
   let newAlarm = {
-    id: Math.round(Math.random() * 1000000000),
+    id: "",
     displayTime:
-      clockValue[0]["value"] +
+      clockValue[0].value +
       ":" +
-      clockValue[1]["value"] +
+      clockValue[1].value +
       " " +
-      clockValue[2]["value"],
+      clockValue[2].value,
     triggerTime: date,
     active: true,
     isVibrate: isEnabled,
   };
+
+  // Schedule notification
+  await schedulePushNotification(
+    newAlarm,
+    newAlarm.triggerTime.getHours(),
+    newAlarm.triggerTime.getMinutes()
+  );
 
   // Fetch alarms from local storage and add new alarm
   let alarms;
@@ -94,17 +101,11 @@ export async function saveAlarm(clockValue: any, isEnabled: boolean) {
   alarms = JSON.stringify(alarms);
   AsyncStorage.setItem("alarms", alarms);
 
-  // Schedule notification
-  await schedulePushNotification(
-    newAlarm["triggerTime"].getHours(),
-    newAlarm["triggerTime"].getMinutes()
-  );
-
   return true;
 }
 
-async function schedulePushNotification(hour: any, minute: any) {
-  await Notifications.scheduleNotificationAsync({
+async function schedulePushNotification(newAlarm:any, hour: any, minute: any) {
+  let identifier = await Notifications.scheduleNotificationAsync({
     content: {
       title: "It's time to wake up!",
     },
@@ -115,6 +116,9 @@ async function schedulePushNotification(hour: any, minute: any) {
       channelId: "default",
     },
   });
+
+  // Notification ID will be the alarms ID as well
+  newAlarm.id = identifier;
 }
 
 /**
@@ -151,7 +155,7 @@ export async function fetchActiveAlarms() {
 
   for (let i = 0; i < alarms.length; i++) {
     let currentItem = alarms[i];
-    let currentAlarm = new Date(currentItem["triggerTime"]);
+    let currentAlarm = new Date(currentItem.triggerTime);
     let currentAlarmHour = currentAlarm.getHours();
     let currentAlarmMinute = currentAlarm.getMinutes();
 
@@ -178,13 +182,18 @@ export async function fetchActiveAlarms() {
   return sortedAlarms;
 }
 
+/**
+ * Returns the next available alarm calculated from the passed Date
+ * @param dateFrom    Date to be calculated from
+ * @returns 
+ */
 export async function fetchNextAlarm(dateFrom: Date) {
   let fetched = await fetchActiveAlarms();
   let alarmsIntoDates = [];
 
   for (let i = 0; i < fetched.length; i++) {
     let currentItem = fetched[i];
-    let currentAlarm = new Date(currentItem["triggerTime"]);
+    let currentAlarm = new Date(currentItem.triggerTime);
     let currentAlarmHour = currentAlarm.getHours();
     let currentAlarmMinute = currentAlarm.getMinutes();
 
@@ -215,10 +224,16 @@ export async function fetchNextAlarm(dateFrom: Date) {
   return alarmsIntoDates[0].alarm;
 }
 
+/**
+ * Calculates the time difference between the alarm and the time it was passed
+ * @param alarm         
+ * @param currentTime 
+ * @returns {hours, minutes}  eg.: {hours:03, minutes:25} or {hours:17, minutes:08}
+ */
 export async function calcTimeToSleep(alarm: any, currentTime: any) {
   if (!alarm) return;
   let fromDate = currentTime;
-  let alarmDate = new Date(alarm["triggerTime"]);
+  let alarmDate = new Date(alarm.triggerTime);
   let toDate = new Date();
   let toDateHour = alarmDate.getHours();
   let toDateMinute = alarmDate.getMinutes();
@@ -229,20 +244,55 @@ export async function calcTimeToSleep(alarm: any, currentTime: any) {
   if (toDateHour < fromDate.getHours()) {
     toDate.setDate(toDate.getDate() + 1);
   }
+  else if(toDateHour === fromDate.getHours() && toDateMinute < fromDate.getMinutes()){
+    toDate.setDate(toDate.getDate() + 1);
+  }
+  else if((toDateHour === fromDate.getHours() && toDateMinute === fromDate.getMinutes())) {
+    // Exact minute where the alarm should be triggered
+    return {
+      hours: "24",
+      minutes: "00"
+    };
+  }
 
   let diff = toDate - fromDate;
   let hoursToSleep = Math.abs(Math.round(diff / (1000 * 60 * 60)));
+  if(hoursToSleep === 24){
+    hoursToSleep = 23;
+  }
+
   let minutesToSleep = Math.abs(
-    Math.round((diff - 1000 * 60 * 60 * hoursToSleep) / (1000 * 60))
+    Math.round((diff - (1000 * 60 * 60 * hoursToSleep)) / (1000 * 60))
   );
+  if(minutesToSleep === 60){
+    minutesToSleep = 59;
+  }
 
   return {
     hours: addZeroToDigits(hoursToSleep),
-    minutes: addZeroToDigits(minutesToSleep),
+    minutes: addZeroToDigits(minutesToSleep)
   };
 }
 
-export async function deleteAlarm(id: number) {
+/**
+ * Removes the scheduled push notification by the passed alarm ID
+ * @param id 
+ */
+async function removePushNotification(id:string) {
+  await Notifications.cancelScheduledNotificationAsync(
+    id
+  );
+}
+
+/**
+ * Removes alarm from local storage and from the scheduled notifications
+ * @param id
+ * @returns toast message
+ */
+export async function deleteAlarm(id: string) {
+
+  await removePushNotification(id);
+
   let alarms;
   alarms = await AsyncStorage.getItem("alarms");
 
@@ -254,13 +304,15 @@ export async function deleteAlarm(id: number) {
 
   let removedText = "No alarm deleted";
   var removed = alarms.filter(function (value: any) {
-    if (value["id"] === id) {
-      removedText = "Alarm deleted: " + value["displayTime"];
+    if (value.id === id) {
+      removedText = "Alarm deleted: " + value.displayTime;
     }
-    return value["id"] !== id;
+    return value.id !== id;
   });
 
   removed = JSON.stringify(removed);
 
   await AsyncStorage.setItem("alarms", removed);
+
+  return removedText;
 }
