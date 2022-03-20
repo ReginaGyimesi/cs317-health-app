@@ -11,6 +11,9 @@ export const Alarms = () => {
   // Set the initial alarms screen
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [idx, setIdx] = useState(-1);
+  const [pressed, setPressed] = useState(false);
+
 
   const fetch = async () => {
     try {
@@ -30,22 +33,6 @@ export const Alarms = () => {
     }, [])
   );
 
-  const [idx, setIdx] = useState(-1);
-
-  const animatedButtonScale = new Animated.Value(1);
-  const onPressIn = () => {
-    Animated.spring(animatedButtonScale, {
-      toValue: 0.95,
-      speed: 999,
-      useNativeDriver: true,
-    }).start();
-  };
-  const onPressOut = () => {
-    Animated.spring(animatedButtonScale, {
-      toValue: 1,
-      useNativeDriver: true,
-    }).start();
-  };
 
   return (
     <>
@@ -62,15 +49,17 @@ export const Alarms = () => {
               text={item.displayTime}
               longPressCallback={() => {
                 setIdx(i);
+                setPressed(true)
               }}
               pressOutCallback={async () => {
                 let message = await deleteAlarm(item.id);
-                onPressOut();
                 setIdx(-1);
                 showToast(message, ToastType.SUCCESS);
+                setPressed(false)
                 fetch(); // reload state
               }}
               op={idx === i ? 0.3 : 1}
+              pressed={idx === i && pressed}
             />
           );
         })

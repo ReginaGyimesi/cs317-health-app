@@ -8,13 +8,15 @@ import {
 } from "react-native";
 import { Colors, FontVariants } from "../../styles";
 import React from "react";
+import * as Animatable from "react-native-animatable";
 
 type TabProps = {
   icon?: any;
   text: String;
   longPressCallback?: any;
   pressOutCallback?: any;
-  op?: any
+  op?: any;
+  pressed?: boolean;
 };
 
 export const FeaturedTabWrapper = ({
@@ -22,14 +24,19 @@ export const FeaturedTabWrapper = ({
   text,
   longPressCallback,
   pressOutCallback,
-  op
+  op,
+  pressed = false,
 }: TabProps) => {
   return (
     <Pressable onLongPress={longPressCallback} onPressOut={pressOutCallback}>
-      <View style={[styles.container, {opacity: op}]}>
+      <Animatable.View
+        animation={pressed && "shake"}
+        iterationCount={"infinite"}
+        style={[styles.container, { opacity: op }]}
+      >
         {icon}
         <Text style={styles.text}>{text}</Text>
-      </View>
+      </Animatable.View>
     </Pressable>
   );
 };
