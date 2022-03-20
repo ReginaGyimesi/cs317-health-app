@@ -1,39 +1,47 @@
 import React, { useState } from "react";
 import { ScreenWrapper } from "../../components/common/ScreenWrapper.tsx";
-import { Text, View, Button, Switch, StyleSheet } from "react-native";
+import { Text, View, Switch, StyleSheet, Animated } from "react-native";
 import RNDateTimeSelector from "react-native-date-time-scroll-picker";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { saveAlarm, addZeroToDigits } from "../../utils/alarmHandler";
+import { saveAlarm, addZeroToDigits } from "../../utils/alarmUtils";
 import { Colors } from "../../styles";
+import { showToast, ToastType } from "../../components/common/MessageToast";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
 
 // Time Picker initialization
 const borderWidth = 45;
 const setTimerWidthHeight = wp(85);
 const selectedItemTextSize = 30;
 const wrapperHeight = setTimerWidthHeight - borderWidth * 2;
-
-const dataSet = {
-  data: {
-    firstColumn: [...Array(12).keys()].map((item, idx) => {
-      return { value: addZeroToDigits(item + 1), index: idx + 1 };
-    }),
-    secondColumn: [...Array(60).keys()].map((item, idx) => {
-      return { value: addZeroToDigits(item), index: idx };
-    }),
-    thirdColumn: [
-      { value: "AM", index: 0 },
-      { value: "PM", index: 1 },
-    ],
-  },
-  initials: [8, 25, 0],
-};
-
 export const AlarmScreenNavName = "Alarm";
 export const AlarmScreen = () => {
-  let clockValue = [
+  const navigation = useNavigation();
+
+  // Button animation
+  const animatedButtonScale = new Animated.Value(1);
+  const onPressIn = () => {
+    Animated.spring(animatedButtonScale, {
+      toValue: 0.95,
+      speed: 999,
+      useNativeDriver: true,
+    }).start();
+  };
+  const onPressOut = () => {
+    Animated.spring(animatedButtonScale, {
+      toValue: 1,
+      useNativeDriver: true,
+    }).start();
+  };
+  const animatedScaleStyle = {
+    transform: [{ scale: animatedButtonScale }],
+  };
+
+  // Initial clock values
+  const [clockValue, setClockValue] = useState([
     {
       index: 8,
       value: "09",
@@ -46,40 +54,28 @@ export const AlarmScreen = () => {
       index: 0,
       value: "AM",
     },
-  ];
+  ]);
 
-  let vibrate;
+  const dataSet = {
+    data: {
+      firstColumn: [...Array(12).keys()].map((item, idx) => {
+        return { value: addZeroToDigits(item + 1), index: idx + 1 };
+      }),
+      secondColumn: [...Array(60).keys()].map((item, idx) => {
+        return { value: addZeroToDigits(item), index: idx };
+      }),
+      thirdColumn: [
+        { value: "AM", index: 0 },
+        { value: "PM", index: 1 },
+      ],
+    },
+    initials: [8, 25, 0],
+  };
 
   // Vibration switch toggle
-  const [isEnabled, setIsEnabled] = useState(false);
+  const [isVibrate, setIsVibrate] = useState(false);
   const toggleVibration = () => {
-    setIsEnabled((previousState) => !previousState);
-    vibrate = !isEnabled;
-  };
-
-  const separatorComponentRendererOne = () => {
-    return (
-      <Text
-        style={{
-          fontSize: selectedItemTextSize,
-          lineHeight: setTimerWidthHeight * 0.15,
-          color: "white",
-        }}
-      >
-        :
-      </Text>
-    );
-  };
-  const separatorComponentRendererTwo = () => {
-    return (
-      <Text
-        style={{
-          fontSize: selectedItemTextSize,
-          lineHeight: setTimerWidthHeight * 0.15,
-          color: "white",
-        }}
-      ></Text>
-    );
+    setIsVibrate((previousState) => !previousState);
   };
 
   return (
@@ -88,11 +84,13 @@ export const AlarmScreen = () => {
         <RNDateTimeSelector
           dataSet={dataSet}
           onValueChange={(value: any) => {
-            clockValue = value;
+            setClockValue(value);
           }}
           containerStyle={styles.dateTimeSelector}
-          firstSeperatorComponent={separatorComponentRendererOne}
-          secondSeperatorComponent={separatorComponentRendererTwo}
+          firstSeperatorComponent={() => <Text style={styles.separator}></Text>}
+          secondSeperatorComponent={() => (
+            <Text style={styles.separator}></Text>
+          )}
           seperatorContainerStyle={{ width: wp(10) }}
           scrollPickerOptions={{
             fontSize: 90,
@@ -114,20 +112,30 @@ export const AlarmScreen = () => {
         <View style={styles.vibrationSwitchHolder}>
           <Switch
             trackColor={{ false: Colors.darkPurple, true: Colors.lightPurple }}
-            thumbColor={isEnabled ? Colors.white : Colors.grey20}
+            thumbColor={isVibrate ? Colors.white : Colors.grey20}
             ios_backgroundColor={Colors.darkPurple}
             onValueChange={toggleVibration}
-            value={isEnabled}
+            value={isVibrate}
           />
         </View>
       </View>
-      <View style={[styles.wrapper, { justifyContent: "center" }]}>
-        <Button
-          title="Save"
-          onPress={() => saveAlarm(clockValue, isEnabled)}
-          color={Colors.opPurple}
-        />
-      </View>
+      <TouchableWithoutFeedback
+        onPress={async () => {
+          const success = await saveAlarm(clockValue, isVibrate);
+          showToast(
+            success ? "Alarm saved!" : "Alarm dave failed!",
+            success ? ToastType.SUCCESS : ToastType.FAILURE
+          );
+          navigation.goBack();
+        }}
+        onPressIn={onPressIn}
+        onPressOut={onPressOut}
+        style={{ marginBottom: 60 }}
+      >
+        <Animated.Text style={[styles.saveText, animatedScaleStyle]}>
+          Save alarm
+        </Animated.Text>
+      </TouchableWithoutFeedback>
     </ScreenWrapper>
   );
 };
@@ -179,5 +187,23 @@ const styles = StyleSheet.create({
     color: Colors.white,
     marginLeft: "auto",
     marginRight: "auto",
+  },
+  separator: {
+    fontSize: selectedItemTextSize,
+    lineHeight: setTimerWidthHeight * 0.15,
+    color: Colors.white,
+  },
+  saveText: {
+    backgroundColor: Colors.opPurple,
+    color: Colors.white,
+    width: wp(50),
+    fontSize: hp(3),
+    textAlign: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: hp(5),
+    borderRadius: 5,
   },
 });
