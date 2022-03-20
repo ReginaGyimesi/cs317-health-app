@@ -3,7 +3,7 @@ import React from "react";
 import { Colors } from "../../styles/Colors";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { StyleSheet } from "react-native";
-import * as Animatable from 'react-native-animatable';
+import * as Animatable from "react-native-animatable";
 
 type Props = {
   onPress?: () => void;
@@ -14,7 +14,13 @@ type Props = {
 export const PlayButton = ({ onPress, start = false, style }: Props) => {
   return (
     <TouchableOpacity onPress={onPress} style={style}>
-      <Animatable.View style={styles.logbtn} animation={!start && "pulse"} easing="ease-in-out" iterationCount="infinite" iterationDelay={1000}>
+      <Animatable.View
+        style={styles.logbtn}
+        animation={!start && "pulse"}
+        easing="ease-in-out"
+        iterationCount="infinite"
+        iterationDelay={1000}
+      >
         <MaterialCommunityIcons
           name={start ? "play" : "pause"}
           color={Colors.grey20}
