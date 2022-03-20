@@ -1,4 +1,5 @@
 import { useFocusEffect } from "@react-navigation/native";
+import { Animated } from "react-native";
 import React, { useEffect, useState } from "react";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import { FeaturedTabWrapper } from "../../components/home/FeaturedTabWrapper";
@@ -31,6 +32,21 @@ export const Alarms = () => {
 
   const [idx, setIdx] = useState(-1);
 
+  const animatedButtonScale = new Animated.Value(1);
+  const onPressIn = () => {
+    Animated.spring(animatedButtonScale, {
+      toValue: 0.95,
+      speed: 999,
+      useNativeDriver: true,
+    }).start();
+  };
+  const onPressOut = () => {
+    Animated.spring(animatedButtonScale, {
+      toValue: 1,
+      useNativeDriver: true,
+    }).start();
+  };
+
   return (
     <>
       {!data || data.length === 0 || loading ? (
@@ -48,7 +64,8 @@ export const Alarms = () => {
                 setIdx(i);
               }}
               pressOutCallback={async () => {
-                const message = await deleteAlarm(item.id);
+                let message = await deleteAlarm(item.id);
+                onPressOut();
                 setIdx(-1);
                 showToast(message, ToastType.SUCCESS);
                 fetch(); // reload state

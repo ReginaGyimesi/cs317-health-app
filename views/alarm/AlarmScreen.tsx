@@ -130,6 +130,7 @@ export const AlarmScreen = () => {
         }}
         onPressIn={onPressIn}
         onPressOut={onPressOut}
+        style={{ marginBottom: 60 }}
       >
         <Animated.Text style={[styles.saveText, animatedScaleStyle]}>
           Save alarm
