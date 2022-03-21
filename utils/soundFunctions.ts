@@ -16,7 +16,6 @@ export async function toggleSound({ isPlaying, sound, path }: SoundProps) {
   } else {
     await sound.stopAsync();
     await sound.unloadAsync();
-    sound.setIsLoopingAsync(false);
   }
 }
 
