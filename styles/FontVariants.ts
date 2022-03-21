@@ -44,6 +44,11 @@ export const FontVariants = StyleSheet.create({
     fontFamily: FontWeights.Roboto700,
     color: Colors.white,
   },
+  modalHeader: {
+    fontSize: FontSizes.M16,
+    fontFamily: FontWeights.Roboto700,
+    color: Colors.white,
+  },
   body: {
     fontSize: FontSizes.S14,
     fontFamily: FontWeights.Roboto400,
