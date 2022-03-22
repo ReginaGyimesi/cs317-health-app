@@ -37,6 +37,7 @@ export const SoundButton = ({
             sound: sound,
             isPlaying: playing,
             path: path,
+            name: name,
           });
         }}
       >

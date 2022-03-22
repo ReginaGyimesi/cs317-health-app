@@ -8,6 +8,7 @@ import { FeaturedTabWrapper } from "../../components/home/FeaturedTabWrapper";
 import { WelcomeView } from "../../components/home/WelcomeView";
 import { Colors, FontVariants } from "../../styles";
 import { Alarms } from "../../components/home/Alarms";
+import { ActiveSounds } from "../../components/sound/ActiveSounds";
 
 export const HomeScreenNavName = "Home";
 export const HomeScreen = () => {
@@ -61,17 +62,7 @@ export const HomeScreen = () => {
                 <Text style={styles.plustext}>+</Text>
               </Pressable>
             </View>
-
-            <FeaturedTabWrapper
-              icon={
-                <MaterialCommunityIcons
-                  name="account-music-outline"
-                  color={Colors.white}
-                  size={20}
-                />
-              }
-              text="waves"
-            />
+            <ActiveSounds />
           </View>
         </View>
       </View>
