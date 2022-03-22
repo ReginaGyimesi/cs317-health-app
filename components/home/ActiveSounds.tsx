@@ -2,7 +2,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import React from "react";
 import { deleteActiveSound, getActiveSounds } from "../../utils/soundFunctions";
-import { FeaturedTabWrapper } from "../home/FeaturedTabWrapper";
+import { FeaturedTabWrapper } from "./FeaturedTabWrapper";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import { Colors } from "../../styles/Colors";
 
@@ -34,7 +34,7 @@ export const ActiveSounds = () => {
             <FeaturedTabWrapper
               key={i}
               icon={
-                <IonIcons name="musical-notes-outline" color={Colors.white} size={20} />
+                <IonIcons name={item.soundIcon} color={Colors.white} size={20} />
               }
               text={item.soundName}
               pressOutCallback={async () => {

@@ -1,6 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Audio } from "expo-av";
-import { Sound } from "expo-av/build/Audio";
 import { AVPlaybackSource } from "expo-av/build/AV.types";
 
 export type SoundProps = {
@@ -8,15 +7,16 @@ export type SoundProps = {
   sound: Audio.Sound;
   path: AVPlaybackSource;
   name: string;
+  icon: string;
 };
 
 // Function to toggle audio playback
-export async function toggleSound({ isPlaying, sound, path, name }: SoundProps) {
+export async function toggleSound({ isPlaying, sound, path, name, icon }: SoundProps) {
   if (!isPlaying) {
     await sound.loadAsync(path);
     await sound.playAsync();
     sound.setIsLoopingAsync(true);
-    saveActiveSound(name);
+    saveActiveSound({name, icon});
   } else {
     await sound.stopAsync();
     await sound.unloadAsync();
@@ -45,10 +45,16 @@ export async function changeVolume({ sound, volume }: VolumeProps) {
   }
 }
 
+export type ActiveProps = {
+  name: string;
+  icon: string;
+}
+
 // Saves sounds to local storage to track when they are played
-export async function saveActiveSound(name: string) {
+export async function saveActiveSound({ name, icon }: ActiveProps) {
   const activeSound = {
     soundName: name,
+    soundIcon: icon,
   };
 
   let activeSounds;

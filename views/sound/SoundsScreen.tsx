@@ -20,26 +20,31 @@ export const SoundsScreen = () => {
       name: "Rain",
       path: require("../../assets/sounds/rain.mp3"),
       colour: Colors.opBlue,
+      icon: "rainy-outline",
     },
     {
       name: "Fire",
       path: require("../../assets/sounds/fire.mp3"),
       colour: Colors.opOrange,
+      icon: "flame-outline",
     },
     {
       name: "Waves",
       path: require("../../assets/sounds/waves.mp3"),
       colour: Colors.opPurple,
+      icon: "water-outline",
     },
     {
       name: "Forest",
       path: require("../../assets/sounds/forest.mp3"),
       colour: Colors.opGreen,
+      icon: "leaf-outline",
     },
     {
       name: "Noise",
       path: require("../../assets/sounds/noise.mp3"),
       colour: Colors.opYellow,
+      icon: "tv-outline",
     },
   ];
 
@@ -57,6 +62,7 @@ export const SoundsScreen = () => {
               name={sound.name}
               path={sound.path}
               colour={sound.colour}
+              icon={sound.icon}
             />
           );
         })}
