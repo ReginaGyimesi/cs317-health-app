@@ -140,7 +140,7 @@ const chartConfig = {
   useShadowColorFromDataset: false, // optional
   propsForBackgroundLines: {
     stroke: Colors.grey10,
-    strokeDasharray: {},
+   // strokeDasharray: {},
   },
   propsForHorizontalLabels: {
     fill: Colors.grey10,
