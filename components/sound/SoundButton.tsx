@@ -5,12 +5,14 @@ import React from "react";
 import { toggleSound, changeVolume } from "../../utils/soundFunctions";
 import { Audio } from "expo-av";
 import { useState } from "react";
+import * as Animatable from "react-native-animatable";
 
 export type SoundButtonProps = {
   sound: Audio.Sound;
   name: string;
   path: any;
   colour: string;
+  icon: string;
 };
 
 export const SoundButton = ({
@@ -18,6 +20,7 @@ export const SoundButton = ({
   name,
   path,
   colour,
+  icon,
 }: SoundButtonProps) => {
   const [playing, setPlaying] = useState(false);
   const [vol, setVolume] = useState(1);
@@ -36,17 +39,24 @@ export const SoundButton = ({
             sound: sound,
             isPlaying: playing,
             path: path,
+            name: name,
+            icon: icon,
           });
         }}
       >
         <Text style={styles.buttonText}>{name}</Text>
-        <View style={styles.wrapper}>
+        <Animatable.View
+          style={styles.wrapper}
+          animation={playing && "pulse"}
+          easing="ease-in-out"
+          iterationCount="infinite"
+        >
           <MaterialCommunityIcons
             name={!playing ? "play" : "pause"}
             color={Colors.primaryPink}
             size={35}
           />
-        </View>
+        </Animatable.View>
       </TouchableOpacity>
       <View style={styles.volumeButtons}>
         <TouchableOpacity

@@ -1,19 +1,21 @@
+import { StackActions, useNavigation } from "@react-navigation/native";
 import React from "react";
-import { Text, View, StyleSheet, ScrollView, Pressable } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { AlarmScreenNavName, LogScreenNavName, SoundsScreenNavName } from "..";
 import { FeaturedCardWrapper } from "../../components/home/FeaturedCardWrapper";
 import { FeaturedTabWrapper } from "../../components/home/FeaturedTabWrapper";
 import { WelcomeView } from "../../components/home/WelcomeView";
 import { Colors, FontVariants } from "../../styles";
-import IonIcons from "react-native-vector-icons/Ionicons";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { useNavigation, StackActions } from "@react-navigation/native";
-import { AlarmScreenNavName, LogScreenNavName, SoundsScreenNavName } from "..";
+import { Alarms } from "../../components/home/Alarms";
+import { ActiveSounds } from "../../components/home/ActiveSounds";
 
 export const HomeScreenNavName = "Home";
 export const HomeScreen = () => {
   const navigation = useNavigation();
 
-  const onAlarmPressed = () => navigation.dispatch(StackActions.push(AlarmScreenNavName));
+  const onAlarmPressed = () =>
+    navigation.dispatch(StackActions.push(AlarmScreenNavName));
   const onSoundPressed = () => navigation.navigate(SoundsScreenNavName);
   const onLogPressed = () => navigation.navigate(LogScreenNavName);
 
@@ -46,40 +48,21 @@ export const HomeScreen = () => {
               </ScrollView>
             </View>
           </View>
-          <View>
-            <View style={[styles.rowjustify]}>
-              <Text style={styles.title}>Your alarms</Text>
-              <Pressable onPress={onAlarmPressed}><Text style={styles.plustext}>+</Text></Pressable>
-            </View>
-            <FeaturedTabWrapper
-              icon={
-                <IonIcons name="alarm-outline" color={Colors.white} size={20} />
-              }
-              text="07:15"
-            />
-            <FeaturedTabWrapper
-              icon={
-                <IonIcons name="alarm-outline" color={Colors.white} size={20} />
-              }
-              text="07:30"
-            />
+          <View style={[styles.rowjustify]}>
+            <Text style={styles.title}>Your alarms</Text>
+            <Pressable onPress={onAlarmPressed}>
+              <Text style={styles.plustext}>+</Text>
+            </Pressable>
           </View>
+          <Alarms />
           <View>
             <View style={[styles.rowjustify]}>
               <Text style={styles.title}>Your sounds</Text>
-              <Pressable onPress={onSoundPressed}><Text style={styles.plustext}>+</Text></Pressable>
+              <Pressable onPress={onSoundPressed}>
+                <Text style={styles.plustext}>+</Text>
+              </Pressable>
             </View>
-
-            <FeaturedTabWrapper
-              icon={
-                <MaterialCommunityIcons
-                  name="account-music-outline"
-                  color={Colors.white}
-                  size={20}
-                />
-              }
-              text="water by a stream"
-            />
+            <ActiveSounds />
           </View>
         </View>
       </View>
