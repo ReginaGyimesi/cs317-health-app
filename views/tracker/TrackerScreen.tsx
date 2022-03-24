@@ -83,7 +83,7 @@ export const TrackerScreen = () => {
         <Pressable
           style={[
             styles.radioButton,
-            { backgroundColor: id === 0 ? "white" :""},
+            { backgroundColor: id === 0 ? "white" :"transparent"},
           ]}
           onPress={() => setHighlighted({ number: 0 })}
         >
@@ -92,7 +92,7 @@ export const TrackerScreen = () => {
         <Pressable
           style={[
             styles.radioButton,
-            { backgroundColor: id === 1 ? "white" : "" },
+            { backgroundColor: id === 1 ? "white" : "transparent" },
           ]}
           onPress={() => setHighlighted({ number: 1 })}
         >
@@ -101,7 +101,7 @@ export const TrackerScreen = () => {
         <Pressable
           style={[
             styles.radioButton,
-            { backgroundColor: id === 2 ? "white" : "" },
+            { backgroundColor: id === 2 ? "white" :"transparent"},
           ]}
           onPress={() => setHighlighted({ number: 2 })}
         >
