@@ -12,6 +12,7 @@ export type SoundButtonProps = {
   name: string;
   path: any;
   colour: string;
+  icon: string;
 };
 
 export const SoundButton = ({
@@ -19,6 +20,7 @@ export const SoundButton = ({
   name,
   path,
   colour,
+  icon,
 }: SoundButtonProps) => {
   const [playing, setPlaying] = useState(false);
   const [vol, setVolume] = useState(1);
@@ -37,6 +39,8 @@ export const SoundButton = ({
             sound: sound,
             isPlaying: playing,
             path: path,
+            name: name,
+            icon: icon,
           });
         }}
       >
