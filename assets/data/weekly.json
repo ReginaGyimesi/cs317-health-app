@@ -1,0 +1,12 @@
+{
+    "hours":[6, 6, 7, 8, 8, 8, 12],
+    "label":[
+        "Mon",
+        "Tues",
+        "Wed",
+        "Thur",
+        "Fri",
+        "Sat",
+        "Sun"
+      ]
+}

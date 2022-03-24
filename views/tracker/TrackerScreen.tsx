@@ -11,12 +11,14 @@ import {
   Alert,
   GestureResponderEvent,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Colors, FontVariants } from "../../styles";
 import { LineChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
-import { color, max } from "react-native-reanimated";
-import { RadioButton } from "react-native-paper";
+
+const dailyData = require('../../assets/data/daily.json');
+const weeklyData = require('../../assets/data/weekly.json');
+const monthlyData = require('../../assets/data/monthly.json');
+
 
 type RadioProps = {
   title?: String;
@@ -29,20 +31,12 @@ type RadioProps = {
 export const TrackerScreenNavName = "Tracker";
 export const TrackerScreen = () => {
  
-  const [hours, setData] = useState([6, 6, 7, 8, 8, 8, 12]);
-  const [xAxis, setLabels] = useState([
-    "Mon",
-    "Tues",
-    "Wed",
-    "Thur",
-    "Fri",
-    "Sat",
-    "Sun",
-  ]);
+  const [hours, setData] = useState(dailyData.hours);
+  const [xAxis, setLabels] = useState(dailyData.labels);
   const [yAxis, setyAxis] = useState(15);
   const [id, setId] = useState(0);
 
-  let initial = {
+  const initial = {
     labels: xAxis,
     datasets: [
       {
@@ -150,19 +144,6 @@ export const TrackerScreen = () => {
         fromZero={true}
         
       />
-      <Button onPress={valami} title="Increase"></Button>
-
-      <Button
-        onPress={() => setData([6, 6, 7, 8, 8, 8, 12])}
-        title="Reset"
-      ></Button>
-      <Text
-        style={{
-          color: "white",
-        }}
-      >
-        {initial.datasets[0].data}
-      </Text>
     </ScreenWrapper>
   );
 };
@@ -202,9 +183,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   radioButton: {
-    margin:15,
+    marginHorizontal:5,
     padding:2,
-    width:30,
     borderRadius: 100,
     backgroundColor: "green",
     flex: 3,
