@@ -1,12 +1,5 @@
 {
-    "hours":[6, 6, 7, 8, 8, 8, 12],
-    "label":[
-        "Mon",
-        "Tues",
-        "Wed",
-        "Thur",
-        "Fri",
-        "Sat",
-        "Sun"
-      ]
+    "hours":[50,55, 60,48],
+    "label":["1st Week", "2nd Week", "3rd Week", "4th Week"],
+    "axis":60
 }

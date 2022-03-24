@@ -15,9 +15,7 @@ import { Colors, FontVariants } from "../../styles";
 import { LineChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
 
-const dailyData = require('../../assets/data/daily.json');
-const weeklyData = require('../../assets/data/weekly.json');
-const monthlyData = require('../../assets/data/monthly.json');
+const dummyData = require('../../assets/data/dummy.json');
 
 
 type RadioProps = {
@@ -31,8 +29,8 @@ type RadioProps = {
 export const TrackerScreenNavName = "Tracker";
 export const TrackerScreen = () => {
  
-  const [hours, setData] = useState(dailyData.hours);
-  const [xAxis, setLabels] = useState(dailyData.labels);
+  const [hours, setData] = useState(dummyData.dailyHours);
+  const [xAxis, setLabels] = useState(dummyData.dailyLabel);
   const [yAxis, setyAxis] = useState(15);
   const [id, setId] = useState(0);
 
@@ -46,41 +44,23 @@ export const TrackerScreen = () => {
     legend: ["Total sleep time"], // optional
   };
 
-  function valami() {
-    setData(hours.map((element) => (element += Math.floor(Math.random() * 5))));
-    setLabels(["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"]);
-  }
-
   function daily() {
     //Calculate daily values from Async storage
-    setData([6, 6, 7, 8, 8, 8, 12]);
-    setLabels(["Mon", "Tues", "Wed", "Thur", "Fri", "Sat", "Sun"]);
-    setyAxis(15)
+    setData(dummyData.dailyHours);
+    setLabels(dummyData.dailyLabel);
+    setyAxis(dummyData.dailyAxis)
   }
   function weekly() {
     //Calculate daily values from Async storage
-    setData([1, 2, 3, 4]);
-    setLabels(["1st", "2nd", "3rd", "4th"]);
-    setyAxis(30)
+    setData(dummyData.weeklyHours);
+    setLabels(dummyData.weeklyLabel);
+    setyAxis(dummyData.weeklyAxis)
   }
   function monthly() {
     //Calculate daily values from Async storage
-    setData([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
-    setLabels([
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ]);
-    setyAxis(15)
+    setData(dummyData.monthlyHours);
+    setLabels(dummyData.monthlyLabel);
+    setyAxis(dummyData.monthlyAxis)
 
   }
 
