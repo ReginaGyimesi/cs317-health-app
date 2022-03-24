@@ -1,0 +1,13 @@
+{
+  "dailyHours": [6, 6, 7, 8, 8, 8, 12],
+  "dailyLabel": ["Mon", "Tues", "Wed", "Thur", "Fri", "Sat", "Sun"],
+  "dailyAxis": 15,
+
+  "weeklyHours": [50, 55, 60, 48],
+  "weeklyLabel": ["1st Week", "2nd Week", "3rd Week", "4th Week"],
+  "weeklyAxis": 80,
+
+  "monthlyHours": [217, 224, 210, 200,230,220,205,211,205,232,190,240],
+  "monthlyLabel": ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+  "monthlyAxis": 250
+}
