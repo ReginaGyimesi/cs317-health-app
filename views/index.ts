@@ -5,3 +5,4 @@ export * from "./logs/SingleLogScreen";
 export * from "./profile/ProfileScreen";
 export * from "./sound/SoundsScreen";
 export * from "./tracker/TrackerScreen";
+export * from "./login/LoginScreen"

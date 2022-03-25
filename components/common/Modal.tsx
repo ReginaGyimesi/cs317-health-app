@@ -63,7 +63,7 @@ export const ModalWrapper = ({
                     styles.btnwrapper,
                     { borderColor: Colors.acceptGreen },
                   ]}
-                  onPress={() => _onClick}
+                  onPress={_onClick}
                 >
                   <Text style={[styles.btntext, { color: Colors.acceptGreen }]}>
                     Yes

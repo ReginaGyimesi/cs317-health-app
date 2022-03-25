@@ -3,9 +3,11 @@ import { Text, Image, View, StyleSheet } from "react-native";
 import { ScreenWrapper } from "../../components/common/ScreenWrapper.tsx";
 import { FontVariants, Colors } from "../../styles";
 import { ModalWrapper } from "../../components/common/Modal";
+import { AuthContext } from "../../App";
 
 export const ProfileScreenNavName = "Me";
 export const ProfileScreen = () => {
+  const { signOut } = React.useContext(AuthContext);
   return (
     <ScreenWrapper title="Hello, Admin" text="">
       <Image
@@ -28,7 +30,7 @@ export const ProfileScreen = () => {
             text={
               "Are you sure you want to delete your account? You will lose all your data."
             }
-            _onClick={() => console.log("take me to login screen")}
+            _onClick={signOut}
           >
             <Text style={[styles.text, { color: Colors.dangerRed }]}>
               Delete account
@@ -38,7 +40,7 @@ export const ProfileScreen = () => {
         <ModalWrapper
           title={"Log out"}
           text={"Are you sure you want to log out?"}
-          _onClick={() => console.log("take me to login screen")}
+          _onClick={signOut}
         >
           <View style={styles.capsule}>
             <Text style={{ ...FontVariants.headerThin, color: Colors.white }}>

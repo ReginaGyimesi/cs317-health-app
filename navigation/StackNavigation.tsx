@@ -11,6 +11,8 @@ import {
   LogScreenNavName,
   SingleLogScreen,
   SingleLogScreenNavName,
+  LoginScreenNavName,
+  LoginScreen,
 } from "../views";
 
 const Stack = createStackNavigator();
@@ -40,3 +42,17 @@ export const LogToSingleLogNavigator = () => {
     </Stack.Navigator>
   );
 };
+
+export const LoginToHomeNavigator = () => {
+    return (
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name={LoginScreenNavName} component={LoginScreen} />
+        <Stack.Screen name={HomeScreenNavName} component={HomeScreen} />
+      </Stack.Navigator>
+    );
+  };
+  

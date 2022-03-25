@@ -4,10 +4,10 @@ import { Accelerometer } from "expo-sensors";
 import React, { useEffect, useState } from "react";
 import { ImageBackground, Pressable, StyleSheet, Text } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { SingleLogScreenNavName } from "..";
 import { ScreenWrapper } from "../../components/common/ScreenWrapper.tsx";
 import { PlayButton } from "../../components/logs/PlayButton";
 import { Colors, FontVariants } from "../../styles";
+import { SingleLogScreenNavName } from "..";
 import { Main } from "../../components/logs/Main";
 
 // src: https://medium.com/@charana.am/react-native-shake-event-w-expo-9dbf17033ea9
@@ -134,7 +134,7 @@ export const LogsScreen = () => {
 const styles = StyleSheet.create({
   imgcontainer: {
     width: "100%",
-    height: 400,
+    height: 500,
   },
   capsule: {
     flexDirection: "row",
