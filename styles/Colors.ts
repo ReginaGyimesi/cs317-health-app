@@ -8,6 +8,7 @@ export const Colors = {
   primaryYellow: "#BAAF48",
   primaryOrange: "#F96C3F",
   primaryPink: "#C6A7A7",
+  
 
   // greys in order
   grey10: "#FBFBFB",
@@ -27,6 +28,7 @@ export const Colors = {
   opGreen: "rgba(81, 171, 79, 0.4)",
   opPink: "rgba(234, 73, 179, 0.4)",
   opBlue: "rgba(79, 83, 171, 0.4)",
+  opBlue2: "rgba(109, 165, 251,0.3)",
   opGrey: "#C4C4C41A",
   opOrange: "#C23939B8",
   opYellow: "#AE8416B0"

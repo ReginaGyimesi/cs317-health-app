@@ -16,7 +16,6 @@ const THRESHOLD = 0.3;
 export const LogScreenNavName = "Log";
 export const LogsScreen = () => {
   const navigation = useNavigation();
-
   const [subscription, setSubscription] = useState(null);
   const [start, setStart] = useState(new Date());
   const [shakes, setShakes] = useState(0);
