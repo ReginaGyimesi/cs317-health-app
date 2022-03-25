@@ -1,20 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ScreenWrapper } from "../../components/common/ScreenWrapper.tsx";
 import {
   Text,
   View,
   StyleSheet,
-  ScrollView,
-  Image,
   Pressable,
-  Button,
-  Alert,
-  GestureResponderEvent,
 } from "react-native";
 import { Colors, FontSizes, FontVariants } from "../../styles";
 import { LineChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
-import { FeaturedCardWrapper } from "../../components/home/FeaturedCardWrapper";
 
 const dummyData = require("../../assets/data/dummy.json");
 
@@ -82,33 +76,33 @@ export const TrackerScreen = () => {
         <Pressable
           style={[
             styles.radioButton,
-            { backgroundColor: id === 0 ? "white" : "transparent" },
+            { backgroundColor: id === 0 ? Colors.white  : "transparent" },
           ]}
           onPress={() => setHighlighted({ number: 0 })}
         >
-          <Text style={[{ color: id === 0 ? "#3D45F6" : "white" }]}>
+          <Text style={[{ color: id === 0 ? Colors.secondaryPurple : Colors.white }]}>
             Weekly
           </Text>
         </Pressable>
         <Pressable
           style={[
             styles.radioButton,
-            { backgroundColor: id === 1 ? "white" : "transparent" },
+            { backgroundColor: id === 1 ? Colors.white : "transparent" },
           ]}
           onPress={() => setHighlighted({ number: 1 })}
         >
-          <Text style={[{ color: id === 1 ? "#3D45F6" : "white" }]}>
+          <Text style={[{ color: id === 1 ? Colors.secondaryPurple : Colors.white  }]}>
             Monthly
           </Text>
         </Pressable>
         <Pressable
           style={[
             styles.radioButton,
-            { backgroundColor: id === 2 ? "white" : "transparent" },
+            { backgroundColor: id === 2 ? Colors.white: "transparent" },
           ]}
           onPress={() => setHighlighted({ number: 2 })}
         >
-          <Text style={[{ color: id === 2 ? "#3D45F6" : "white" }]}>
+          <Text style={[{ color: id === 2 ? Colors.secondaryPurple : Colors.white }]}>
             Yearly
           </Text>
         </Pressable>
@@ -168,7 +162,7 @@ const chartConfig = {
 };
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#C4C4C4",
+    backgroundColor: Colors.grey30,
     height: 130,
     width: screenWidth - 50,
     borderRadius: 20,
@@ -177,13 +171,13 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   cardTitle: {
-    color: "#3D45F6",
+    color:Colors.secondaryPurple,
     fontSize: 28,
     fontWeight: "bold",
     fontFamily: "Roboto",
   },
   cardText: {
-    color: "#A5A3A3",
+    color: Colors.grey40,
     fontFamily: "Roboto",
     fontSize: 16,
   },

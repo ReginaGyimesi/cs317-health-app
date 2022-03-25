@@ -8,6 +8,7 @@ export const Colors = {
   primaryYellow: "#BAAF48",
   primaryOrange: "#F96C3F",
   primaryPink: "#C6A7A7",
+  
 
   // greys in order
   grey10: "#FBFBFB",
