@@ -11,12 +11,12 @@ import {
   Alert,
   GestureResponderEvent,
 } from "react-native";
-import { Colors, FontVariants } from "../../styles";
+import { Colors, FontSizes, FontVariants } from "../../styles";
 import { LineChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
+import { FeaturedCardWrapper } from "../../components/home/FeaturedCardWrapper";
 
-const dummyData = require('../../assets/data/dummy.json');
-
+const dummyData = require("../../assets/data/dummy.json");
 
 type RadioProps = {
   title?: String;
@@ -24,15 +24,15 @@ type RadioProps = {
   nav?: String;
   onPress?: () => void;
 };
- const screenWidth = Dimensions.get("window").width;
- 
+const screenWidth = Dimensions.get("window").width;
+
 export const TrackerScreenNavName = "Tracker";
 export const TrackerScreen = () => {
- 
   const [hours, setData] = useState(dummyData.dailyHours);
   const [xAxis, setLabels] = useState(dummyData.dailyLabel);
   const [yAxis, setyAxis] = useState(15);
   const [id, setId] = useState(0);
+
 
   const initial = {
     labels: xAxis,
@@ -48,20 +48,19 @@ export const TrackerScreen = () => {
     //Calculate daily values from Async storage
     setData(dummyData.dailyHours);
     setLabels(dummyData.dailyLabel);
-    setyAxis(dummyData.dailyAxis)
+    setyAxis(dummyData.dailyAxis);
   }
   function weekly() {
     //Calculate daily values from Async storage
     setData(dummyData.weeklyHours);
     setLabels(dummyData.weeklyLabel);
-    setyAxis(dummyData.weeklyAxis)
+    setyAxis(dummyData.weeklyAxis);
   }
   function monthly() {
     //Calculate daily values from Async storage
     setData(dummyData.monthlyHours);
     setLabels(dummyData.monthlyLabel);
-    setyAxis(dummyData.monthlyAxis)
-
+    setyAxis(dummyData.monthlyAxis);
   }
 
   function setHighlighted({ number }: RadioProps) {
@@ -83,11 +82,13 @@ export const TrackerScreen = () => {
         <Pressable
           style={[
             styles.radioButton,
-            { backgroundColor: id === 0 ? "white" :"transparent"},
+            { backgroundColor: id === 0 ? "white" : "transparent" },
           ]}
           onPress={() => setHighlighted({ number: 0 })}
         >
-          <Text style={[{color: id === 0 ? "#3D45F6" : "white"}]}>Weekly</Text>
+          <Text style={[{ color: id === 0 ? "#3D45F6" : "white" }]}>
+            Weekly
+          </Text>
         </Pressable>
         <Pressable
           style={[
@@ -96,34 +97,50 @@ export const TrackerScreen = () => {
           ]}
           onPress={() => setHighlighted({ number: 1 })}
         >
-          <Text style={[{color: id === 1 ? "#3D45F6" : "white"}]}>Monthly</Text>
+          <Text style={[{ color: id === 1 ? "#3D45F6" : "white" }]}>
+            Monthly
+          </Text>
         </Pressable>
         <Pressable
           style={[
             styles.radioButton,
-            { backgroundColor: id === 2 ? "white" :"transparent"},
+            { backgroundColor: id === 2 ? "white" : "transparent" },
           ]}
           onPress={() => setHighlighted({ number: 2 })}
         >
-          <Text style={[{color: id === 2 ? "#3D45F6" : "white"}]}>Yearly</Text>
+          <Text style={[{ color: id === 2 ? "#3D45F6" : "white" }]}>
+            Yearly
+          </Text>
         </Pressable>
       </View>
 
-      <LineChart
-        data={initial}
-        width={screenWidth}
-        height={200}
-        yAxisSuffix="h"
-        withShadow={false}
-        withInnerLines={true}
-        withVerticalLines={false}
-        withOuterLines={false}
-        chartConfig={chartConfig}
-        segments={5}
-        fromNumber={yAxis}
-        fromZero={true}
-        
-      />
+      <View style={styles.graph}>
+        <LineChart
+          data={initial}
+          width={screenWidth-30}
+          height={200}
+          yAxisSuffix="h"
+          withShadow={false}
+          withInnerLines={true}
+          withVerticalLines={false}
+          withOuterLines={false}
+          chartConfig={chartConfig}
+          segments={5}
+          fromNumber={yAxis}
+          fromZero={true}
+        />
+      </View>
+
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>Good job!</Text>
+        <Text style={styles.cardText}>
+          {hours.reduce((a: number, b: number) => a + b, 0)} hours of sleep has
+          been logged this 
+          {id==0? " week":""} 
+          {id==1? " month":""}
+          {id==2? " year":""} so far.
+        </Text>
+      </View>
     </ScreenWrapper>
   );
 };
@@ -137,10 +154,10 @@ const chartConfig = {
   color: () => Colors.primaryOrange,
   strokeWidth: 2, // optional, default 3
   barPercentage: 0.5,
-  useShadowColorFromDataset: false, // optional
+  useShadowColorFromDataset: true, // optional
   propsForBackgroundLines: {
     stroke: Colors.grey10,
-   // strokeDasharray: {},
+    strokeDasharray: 0,
   },
   propsForHorizontalLabels: {
     fill: Colors.grey10,
@@ -150,21 +167,43 @@ const chartConfig = {
   },
 };
 const styles = StyleSheet.create({
-  container: {},
+  card: {
+    backgroundColor: "#C4C4C4",
+    height: 130,
+    width: screenWidth - 50,
+    borderRadius: 20,
+    marginVertical: 20,
+    marginHorizontal: 25,
+    padding: 20,
+  },
+  cardTitle: {
+    color: "#3D45F6",
+    fontSize: 28,
+    fontWeight: "bold",
+    fontFamily: "Roboto",
+  },
+  cardText: {
+    color: "#A5A3A3",
+    fontFamily: "Roboto",
+    fontSize: 16,
+  },
+  graph:{
+
+  },
   radio: {
-    marginHorizontal:10,
+    marginHorizontal: 10,
     backgroundColor: Colors.opBlue2,
     borderRadius: 40,
-    width: screenWidth-20,
-    height:35,
+    width: screenWidth - 20,
+    height: 35,
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
   },
   radioButton: {
-    marginHorizontal:5,
-    padding:2,
+    marginHorizontal: 5,
+    padding: 2,
     borderRadius: 100,
     backgroundColor: "green",
     flex: 3,
@@ -177,6 +216,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: 30,
   },
+
   basemargin: {
     marginBottom: 40,
   },
@@ -190,7 +230,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 30,
     marginRight: 30,
-     justifyContent: "space-between",
+    justifyContent: "space-between",
   },
   plustext: {
     ...FontVariants.headerBold,
