@@ -7,7 +7,7 @@ import { ModalWrapper } from "../../components/common/Modal";
 export const ProfileScreenNavName = "Me";
 export const ProfileScreen = () => {
   return (
-    <ScreenWrapper title="Hello, Bob" text="">
+    <ScreenWrapper title="Hello, Admin" text="">
       <Image
         source={require("../../assets/images/semicirclereversed.png")}
         style={styles.imgcontainer}

@@ -166,8 +166,9 @@ const styles = StyleSheet.create({
     height: 130,
     width: screenWidth - 50,
     borderRadius: 20,
-    marginVertical: 20,
     marginHorizontal: 25,
+    marginTop: 30,
+    marginBottom: 60,
     padding: 20,
   },
   cardTitle: {
@@ -177,7 +178,7 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto",
   },
   cardText: {
-    color: Colors.grey40,
+    color: Colors.grey50,
     fontFamily: "Roboto",
     fontSize: 16,
   },
@@ -194,6 +195,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: 20
   },
   radioButton: {
     marginHorizontal: 5,
