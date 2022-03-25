@@ -123,7 +123,7 @@ export const AlarmScreen = () => {
         onPress={async () => {
           const success = await saveAlarm(clockValue, isVibrate);
           showToast(
-            success ? "Alarm saved!" : "Alarm dave failed!",
+            success ? "Alarm saved" : "Alarm save failed",
             success ? ToastType.SUCCESS : ToastType.FAILURE
           );
           navigation.goBack();
