@@ -9,6 +9,7 @@ import { RootSiblingParent } from "react-native-root-siblings";
 import { Navigator } from "./navigation/BottomTabNav";
 import { Colors } from "./styles";
 import { LoginScreen, LoginScreenNavName } from "./views";
+console.disableYellowBox = true;
 
 // https://reactnavigation.org/docs/auth-flow/#how-it-will-work
 const Stack = createStackNavigator();
