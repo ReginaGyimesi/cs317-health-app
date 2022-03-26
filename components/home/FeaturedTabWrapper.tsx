@@ -30,8 +30,8 @@ export const FeaturedTabWrapper = ({
   return (
     <Pressable onLongPress={longPressCallback} onPressOut={pressOutCallback}>
       <Animatable.View
-        animation={pressed && "shake"}
-        iterationCount={"infinite"}
+        animation={"shake"}
+        iterationCount={1}
         style={[styles.container, { opacity: op }]}
       >
         {icon}

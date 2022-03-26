@@ -16,8 +16,8 @@ export const HomeScreen = () => {
 
   const onAlarmPressed = () =>
     navigation.dispatch(StackActions.push(AlarmScreenNavName));
-  const onSoundPressed = () => navigation.navigate(SoundsScreenNavName);
-  const onLogPressed = () => navigation.navigate(LogScreenNavName);
+  const onSoundPressed = () => navigation.navigate({key:SoundsScreenNavName});
+  const onLogPressed = () => navigation.navigate({key:LogScreenNavName});
 
   const featuredcards = [
     { style: styles.bgcolor1, title: "sounds", num: "01", nav: onSoundPressed },
