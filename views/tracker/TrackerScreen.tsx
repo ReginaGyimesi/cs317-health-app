@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import { ScreenWrapper } from "../../components/common/ScreenWrapper.tsx";
-import {
-  Text,
-  View,
-  StyleSheet,
-  Pressable,
-} from "react-native";
+import { Text, View, StyleSheet, Pressable } from "react-native";
 import { Colors, FontSizes, FontVariants } from "../../styles";
 import { LineChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
@@ -26,7 +21,6 @@ export const TrackerScreen = () => {
   const [xAxis, setLabels] = useState(dummyData.dailyLabel);
   const [yAxis, setyAxis] = useState(15);
   const [id, setId] = useState(0);
-
 
   const initial = {
     labels: xAxis,
@@ -76,11 +70,15 @@ export const TrackerScreen = () => {
         <Pressable
           style={[
             styles.radioButton,
-            { backgroundColor: id === 0 ? Colors.white  : "transparent" },
+            { backgroundColor: id === 0 ? Colors.white : "transparent" },
           ]}
           onPress={() => setHighlighted({ number: 0 })}
         >
-          <Text style={[{ color: id === 0 ? Colors.secondaryPurple : Colors.white }]}>
+          <Text
+            style={[
+              { color: id === 0 ? Colors.secondaryPurple : Colors.white },
+            ]}
+          >
             Weekly
           </Text>
         </Pressable>
@@ -91,18 +89,26 @@ export const TrackerScreen = () => {
           ]}
           onPress={() => setHighlighted({ number: 1 })}
         >
-          <Text style={[{ color: id === 1 ? Colors.secondaryPurple : Colors.white  }]}>
+          <Text
+            style={[
+              { color: id === 1 ? Colors.secondaryPurple : Colors.white },
+            ]}
+          >
             Monthly
           </Text>
         </Pressable>
         <Pressable
           style={[
             styles.radioButton,
-            { backgroundColor: id === 2 ? Colors.white: "transparent" },
+            { backgroundColor: id === 2 ? Colors.white : "transparent" },
           ]}
           onPress={() => setHighlighted({ number: 2 })}
         >
-          <Text style={[{ color: id === 2 ? Colors.secondaryPurple : Colors.white }]}>
+          <Text
+            style={[
+              { color: id === 2 ? Colors.secondaryPurple : Colors.white },
+            ]}
+          >
             Yearly
           </Text>
         </Pressable>
@@ -111,7 +117,7 @@ export const TrackerScreen = () => {
       <View style={styles.graph}>
         <LineChart
           data={initial}
-          width={screenWidth-30}
+          width={screenWidth - 30}
           height={200}
           yAxisSuffix="h"
           withShadow={false}
@@ -129,10 +135,10 @@ export const TrackerScreen = () => {
         <Text style={styles.cardTitle}>Good job!</Text>
         <Text style={styles.cardText}>
           {hours.reduce((a: number, b: number) => a + b, 0)} hours of sleep has
-          been logged this 
-          {id==0? " week":""} 
-          {id==1? " month":""}
-          {id==2? " year":""} so far.
+          been logged this
+          {id == 0 ? " week" : ""}
+          {id == 1 ? " month" : ""}
+          {id == 2 ? " year" : ""} so far.
         </Text>
       </View>
     </ScreenWrapper>
@@ -172,7 +178,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   cardTitle: {
-    color:Colors.secondaryPurple,
+    color: Colors.secondaryPurple,
     fontSize: 28,
     fontWeight: "bold",
     fontFamily: "Roboto",
@@ -182,9 +188,7 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto",
     fontSize: 16,
   },
-  graph:{
-
-  },
+  graph: {},
   radio: {
     marginHorizontal: 10,
     backgroundColor: Colors.opBlue2,
@@ -195,7 +199,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 20
+    marginBottom: 20,
   },
   radioButton: {
     marginHorizontal: 5,

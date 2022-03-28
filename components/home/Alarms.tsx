@@ -1,11 +1,10 @@
 import { useFocusEffect } from "@react-navigation/native";
-import { Animated } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import IonIcons from "react-native-vector-icons/Ionicons";
+import { showToast, ToastType } from "../../components/common/MessageToast";
 import { FeaturedTabWrapper } from "../../components/home/FeaturedTabWrapper";
 import { Colors } from "../../styles";
 import { deleteAlarm, fetchActiveAlarms } from "../../utils/alarmUtils";
-import { showToast, ToastType } from "../../components/common/MessageToast";
 
 export const Alarms = () => {
   // Set the initial alarms screen
@@ -13,7 +12,6 @@ export const Alarms = () => {
   const [loading, setLoading] = useState(true);
   const [idx, setIdx] = useState(-1);
   const [pressed, setPressed] = useState(false);
-
 
   const fetch = async () => {
     try {
@@ -33,7 +31,6 @@ export const Alarms = () => {
     }, [])
   );
 
-
   return (
     <>
       {!data || data.length === 0 || loading ? (
@@ -49,13 +46,13 @@ export const Alarms = () => {
               text={item.displayTime}
               longPressCallback={() => {
                 setIdx(i);
-                setPressed(true)
+                setPressed(true);
               }}
               pressOutCallback={async () => {
                 let message = await deleteAlarm(item.id);
                 setIdx(-1);
                 showToast(message, ToastType.SUCCESS);
-                setPressed(false)
+                setPressed(false);
                 fetch(); // reload state
               }}
               op={idx === i ? 0.3 : 1}

@@ -1,8 +1,8 @@
 import React from "react";
-import { StyleSheet, Text, ScrollView, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
+import * as Animatable from "react-native-animatable";
 import { Colors, FontVariants } from "../../styles";
 import { BackToHomeButton } from "./BackToHomeButton";
-import * as Animatable from "react-native-animatable";
 
 type Props = {
   title: String;
@@ -15,7 +15,9 @@ export const ScreenWrapper = ({ title, text, children }: Props) => {
     <ScrollView>
       <View style={[styles.container]}>
         <BackToHomeButton />
-        <Animatable.Text animation={"fadeIn"} style={styles.title}>{title}</Animatable.Text>
+        <Animatable.Text animation={"fadeIn"} style={styles.title}>
+          {title}
+        </Animatable.Text>
         <Animatable.Text style={styles.text}>{text}</Animatable.Text>
       </View>
       {children}

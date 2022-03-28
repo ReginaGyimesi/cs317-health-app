@@ -81,15 +81,15 @@ export const LoginScreen = () => {
             secureTextEntry={true}
           />
           <View style={styles.loginwrapper}>
-          <Pressable
-            style={styles.loginView}
-            onPress={() => {
-              checkLogin();
-            }}
-            accessibilityLabel="Login Button"
-          >
-            <Text style={styles.loginText}>Login</Text>
-          </Pressable>
+            <Pressable
+              style={styles.loginView}
+              onPress={() => {
+                checkLogin();
+              }}
+              accessibilityLabel="Login Button"
+            >
+              <Text style={styles.loginText}>Login</Text>
+            </Pressable>
           </View>
           <Text
             style={{ ...styles.signUp, marginTop: 55, color: Colors.grey20 }}
@@ -160,7 +160,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 20,
     borderColor: Colors.grey20,
-    color: Colors.grey10
+    color: Colors.grey10,
   },
   button: {
     alignItems: "center",

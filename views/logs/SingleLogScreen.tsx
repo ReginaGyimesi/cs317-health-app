@@ -5,11 +5,11 @@ import { LogsTabWrapper } from "../../components/logs/LogsTabWrapper";
 import { Colors } from "../../styles";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { millisToTime } from "../../utils/millisToTime"
+import { millisToTime } from "../../utils/millisToTime";
 
 export const SingleLogScreenNavName = "SingleLog";
 export const SingleLogScreen = () => {
-  const [lastLogged, setLastLogged] = useState(Object)
+  const [lastLogged, setLastLogged] = useState(Object);
   const getItem = async () => {
     let logged = await AsyncStorage.getItem("loggedHours");
     let data = JSON.parse(logged);
@@ -17,7 +17,7 @@ export const SingleLogScreen = () => {
     return data;
   };
 
-  let arr = Object.values(lastLogged)
+  let arr = Object.values(lastLogged);
   const logs = [
     { title: "Deep sleep", text: millisToTime(arr[2]), bg: Colors.opPurple },
     { title: "Light sleep", text: millisToTime(arr[1]), bg: Colors.opGreen },
@@ -26,8 +26,8 @@ export const SingleLogScreen = () => {
   ];
 
   useEffect(() => {
-    getItem()
-  }, [])
+    getItem();
+  }, []);
 
   return (
     <ScreenWrapper

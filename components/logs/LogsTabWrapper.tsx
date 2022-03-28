@@ -3,9 +3,9 @@ import { Colors, FontVariants } from "../../styles";
 import React from "react";
 
 type TabProps = {
-  title: any,
-  text: String,
-  style: StyleProp<ViewStyle>
+  title: any;
+  text: String;
+  style: StyleProp<ViewStyle>;
 };
 
 export const LogsTabWrapper = ({ title, style, text }: TabProps) => {
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: Colors.grey60,
     flexDirection: "row",
-    padding: 15
+    padding: 15,
   },
   title: {
     ...FontVariants.headerThin,

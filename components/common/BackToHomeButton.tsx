@@ -6,7 +6,7 @@ import React from "react";
 export const BackToHomeButton = () => {
   const navigation = useNavigation();
   return (
-    <Pressable onPress={() => navigation.navigate(HomeScreenNavName)}>
+    <Pressable onPress={() => navigation.navigate({key: HomeScreenNavName})}>
       <Image source={require("../../assets/icons/back.png")} />
     </Pressable>
   );

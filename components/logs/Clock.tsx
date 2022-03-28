@@ -6,7 +6,7 @@ type ClockProps = {
   updateCallback: any;
 };
 
-export const Clock = ({updateCallback}:ClockProps) => {
+export const Clock = ({ updateCallback }: ClockProps) => {
   const time = new Date();
   const [currTime, setCurrTime] = useState(time);
 
@@ -31,6 +31,6 @@ const stylesheet = StyleSheet.create({
     ...FontVariants.headerLarge,
     textAlign: "center",
     justifyContent: "center",
-    color: Colors.grey20
+    color: Colors.grey20,
   },
 });

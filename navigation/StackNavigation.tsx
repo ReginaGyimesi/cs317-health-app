@@ -44,15 +44,14 @@ export const LogToSingleLogNavigator = () => {
 };
 
 export const LoginToHomeNavigator = () => {
-    return (
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name={LoginScreenNavName} component={LoginScreen} />
-        <Stack.Screen name={HomeScreenNavName} component={HomeScreen} />
-      </Stack.Navigator>
-    );
-  };
-  
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name={LoginScreenNavName} component={LoginScreen} />
+      <Stack.Screen name={HomeScreenNavName} component={HomeScreen} />
+    </Stack.Navigator>
+  );
+};

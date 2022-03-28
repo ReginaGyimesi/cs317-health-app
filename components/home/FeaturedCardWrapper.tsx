@@ -1,5 +1,11 @@
 import React from "react";
-import { StyleProp, StyleSheet, Text, TextStyle, TouchableOpacity } from "react-native";
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+} from "react-native";
 import { Colors, FontVariants } from "../../styles";
 
 type CardProps = {
