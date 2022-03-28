@@ -11,7 +11,7 @@ import { Colors } from "./styles";
 import { LoginScreen, LoginScreenNavName } from "./views";
 console.disableYellowBox = true;
 
-// https://reactnavigation.org/docs/auth-flow/#how-it-will-work
+// src: https://reactnavigation.org/docs/auth-flow/#how-it-will-work
 const Stack = createStackNavigator();
 export const AuthContext = React.createContext();
 

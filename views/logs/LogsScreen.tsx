@@ -134,7 +134,7 @@ export const LogsScreen = () => {
 const styles = StyleSheet.create({
   imgcontainer: {
     width: "100%",
-    height: 480,
+    height: 500,
   },
   capsule: {
     flexDirection: "row",

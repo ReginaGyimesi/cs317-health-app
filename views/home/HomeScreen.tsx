@@ -1,14 +1,12 @@
 import { StackActions, useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { AlarmScreenNavName, LogScreenNavName, SoundsScreenNavName } from "..";
+import { ActiveSounds } from "../../components/home/ActiveSounds";
+import { Alarms } from "../../components/home/Alarms";
 import { FeaturedCardWrapper } from "../../components/home/FeaturedCardWrapper";
-import { FeaturedTabWrapper } from "../../components/home/FeaturedTabWrapper";
 import { WelcomeView } from "../../components/home/WelcomeView";
 import { Colors, FontVariants } from "../../styles";
-import { Alarms } from "../../components/home/Alarms";
-import { ActiveSounds } from "../../components/home/ActiveSounds";
 
 export const HomeScreenNavName = "Home";
 export const HomeScreen = () => {
@@ -16,9 +14,8 @@ export const HomeScreen = () => {
 
   const onAlarmPressed = () =>
     navigation.dispatch(StackActions.push(AlarmScreenNavName));
-  const onSoundPressed = () =>
-    navigation.navigate({ key: SoundsScreenNavName });
-  const onLogPressed = () => navigation.navigate({ key: LogScreenNavName });
+  const onSoundPressed = () => navigation.navigate(SoundsScreenNavName);
+  const onLogPressed = () => navigation.navigate(LogScreenNavName);
 
   const featuredcards = [
     { style: styles.bgcolor1, title: "sounds", num: "01", nav: onSoundPressed },
