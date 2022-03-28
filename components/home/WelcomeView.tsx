@@ -28,7 +28,7 @@ export const WelcomeView = () => {
           <Text
             style={[FontVariants.introBold, styles.text, { paddingTop: 8 }]}
           >
-            Bob
+            Admin
           </Text>
         </View>
       </ImageBackground>
